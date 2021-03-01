@@ -34,7 +34,8 @@ target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARIES})
 endif()
 #    Windows
 if(WIN32)
-set(SDL2_DIR "path/to/sdl2/folder")
+# Change to your local SDL2 folder path
+set(SDL2_DIR "D:/Programming/sdks/SDL2")
 set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR} ${CMAKE_PREFIX_PATH})
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
