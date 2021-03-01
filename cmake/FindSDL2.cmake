@@ -67,6 +67,8 @@
 
 # message("<FindSDL2.cmake>")
 
+set(SDL2_PATH "D:/Programing/sdks/SDL2")
+
 SET(SDL2_SEARCH_PATHS
 	~/Library/Frameworks
 	/Library/Frameworks

@@ -29,16 +29,14 @@ set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD_REQUIRED ON)
 #    Linux
 if(UNIX)
 find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
+target_include_directories(RubiksCubeSolver ${SDL2_INCLUDE_DIRS})
 target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARIES})
 endif()
 #    Windows
 if(WIN32)
-# use this when SDL2 is installed somewhere else on your PC
-    #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
+set(SDL2_DIR "path/to/sdl2/folder")
 set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR} ${CMAKE_PREFIX_PATH})
 find_package(SDL2 REQUIRED)
-
-include_directories(${SDL2_INCLUDE_DIR})
-target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARY})
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARIES})
 endif()
