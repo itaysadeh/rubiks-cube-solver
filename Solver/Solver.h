@@ -24,9 +24,9 @@ struct Solver
     // this will only be avaliable in classes that inherit from Solver, and not in the global scope
     using EMOVE = Rubiks::EMOVE;
 
-    //virtual std::vector<Rubiks::EMOVE> solve(const Rubiks& cube) = 0;
+    virtual std::vector<Rubiks::EMOVE> solve(const Rubiks& cube) = 0;
 
-//protected:
+protected:
     // search algorithms:
         // A*       when using a database
     std::vector<EMOVE> Astar(const Rubiks& cube, const Goal& goal, const Database& database) const;

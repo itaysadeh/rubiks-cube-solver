@@ -29,7 +29,8 @@ set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD_REQUIRED ON)
 #    Linux
 if(UNIX)
 find_package(SDL2 REQUIRED)
-include_directories(${SDL_INCLUDE_DIRS})
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARIES})
 endif()
 #    Windows
 if(WIN32)

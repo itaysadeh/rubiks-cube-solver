@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 #include <ctime>
+#include <cstring>
 
 class Rubiks
 {

@@ -25,7 +25,7 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
     uint8_t rootScoreH = database.getDistance(cube);
     uint8_t rootScoreF = rootScoreG + rootScoreH;
 
-    Node_S rootNode     = std::make_shared<Node>(nullptr, EMOVE::NO_MOVE, cube, rootScoreG, rootScoreH, rootScoreF);
+    Node_S rootNode     = std::make_shared<Node>(Node{nullptr, EMOVE::NO_MOVE, cube, rootScoreG, rootScoreH, rootScoreF});
     Node_S currentNode  = nullptr;
     Node_S solvedNode   = nullptr;
 
@@ -60,7 +60,7 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
                 // ignore nodes that move from a solution
                 if (newScoreF <= currentNode->scoreF)
                 {
-                    Node_S newNode = std::make_shared<Node>(currentNode, move, copy, newScoreG, newScoreH, newScoreF);
+                    Node_S newNode = std::make_shared<Node>(Node{currentNode, move, copy, newScoreG, newScoreH, newScoreF});
                     Q.push(newNode);
                 }
                 copy.revertMove(move);
