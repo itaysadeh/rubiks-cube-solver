@@ -1,0 +1,48 @@
+#pragma once
+
+#include <chrono>
+#include <string>
+#include <iostream>
+
+class Timer
+{
+public:
+	// reset the timer
+	void set()
+	{
+		m_start = std::chrono::high_resolution_clock::now();
+	}
+
+	// get elapsed time
+	double get()
+	{
+		auto endTimePoint = std::chrono::high_resolution_clock::now();
+
+		auto start = std::chrono::time_point_cast<std::chrono::microseconds>(m_start).time_since_epoch().count();
+		auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimePoint).time_since_epoch().count();
+
+		auto duration = end - start;
+		double ms = duration * 0.001;
+
+		return ms;
+	}
+
+	// same, but also prints the result with a message
+	double get(const std::string& message)
+	{
+		auto endTimePoint = std::chrono::high_resolution_clock::now();
+
+		auto start = std::chrono::time_point_cast<std::chrono::microseconds>(m_start).time_since_epoch().count();
+		auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimePoint).time_since_epoch().count();
+
+		auto duration = end - start;
+		double ms = duration * 0.001;
+		std::cout << message << "(" << ms << "ms)." << "\n";
+
+		return ms;
+	}
+
+private:
+	std::chrono::time_point<std::chrono::high_resolution_clock> m_start;
+};
+

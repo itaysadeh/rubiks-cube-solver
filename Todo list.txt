@@ -1,0 +1,21 @@
+General:
+    make a rotateAdjacents CW and CCW and store the affected facelets in a simple list
+    implement threading for solving the cube and generating tables without freezing the entire program while it does
+    remove permutation indexer if it's not in use + for loading and generating databases
+
+    remove the option to not use databases depends on the time it takes to generate tables
+
+    *** make a "solver helper" to prune moves etc. remove the functionality of redundant move from the Rubiks class
+    *** it's already implemented on Solver::isRedundant() with more functionalities
+        * maybe make it a base class that can be inherited from with additional logic specific to a search or a function
+    
+    advanced move pruning with respect to 3 moves in reverse
+    
+    
+
+Cube.cpp:
+    displayCube() find a more readable way of doing that
+
+Engine.cpp:
+    remove IDs for facelets functonality
+
