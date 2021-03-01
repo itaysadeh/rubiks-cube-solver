@@ -38,3 +38,5 @@ CMakeSettings.json
 
 /out
 /build
+/x64-Relase
+/x64-Debug
