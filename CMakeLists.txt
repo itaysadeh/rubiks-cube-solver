@@ -21,6 +21,8 @@ set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
 
 add_executable(RubiksCubeSolver ${SRC})
 
+set(CMAKE_BUILD_TYPE Release)
+
 # C++20 required for rotl/rotr
 set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD 20)
 set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD_REQUIRED ON)
