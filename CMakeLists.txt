@@ -33,10 +33,11 @@ include_directories(${SDL_INCLUDE_DIRS})
 endif()
 #    Windows
 if(WIN32)
+# use this when SDL2 is installed somewhere else on your PC
+    #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR} ${CMAKE_PREFIX_PATH})
 find_package(SDL2 REQUIRED)
 
-include_directories(${SDL2_INCLUDE_DIRS})
-target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARIES})
-
+include_directories(${SDL2_INCLUDE_DIR})
+target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARY})
 endif()
