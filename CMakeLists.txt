@@ -4,6 +4,7 @@ project(RubiksCubeSolver)
 
 set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
          "${CMAKE_SOURCE_DIR}/Cube.cpp"
+         "${CMAKE_SOURCE_DIR}/Engine/Engine.cpp"
          "${CMAKE_SOURCE_DIR}/Util/DatabaseGenerator.cpp"
          "${CMAKE_SOURCE_DIR}/Util/MovesSimplifier.cpp"
          "${CMAKE_SOURCE_DIR}/Util/DatabaseGenerator.cpp"
@@ -22,6 +23,7 @@ set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
 add_executable(RubiksCubeSolver ${SRC})
 
 set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
 
 # C++20 required for rotl/rotr
 set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD 20)
