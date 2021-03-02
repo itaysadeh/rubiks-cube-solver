@@ -22,12 +22,11 @@ set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
 
 add_executable(RubiksCubeSolver ${SRC})
 
-
+# Binary outputs will be in root/Debug|Release/executable
+# The relative path of the output will be /root
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
 set_target_properties(RubiksCubeSolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/Debug/")
 set_target_properties(RubiksCubeSolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/Release/")
-
-# This can be used if the build output is in a different directory (coppies databases to output)
-#file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Database/Generated_Databases" DESTINATION "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}/")
 
 # C++20 required for rotl/rotr
 set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD 20)
@@ -44,7 +43,6 @@ endif()
 if(WIN32)
 # Change to your local SDL2 folder path
 set(SDL2_DIR "D:/Programming/sdks/SDL2")
-set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR} ${CMAKE_PREFIX_PATH})
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARIES})

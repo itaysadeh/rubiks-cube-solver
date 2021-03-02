@@ -40,3 +40,6 @@ CMakeSettings.json
 /build
 /x64-Relase
 /x64-Debug
+/dlls
+/Release
+/Debug
