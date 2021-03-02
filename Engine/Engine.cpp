@@ -73,12 +73,12 @@ void Engine::init()
     }
 
     // init colours
-    m_colours[W] = { 255, 255, 255 };    
-    m_colours[O] = { 255, 120, 0 }; 
-    m_colours[G] = { 0, 255, 0 };  
-    m_colours[R] = { 255, 0, 0 };  
-    m_colours[B] = { 0, 0, 255 };  
-    m_colours[Y] = { 255, 255, 0 };
+    m_colours[W] = { 255, 255, 255, 255};
+    m_colours[O] = { 255, 120, 0, 255};
+    m_colours[G] = { 0, 255, 0, 255 };
+    m_colours[R] = { 255, 0, 0, 255 };
+    m_colours[B] = { 0, 0, 255, 255 };
+    m_colours[Y] = { 255, 255, 0, 255 };
 
     // init facelet positions on screen
     auto setFace = [&](size_t ind, size_t x_offset, size_t y_offset) {
@@ -261,7 +261,11 @@ void Engine::pollEvents()
             if (ev.key.keysym.sym == SDLK_F1)
             {
                 std::cout << "Solving (Thistlethwaite's algorithm):\n";
-                m_thistlethwaite.solve(m_cube);
+                std::vector<Rubiks::EMOVE> result = m_thistlethwaite.solve(m_cube);
+                for (auto move : result)
+                {
+                    m_cube.performMove(move);
+                }
             }
             break;
         }

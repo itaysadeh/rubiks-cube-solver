@@ -2,7 +2,7 @@
 
 bool Database::load()
 {
-    const std::string path = "../Database/Generated_Databases/" + m_fileName;
+    const std::string path = "./Database/Generated_Databases/" + m_fileName;
     std::ifstream input(path);
 
     if (input)
@@ -33,7 +33,7 @@ bool Database::load()
 
 void Database::write() const
 {
-    const std::string path = "../Database/Generated_Databases/" + m_fileName;
+    const std::string path = "./Database/Generated_Databases/" + m_fileName;
     std::ofstream outfile;
     outfile.open(path);
 
