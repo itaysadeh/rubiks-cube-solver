@@ -57,16 +57,13 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
         return factorial[n] / (factorial[k] * factorial[n - k]);
     };
 
-    // www.jaapsch.net/puzzles/compindx.htm
-                                                                                                          
-    // edge index is calculated by adding together the number of possible combinations that lead to the
-    // current combination, when positions are always assumed to be in a decending order. order does not
-    // matter and there are no repetitions. the first position is always in the range of: 2 < pos < 13.
-    // for a solved state (and smallest combination) the positions would be 3,2,1,0 which results in:
-    // 2C4 + 1C3 + 0C2 + 0C1 = 0. for n < k => nCk = 0, for n = k => nCk = 1. example: for (9,5,3,1) add
-    // the values of 8C4, 4C3, 2C2 and 0C1 together. since 9 is first, we need to calculate how many
-    // combinations are possible with numbers smaller than 9 (8C4), then, calculate how many combinations
-    // are possible where the first digit is 9 and other 3 are smaller than 5 (4C3).. resulting in 70+4+1+0=75
+    // www.jaapsch.net/puzzles/compindx.htm                                                                                                    
+    // edge index is calculated by counting the amount of possible smaller positions combinations.
+    // because there is no repetition or regard to order, nCk is used assuming the positions
+    // perms are in a decending order. Ex: {9, 5, 3, 1} there are 8C4 combinations
+    // for positions 1-8. then, there are 4C3 combinations where the first position is 5
+    // and the three other positions are smaller than 5. continuing with the same logic
+    // {9, 5, 3, 1} results in (8C4 + 4C3 + 2C2 + 0C1) = (70 + 4 + 1 + 0) = 75
 
     uint32_t edgesInd   = 0;
     uint32_t cornersInd = 0;

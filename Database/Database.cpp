@@ -86,17 +86,9 @@ std::size_t Database::currentSize() const
     return m_currentCapacity;
 }
 
-void Database::set(uint32_t index, uint8_t value)
-{
-    if (m_data[index] == 0xFF)
-    {
-        m_currentCapacity++;
-    }
-    m_data[index] = value;
-}
-
 void Database::reset()
 {
+    // fills the data with 0xFF (unset)
     std::fill(m_data.begin(), m_data.end(), 0xFF);
     m_currentCapacity = 0;
 }

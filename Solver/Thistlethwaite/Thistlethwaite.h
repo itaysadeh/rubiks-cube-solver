@@ -6,10 +6,9 @@
 class Thistlethwaite : public Solver
 {
 public:
-	std::vector<EMOVE> solve(const Rubiks& cube);// override;
-
-	// TEMPORARY
 	Thistlethwaite();
+
+	std::vector<EMOVE> solve(const Rubiks& cube) const override;
 
 private:
 	using G0_G1 = TypedGroup<G0_G1_Database, G0_G1_Goal>;
@@ -21,5 +20,7 @@ private:
 	G1_G2 m_G1G2;
 	G2_G3 m_G2G3;
 	G3_G4 m_G3G4;
+
+	std::vector<Group*> m_groups;
 };
 

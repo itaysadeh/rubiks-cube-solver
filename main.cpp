@@ -8,8 +8,6 @@ int main(int argc, char* argv[])
 {
 	srand(0);
 
-	std::cout << std::filesystem::current_path() << '\n';
-
 	Engine engine;
 	engine.run();
 

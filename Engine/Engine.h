@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cstdint>
 
+// renders cube and handles user input
 class Engine
 {
 public:
@@ -18,6 +19,7 @@ public:
     void run();
 
 private:
+    // engine logic
     void init();
     void mainLoop();
     void pollEvents();
@@ -32,11 +34,11 @@ private:
     SDL_Color m_colours[6];
     enum { W, O, G, R, B, Y };
 
-    const size_t FPS = 60;
-    const size_t FRAME_DELAY = 1000 / FPS;
+    const uint32_t FPS = 60;
+    const uint32_t FRAME_DELAY = 1000 / FPS;
 
     void renderFacelet(size_t ind);
-    void setFaceletPos(size_t ind, size_t x, size_t y);
+    void setFaceletPos(size_t ind, int x, int y);
 
     // cube logic
     Rubiks m_cube;

@@ -2,7 +2,7 @@
 
 #include "../Cube.h"
 
-// speeds searches by pruning redundant moves from a search tree
+// speeds searches by pruning redundant moves (moves that lead to identical states) from a search tree
 struct MovesSimplifier
 {
     using EMOVE = Rubiks::EMOVE;

@@ -11,14 +11,14 @@ set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
          "${CMAKE_SOURCE_DIR}/Database/Database.cpp"
          "${CMAKE_SOURCE_DIR}/Solver/Solver.cpp"
          "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Thistlethwaite.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/Databases/G0_G1_database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/Databases/G1_G2_database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/Databases/G2_G3_database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/Databases/G3_G4_database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/Goals/G0_G1_goal.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/Goals/G1_G2_goal.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/Goals/G2_G3_goal.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/Goals/G3_G4_goal.cpp")
+         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/G0_G1_database.cpp"
+         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/G1_G2_database.cpp"
+         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/G2_G3_database.cpp"
+         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/G3_G4_database.cpp"
+         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/G0_G1_goal.cpp"
+         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/G1_G2_goal.cpp"
+         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/G2_G3_goal.cpp"
+         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Groups/G3_G4_goal.cpp")
 
 add_executable(RubiksCubeSolver ${SRC})
 

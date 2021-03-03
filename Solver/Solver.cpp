@@ -16,7 +16,7 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
         uint8_t scoreF; // G + H
     };
 
-    // for logarithmic insertion, the lowest F score is always looked at first
+    // for logarithmic insertion, the lowest F score is always looked at first in the queue
     auto compareNodeFScore = [](Node_S lhs, Node_S rhs)->bool {
         return lhs->scoreF > rhs->scoreF;
     };
@@ -34,11 +34,11 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
 
     while (!Q.empty())
     {
-        // lowest F score
+        // node wit the lowest F score
         currentNode = Q.top();
         Q.pop();
 
-        // break when found a solution
+        // break when a solution is found
         if (goal.contented(currentNode->cube))
         {
             solvedNode = currentNode;
@@ -52,12 +52,12 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
                 Rubiks copy = currentNode->cube;
                 copy.performMove(move);
 
-                size_t  newIndex  = database.getIndex(copy);
-                uint8_t newScoreG = currentNode->scoreG + 1;
-                uint8_t newScoreH = database.getDistance(newIndex);
-                uint8_t newScoreF = newScoreG + newScoreH;
+                uint32_t newIndex  = database.getIndex(copy);
+                uint8_t  newScoreG = currentNode->scoreG + 1;
+                uint8_t  newScoreH = database.getDistance(newIndex);
+                uint8_t  newScoreF = newScoreG + newScoreH;
 
-                // ignore nodes that move from a solution
+                // ignore nodes that move away from a solution
                 if (newScoreF <= currentNode->scoreF)
                 {
                     Node_S newNode = std::make_shared<Node>(Node{currentNode, move, copy, newScoreG, newScoreH, newScoreF});
@@ -69,6 +69,12 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
     }
 
     std::vector<EMOVE> result;
+
+    // with a database a solution is guaranteed
+    if (!solvedNode)
+    {
+        throw std::logic_error("Solver::Astar Didn't find a solution, invalid database");
+    }
 
     while (solvedNode->parent)
     {
@@ -89,7 +95,6 @@ std::vector<Rubiks::EMOVE> Solver::IDDFS(const Rubiks& cube, const Goal& goal, c
     std::vector<EMOVE> result;
     while (true)
     {
-        //std::cout << "Depth: " << (int)depth << "\n";
         if (searcher(cube, EMOVE::NO_MOVE, goal, database, 0, depth, result))
         {
             break;
@@ -102,8 +107,8 @@ std::vector<Rubiks::EMOVE> Solver::IDDFS(const Rubiks& cube, const Goal& goal, c
     return result;
 }
 
-bool Solver::searcher(Rubiks cube, Rubiks::EMOVE lastMove , const Goal& goal, const Database& database,
-    uint8_t depth, uint8_t maxDepth, std::vector<Rubiks::EMOVE>& result) const
+bool Solver::searcher(Rubiks cube, EMOVE lastMove , const Goal& goal, const Database& database,
+    uint8_t depth, uint8_t maxDepth, std::vector<EMOVE>& result) const
 {
     using EMOVE = Rubiks::EMOVE;
     // stop searching when max depth is reached, a solution might be closer in a different branch

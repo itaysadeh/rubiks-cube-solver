@@ -9,6 +9,8 @@
 #include "../Util/Timer.h"
 #include "../Util/MovesSimplifier.h"
 
+// IDDFS is used to search for all possible cube states reachable from a solved state
+// and assign each state the distance from the root position
 class DatabaseGenerator
 {
 public:

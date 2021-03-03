@@ -58,7 +58,7 @@ void Engine::init()
     m_renderer = SDL_CreateRenderer(m_window, -1, 0);
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
 
-    constexpr size_t faceletSize = 55;
+    constexpr int faceletSize = 55;
 
     for (size_t i = 0; i < 48; ++i)
     {
@@ -81,7 +81,7 @@ void Engine::init()
     m_colours[Y] = { 255, 255, 0, 255 };
 
     // init facelet positions on screen
-    auto setFace = [&](size_t ind, size_t x_offset, size_t y_offset) {
+    auto setFace = [&](size_t ind, int x_offset, int y_offset) {
         setFaceletPos(ind * 8 + 0, x_offset + faceletSize * 0, y_offset + faceletSize * 0);
         setFaceletPos(ind * 8 + 1, x_offset + faceletSize * 1, y_offset + faceletSize * 0);
         setFaceletPos(ind * 8 + 2, x_offset + faceletSize * 2, y_offset + faceletSize * 0);
@@ -118,7 +118,7 @@ void Engine::init()
     m_centreFacelets[Y].y = faceletSize * 8;
 }
 
-void Engine::setFaceletPos(size_t ind, size_t x, size_t y)
+void Engine::setFaceletPos(size_t ind, int x, int y)
 {
     m_facelets[ind].x = x;
     m_facelets[ind].y = y;

@@ -1,13 +1,12 @@
 #pragma once
 
+#include <bit> // rotr & rotl
 #include <cstdint>
-#include <bit>
-#include <bitset>
+#include <cstring>
 #include <iostream>
 #include <vector>
 #include <array>
 #include <ctime>
-#include <cstring>
 
 class Rubiks
 {
@@ -54,7 +53,7 @@ public:
         D, Dp, D2,
     };
 
-    // indices of ajacent facelets of the face when performing a rotation
+    // indices of ajacent facelets of the face when performing a face rotation
     struct AdjacentIndices
     {
         uint8_t i0, i1, i2, i3, i4, i5, i6, i7;
@@ -70,11 +69,11 @@ public:
     void rotateAdjacents(const AdjacentIndices& adj);
     void rotateAdjacents180(const AdjacentIndices& adj);
 
-    // set a face with new colours from a 64bit integer
+    // set a face (8 colours) from a 64bit integer
     void setFace(EFACE face, uint64_t newFace);
 
-    typedef std::array<ECOLOUR, 2> Edge;
-    typedef std::array<ECOLOUR, 3> Corner;
+    using Edge   = std::array<ECOLOUR, 2>;
+    using Corner = std::array<ECOLOUR, 3>;
 
     uint64_t    getFace(EFACE face) const;
     ECOLOUR     getColour(std::size_t index) const;
@@ -82,7 +81,7 @@ public:
     ECOLOUR     getColour(ECORNER corner) const;
     std::string getColourName(ECOLOUR colour) const;
     std::string getMoveName(EMOVE move) const;
-    EMOVE       getMove(const std::string& name) const;
+    EMOVE       getMoveFromStr(const std::string& name) const;
 
     // first index is the facelet on the R/L face, or U/D for the M slice
     uint8_t getEdgeOrientation(const Edge& edge) const;
@@ -96,9 +95,10 @@ public:
 
     // run a face rotation function based on a move
     void performMove(EMOVE move);
+    // make a move that cancels the given move (L => L')
     void revertMove(EMOVE move);
 
-    // display cube in console
+    // display the cube state in ASCII
     void displayCube() const;
 
     // face rotations
@@ -122,7 +122,7 @@ public:
     void D2();
 
 private:
-    // 6 faces * 8 facelets = 48, for easier indexing of colours
+    // 6 faces * 8 facelets = 48, for easier indexing of colours (doesn't store centre facelets)
     std::array<ECOLOUR, 48> m_cube;
 };
 

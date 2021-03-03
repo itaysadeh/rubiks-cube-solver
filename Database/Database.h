@@ -33,15 +33,11 @@ public:
     uint8_t at(uint32_t index) const;
     uint8_t getDistance(const Rubiks& cube) const;
     uint8_t getDistance(uint32_t index) const;
-    
-    // directly set a value, prefer index() instead
-    void set(uint32_t index, uint8_t value);
 
     // each goal has different logic for indexing
     virtual uint32_t getIndex(const Rubiks& cube) const = 0;
 
-    // returns true if changed the value at a given index, and false if nothing was changed
-    // this will only update if the current value is bigger or equals to the new value
+    // updates the database only if the value isn't bigger than the current entry
     bool index(uint32_t index, uint8_t value);
     bool index(const Rubiks& cube, uint8_t value);
 
@@ -49,13 +45,12 @@ public:
     bool isSet(uint32_t index) const;
     bool isSet(const Rubiks& cube) const;
 
-    // returns whether the database is full (all elements initialiesed)
     bool full() const;
 
-    // returns the size of the database
-    size_t size() const;
     // returns the amount of current items (0xFF = uninitialised)
     size_t currentSize() const;
+
+    size_t size() const;
     
 private:
     std::string m_fileName;

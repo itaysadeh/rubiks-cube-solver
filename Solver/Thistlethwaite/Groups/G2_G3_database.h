@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../Database/Database.h"
+#include "../../../Database/Database.h"
 
 struct G2_G3_Database : public Database
 {

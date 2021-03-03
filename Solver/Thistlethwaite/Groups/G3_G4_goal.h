@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Goal.h"
+#include "../../Goal.h"
 
 struct G3_G4_Goal : public Goal
 {

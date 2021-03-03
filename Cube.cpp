@@ -48,30 +48,25 @@ bool Rubiks::isSovled() const
 void Rubiks::rotateFaceCW(EFACE face)
 {
     // requires C++20
-    uint64_t rotatedFace = std::rotl(getFace(face), 16);
-    setFace(face, rotatedFace);
+    setFace(face, std::rotl(getFace(face), 16));
 }
 
 void Rubiks::rotateFaceCCW(EFACE face)
 {
     // requires C++20
-    uint64_t rotatedFace = std::rotr(getFace(face), 16);
-    setFace(face, rotatedFace);
+    setFace(face, std::rotr(getFace(face), 16));
 }
 
 void Rubiks::rotateFace180(EFACE face)
 {
     // requires C++20, 
-    uint64_t rotatedFace = std::rotl(getFace(face), 32);
-    setFace(face, rotatedFace);
+    setFace(face, std::rotl(getFace(face), 32));
 }
 
-// memcpy is used instaed of *(uint16*)&m_cube
-// performace is simillar without the need to cast manually
 void Rubiks::rotateAdjacents(const AdjacentIndices& adj)
 {
     uint16_t tmpi0;
-    // copy 2 facelets (bytes) together
+    // copy 2 bytes (facelets) together
     memcpy(&tmpi0, &m_cube[adj.i0], sizeof(uint16_t));
     memcpy(&m_cube[adj.i0], &m_cube[adj.i1], sizeof(uint16_t));
     memcpy(&m_cube[adj.i1], &m_cube[adj.i2], sizeof(uint16_t));
@@ -79,7 +74,8 @@ void Rubiks::rotateAdjacents(const AdjacentIndices& adj)
     memcpy(&m_cube[adj.i3], &tmpi0, sizeof(uint16_t));
 
     uint8_t tmpi4;
-    // 3rd facelet (byte) needs to be copied by itself because it might not be continious in memory
+    // 3rd byte (facelet) needs to be copied by itself because it might not be continious in memory
+    // (Ex: m_cube[6, 7, 0] is affected after a right face rotation)
     memcpy(&tmpi4, &m_cube[adj.i4], sizeof(uint8_t));
     memcpy(&m_cube[adj.i4], &m_cube[adj.i5], sizeof(uint8_t));
     memcpy(&m_cube[adj.i5], &m_cube[adj.i6], sizeof(uint8_t));
@@ -90,12 +86,8 @@ void Rubiks::rotateAdjacents(const AdjacentIndices& adj)
 void Rubiks::rotateAdjacents180(const AdjacentIndices& adj)
 {
     // 6 swaps for 3 facelets on 2 faces and their opposites faces
-    std::swap(m_cube[adj.i0], m_cube[adj.i2]);
-    std::swap(m_cube[adj.i0 + 1], m_cube[adj.i2 + 1]);
-
-    std::swap(m_cube[adj.i1], m_cube[adj.i3]);
-    std::swap(m_cube[adj.i1 + 1], m_cube[adj.i3 + 1]);
-
+    std::swap(*(uint16_t*)&m_cube[adj.i0], *(uint16_t*)&m_cube[adj.i2]);
+    std::swap(*(uint16_t*)&m_cube[adj.i1], *(uint16_t*)&m_cube[adj.i3]);
     std::swap(m_cube[adj.i4], m_cube[adj.i6]);
     std::swap(m_cube[adj.i5], m_cube[adj.i7]);
 }
@@ -108,9 +100,7 @@ void Rubiks::setFace(EFACE face, uint64_t new_face)
 
 uint64_t Rubiks::getFace(EFACE face) const
 {
-    uint64_t result;
-    memcpy(&result, &m_cube[(size_t)face * 8], sizeof(uint64_t));
-    return result;
+    return *(uint64_t*)&m_cube[(size_t)face * 8];
 }
 
 Rubiks::ECOLOUR Rubiks::getColour(std::size_t index) const
@@ -153,41 +143,45 @@ uint8_t Rubiks::getCornerOrientation(const Corner& corner) const
     {
         return 0;
     }
-    if (corner[1] == ECOLOUR::R || corner[1] == ECOLOUR::O)
+    else if (corner[1] == ECOLOUR::R || corner[1] == ECOLOUR::O)
     {
         return 1;
     }
-    if (corner[2] == ECOLOUR::R || corner[2] == ECOLOUR::O)
+    else if (corner[2] == ECOLOUR::R || corner[2] == ECOLOUR::O)
     {
         return 2;
     }
+    else
+    {
+        throw std::logic_error("Rubiks::getCornerOrientation unable to get orientation, corner must have a R / O facelet");
+    }
+
+
 }
 
 uint8_t Rubiks::getEdgeInd(const Edge& edge) const
 {
-    /*
-     *  github.com/benbotto/rubiks-cube-cracker/
-     *
-     *  W : 0 | 1 << 0 = 1
-     *  O : 1 | 1 << 1 = 2
-     *  G : 2 | 1 << 2 = 4
-     *  R : 3 | 1 << 3 = 8
-     *  B : 4 | 1 << 4 = 16
-     *  Y : 5 | 1 << 5 = 32
-     *  
-     *  WO = 3  = 0
-     *  WG = 5  = 1
-     *  WB = 17 = 2
-     *  WR = 9  = 3
-     *  OG = 6  = 4
-     *  OB = 18 = 5
-     *  RG = 12 = 6
-     *  RB = 24 = 7
-     *  YO = 34 = 8
-     *  YG = 36 = 9
-     *  YB = 48 = 10
-     *  YR = 40 = 11
-     */
+    // github.com/benbotto/rubiks-cube-cracker/
+
+    // W : 0 | 1 << 0 = 1
+    // O : 1 | 1 << 1 = 2
+    // G : 2 | 1 << 2 = 4
+    // R : 3 | 1 << 3 = 8
+    // B : 4 | 1 << 4 = 16
+    // Y : 5 | 1 << 5 = 32
+
+    // WO = 3  = 0
+    // WG = 5  = 1
+    // WB = 17 = 2
+    // WR = 9  = 3
+    // OG = 6  = 4
+    // OB = 18 = 5
+    // RG = 12 = 6
+    // RB = 24 = 7
+    // YO = 34 = 8
+    // YG = 36 = 9
+    // YB = 48 = 10
+    // YR = 40 = 11
 
     uint8_t result = 0;
     result = ((1 << (uint8_t)edge[0]) + (1 << (uint8_t)edge[1]));
@@ -219,7 +213,7 @@ uint8_t Rubiks::getEdgeInd(const Edge& edge) const
     case 40:
         return 11;
     default:
-        return -1; // 255 => should not happen
+        throw std::logic_error("Rubiks::getEdgeInd invalid combination of edge colours:" + getColourName(edge[0]) + " " + getColourName(edge[1]));
     }
 }
 
@@ -240,32 +234,32 @@ std::string Rubiks::getColourName(ECOLOUR colour) const
     case ECOLOUR::Y:
         return "Y";
     default:
-        std::cout << "\nCube::RubiksCube::getColourName -> Invalid enum value:" << (int)colour << "\n";
-        break;
+        throw std::logic_error("Rubiks::getColourName invalid enum value" + (int)colour);
     }
 }
 
-Rubiks::EMOVE Rubiks::getMove(const std::string& name) const
+Rubiks::EMOVE Rubiks::getMoveFromStr(const std::string& name) const
 {
-    if      (name == "U")  return EMOVE::U;
-    else if (name == "U'") return EMOVE::Up;
-    else if (name == "U2") return EMOVE::U2;
-    else if (name == "L")  return EMOVE::L;
-    else if (name == "L'") return EMOVE::Lp;
-    else if (name == "L2") return EMOVE::L2;
-    else if (name == "F")  return EMOVE::F;
-    else if (name == "F'") return EMOVE::Fp;
-    else if (name == "F2") return EMOVE::F2;
-    else if (name == "R")  return EMOVE::R;
-    else if (name == "R'") return EMOVE::Rp;
-    else if (name == "R2") return EMOVE::R2;
-    else if (name == "B")  return EMOVE::B;
-    else if (name == "B'") return EMOVE::Bp;
-    else if (name == "B2") return EMOVE::B2;
-    else if (name == "D")  return EMOVE::D;
-    else if (name == "D'") return EMOVE::Dp;
-    else if (name == "D2") return EMOVE::D2;
-    else { std::cout << "\nCube::RubiksCube::getMove -> Invalid move name:" << name << "\n"; };
+    if (name == "U")  return EMOVE::U;
+    if (name == "U'") return EMOVE::Up;
+    if (name == "U2") return EMOVE::U2;
+    if (name == "L")  return EMOVE::L;
+    if (name == "L'") return EMOVE::Lp;
+    if (name == "L2") return EMOVE::L2;
+    if (name == "F")  return EMOVE::F;
+    if (name == "F'") return EMOVE::Fp;
+    if (name == "F2") return EMOVE::F2;
+    if (name == "R")  return EMOVE::R;
+    if (name == "R'") return EMOVE::Rp;
+    if (name == "R2") return EMOVE::R2;
+    if (name == "B")  return EMOVE::B;
+    if (name == "B'") return EMOVE::Bp;
+    if (name == "B2") return EMOVE::B2;
+    if (name == "D")  return EMOVE::D;
+    if (name == "D'") return EMOVE::Dp;
+    if (name == "D2") return EMOVE::D2;
+    
+    throw std::logic_error("Rubiks::getMove invalid move name" + name);
 }
 
 std::string Rubiks::getMoveName(EMOVE move) const
@@ -275,44 +269,43 @@ std::string Rubiks::getMoveName(EMOVE move) const
     case EMOVE::U:
         return "U";
     case EMOVE::Up:
-        return "U'";
+        return "Up";
     case EMOVE::U2:
         return "U2";
     case EMOVE::L:
         return "L";
     case EMOVE::Lp:
-        return "L'";
+        return "Lp";
     case EMOVE::L2:
         return "L2";
     case EMOVE::F:
         return "F";
     case EMOVE::Fp:
-        return "F'";
+        return "Fp";
     case EMOVE::F2:
         return "F2";
     case EMOVE::R:
         return "R";
     case EMOVE::Rp:
-        return "R'";
+        return "Rp";
     case EMOVE::R2:
         return "R2";
     case EMOVE::B:
         return "B";
     case EMOVE::Bp:
-        return "B'";
+        return "Bp";
     case EMOVE::B2:
         return "B2";
     case EMOVE::D:
         return "D";
     case EMOVE::Dp:
-        return "D'";
+        return "Dp";
     case EMOVE::D2:
         return "D2";
     case EMOVE::NO_MOVE:
         return "";
     default:
-        std::cout << "\nCube::RubiksCube::getMoveName -> Invalid enum value: " << (int)move << "\n";
-        break;
+        throw std::logic_error("Rubiks::getMoveName invalid enum value " + (int)move);
     }
 }
 
@@ -375,10 +368,9 @@ void Rubiks::performMove(EMOVE move)
         D2();
         break;
     case EMOVE::NO_MOVE:
-            break;
-    default:
-        std::cout << "\nCube::RubiksCube::performMove -> Invalid enum value: " << (int)move << "\n";
         break;
+    default:
+        throw std::logic_error("RubiksCube::performMove Invalid enum value " + (int)move);
     }
 }
 
@@ -441,8 +433,7 @@ void Rubiks::revertMove(EMOVE move)
         D2();
         break;
     default:
-        std::cout << "\nCube::RubiksCube::revertMove -> Invalid enum value: " << (int)move << "\n";
-        break;
+        throw std::logic_error("RubiksCube::revertMove Invalid enum value " + (int)move);
     }
 }
 

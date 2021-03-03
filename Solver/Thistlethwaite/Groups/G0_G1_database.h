@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../Database/Database.h"
+#include "../../../Database/Database.h"
 #include <bitset>
 
 struct G0_G1_Database : public Database
