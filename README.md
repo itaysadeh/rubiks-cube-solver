@@ -1,5 +1,4 @@
 # RubiksCubeSolver
-Rubik's Cube solver written in C++
 
 ### Building on Linux:
 1. `sudo apt install cmake libsdl2-dev g++`
