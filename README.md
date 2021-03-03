@@ -10,7 +10,7 @@
 "project": "CMakeLists.txt",
 "projectTarget": "RubiksCubeSolver.exe",
 "name": "RubiksCubeSolver.exe",
-"currentDir": "path\\to\\RubiksCubeSolver"
+"currentDir": "path\\to\\RubiksCubeSolver" // where RubiksCubeSolver is the root folder of the project
 ```
    
 
