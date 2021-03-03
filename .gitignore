@@ -44,3 +44,6 @@ CMakeSettings.json
 /Release
 /Debug
 /bin
+/.cmake
+/.codelite
+CMakeLists.txt.user
