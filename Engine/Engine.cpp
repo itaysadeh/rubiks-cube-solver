@@ -200,7 +200,6 @@ void Engine::pollEvents()
             // U
             if (ev.key.keysym.sym == SDLK_u)
             {
-                std::cout << std::filesystem::current_path() << '\n';
                 if (keyState[SDL_SCANCODE_LSHIFT])
                     m_cube.Up();
                 else if (keyState[SDL_SCANCODE_LCTRL])

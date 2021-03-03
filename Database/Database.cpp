@@ -2,7 +2,6 @@
 
 bool Database::load()
 {
-    std::cout << std::filesystem::current_path() << '\n';
     const std::string path = "./Database/Generated_Databases/" + m_fileName;
     std::ifstream input(path);
 
