@@ -6,7 +6,7 @@
 
 ### Building on Windows (Visual Studio):
 1. Write the path to your SDL2 folder in CMakeLists.txt
-2. If the project is not built with a Visual Studio generator, the working directory needs to be changed. change your launch.vs.json like this:
+2. If the project is not built with a Visual Studio  generator (ninja etc), the working directory needs to be changed. change your launch.vs.json like this:
 ```
 "project": "CMakeLists.txt",
 "projectTarget": "RubiksCubeSolver.exe",
