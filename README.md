@@ -2,6 +2,7 @@
 
 ### Building on Linux:
 1. `sudo apt install cmake libsdl2-dev g++`
+2. Run from root, or set the working direcroey to the root folder in your IDE
 
 ### Building on Windows (Visual Studio):
 1. Write the path to your SDL2 folder in CMakeLists.txt
