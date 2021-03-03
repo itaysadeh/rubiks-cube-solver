@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Solver.h"
-#include "Groups/Groups.h"
+#include "Groups.h"
 
 class Thistlethwaite : public Solver
 {

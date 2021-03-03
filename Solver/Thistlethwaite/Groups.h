@@ -3,17 +3,17 @@
 #include <memory>
 #include <iostream>
 
-#include "G0_G1_database.h"
-#include "G1_G2_database.h"
-#include "G2_G3_database.h"
-#include "G3_G4_database.h"
+#include "Databases/G0_G1_database.h"
+#include "Databases/G1_G2_database.h"
+#include "Databases/G2_G3_database.h"
+#include "Databases/G3_G4_database.h"
 
-#include "G0_G1_goal.h"
-#include "G1_G2_goal.h"
-#include "G2_G3_goal.h"
-#include "G3_G4_goal.h"
+#include "Goals/G0_G1_goal.h"
+#include "Goals/G1_G2_goal.h"
+#include "Goals/G2_G3_goal.h"
+#include "Goals/G3_G4_goal.h"
 
-#include "../../../Util/DatabaseGenerator.h"
+#include "../../Util/DatabaseGenerator.h"
 
 // base class for a group to use for polymorphysm in solvers and database generations
 // contains a database and a goal for a group, and loads databases / generates them

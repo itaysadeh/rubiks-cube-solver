@@ -51,7 +51,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     constexpr std::array<size_t, 13> factorial = { 1,1,2,6,24,120,720,5040,40320,362880,3628800,39916800,479001600 };
 
     // calculate nCk = n! / (k!(n - k)!)
-    auto nCk = [&](uint8_t n, uint8_t k)->size_t {
+    auto nCk = [&](uint8_t n, uint8_t k)->uint32_t {
         if (n < k)  return 0;
         if (n == k) return 1;
         return factorial[n] / (factorial[k] * factorial[n - k]);
