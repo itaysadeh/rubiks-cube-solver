@@ -1,4 +1,4 @@
-# RubiksCubeSolver
+# Rubik's Cube solver
 
 ### Building on Linux
 1. `sudo apt install cmake libsdl2-dev g++`
