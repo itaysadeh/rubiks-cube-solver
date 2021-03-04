@@ -10,10 +10,10 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     std::array<uint8_t, 7> cornerOrientations = {
         //                        {               L/R                          U/D                            F/B            }
         cube.getCornerOrientation({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::UBL), cube.getColour(ECORNER::BLU) }), 
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LFU), cube.getColour(ECORNER::UFL), cube.getColour(ECORNER::FUL) }), 
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DFL), cube.getColour(ECORNER::FLD) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LBD), cube.getColour(ECORNER::DBL), cube.getColour(ECORNER::BDL) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::UFR), cube.getColour(ECORNER::FRU) }), 
+        cube.getCornerOrientation({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::UFL), cube.getColour(ECORNER::FUL) }), 
+        cube.getCornerOrientation({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DFL), cube.getColour(ECORNER::FDL) }),
+        cube.getCornerOrientation({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DBL), cube.getColour(ECORNER::BDL) }),
+        cube.getCornerOrientation({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::UFR), cube.getColour(ECORNER::FUR) }), 
         cube.getCornerOrientation({ cube.getColour(ECORNER::RBU), cube.getColour(ECORNER::UBR), cube.getColour(ECORNER::BUR) }), 
         cube.getCornerOrientation({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DBR), cube.getColour(ECORNER::BRD) }) 
     };
@@ -58,12 +58,10 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     };
 
     // www.jaapsch.net/puzzles/compindx.htm                                                                                                    
-    // edge index is calculated by counting the amount of possible smaller positions combinations.
+    // edge index is calculated by getting the amount of possible smaller position combinations.
     // because there is no repetition or regard to order, nCk is used assuming the positions
-    // perms are in a decending order. Ex: {9, 5, 3, 1} there are 8C4 combinations
-    // for positions 1-8. then, there are 4C3 combinations where the first position is 5
-    // and the three other positions are smaller than 5. continuing with the same logic
-    // {9, 5, 3, 1} results in (8C4 + 4C3 + 2C2 + 0C1) = (70 + 4 + 1 + 0) = 75
+    // perms are always in a decending order (p[0]> p[1] > p[2] > p[3])
+    // index = p[0]-1C4 + p[1]-1C3 + p[2]-1C2 + p[3]-1C1
 
     uint32_t edgesInd   = 0;
     uint32_t cornersInd = 0;
