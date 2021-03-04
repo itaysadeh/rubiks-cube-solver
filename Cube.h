@@ -36,8 +36,8 @@ public:
     enum class ECORNER : uint8_t
     {
         UBL = 0 ,   UBR = 2 ,   UFR = 4 ,   UFL = 6 ,
-        LUB = 8 ,   LFU = 10,   LDF = 12,   LBD = 14,
-        FUL = 16,   FRU = 18,   FDR = 20,   FLD = 22,
+        LUB = 8 ,   LUF = 10,   LDF = 12,   LDB = 14,
+        FUL = 16,   FUR = 18,   FDR = 20,   FDL = 22,
         RUF = 24,   RBU = 26,   RDB = 28,   RFD = 30,
         BUR = 32,   BLU = 34,   BDL = 36,   BRD = 38,
         DFL = 40,   DFR = 42,   DBR = 44,   DBL = 46,

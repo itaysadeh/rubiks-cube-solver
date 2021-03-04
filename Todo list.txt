@@ -11,7 +11,7 @@ General:
     
     advanced move pruning with respect to 3 moves in reverse
     
-    
+    check if restricting moves (no prime moves) speeds the search, or the generation of tables
 
 Cube.cpp:
     displayCube() find a more readable way of doing that

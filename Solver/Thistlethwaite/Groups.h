@@ -21,12 +21,6 @@ struct Group
 {
     void loadDatabase()
     {
-        // TEMPORARY
-        if (goal->name != "G0 to G1" && goal->name != "G1 to G2" && goal->name != "Gu2 to G3")
-        {
-            return;
-        }
-
         // load database
         std::cout << "Loading database for " << goal->name << "...\n";
         if (database->load())

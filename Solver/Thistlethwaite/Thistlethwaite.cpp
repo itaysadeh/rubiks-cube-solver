@@ -4,6 +4,7 @@ Thistlethwaite::Thistlethwaite()
 {
     m_G0G1.useDatabase = true;
     m_G1G2.useDatabase = true;
+    m_G2G3.useDatabase = true;
 
     m_groups = {
         &m_G0G1,

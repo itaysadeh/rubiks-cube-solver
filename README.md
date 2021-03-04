@@ -8,7 +8,6 @@
 1. Write the path to your SDL2 folder in CMakeLists.txt
 2. If the project is not built with a Visual Studio generator (like ninja), the working directory needs to be changed. 
    For Visual studio: change your launch.vs.json accordingly:
-```
 "project": "CMakeLists.txt",
 "projectTarget": "RubiksCubeSolver.exe",
 "name": "RubiksCubeSolver.exe",
