@@ -155,20 +155,18 @@ uint8_t Rubiks::getCornerOrientation(const Corner& corner) const
     {
         throw std::logic_error("Rubiks::getCornerOrientation unable to get orientation, corner must have a R / O facelet");
     }
-
-
 }
 
 uint8_t Rubiks::getEdgeInd(const Edge& edge) const
 {
     // github.com/benbotto/rubiks-cube-cracker/
 
-    // W : 0 | 1 << 0 = 1
-    // O : 1 | 1 << 1 = 2
-    // G : 2 | 1 << 2 = 4
-    // R : 3 | 1 << 3 = 8
-    // B : 4 | 1 << 4 = 16
-    // Y : 5 | 1 << 5 = 32
+    // W : 0 | (1 << 0) = 1
+    // O : 1 | (1 << 1) = 2
+    // G : 2 | (1 << 2) = 4
+    // R : 3 | (1 << 3) = 8
+    // B : 4 | (1 << 4) = 16
+    // Y : 5 | (1 << 5) = 32
 
     // WO = 3  = 0
     // WG = 5  = 1
@@ -183,8 +181,7 @@ uint8_t Rubiks::getEdgeInd(const Edge& edge) const
     // YB = 48 = 10
     // YR = 40 = 11
 
-    uint8_t result = 0;
-    result = ((1 << (uint8_t)edge[0]) + (1 << (uint8_t)edge[1]));
+    uint8_t result = ((1 << (uint8_t)edge[0]) + (1 << (uint8_t)edge[1]));
 
     switch (result)
     {
@@ -213,7 +210,53 @@ uint8_t Rubiks::getEdgeInd(const Edge& edge) const
     case 40:
         return 11;
     default:
-        throw std::logic_error("Rubiks::getEdgeInd invalid combination of edge colours:" + getColourName(edge[0]) + " " + getColourName(edge[1]));
+        std::string edgeComb = getColourName(edge[0]) + getColourName(edge[1]);
+        throw std::logic_error("Rubiks::getCornerInd invalid combination of edge colours:" + edgeComb);
+    }
+}
+
+uint8_t Rubiks::getCornerInd(const Corner& corner) const
+{
+    // W : 0 | (1 << 0) = 1
+    // O : 1 | (1 << 1) = 2
+    // G : 2 | (1 << 2) = 4
+    // R : 3 | (1 << 3) = 8
+    // B : 4 | (1 << 4) = 16
+    // Y : 5 | (1 << 5) = 32
+
+    // WGO = 7  = ULF = 0
+    // WBR = 25 = URB = 1
+    // YBO = 50 = DLB = 2
+    // YGR = 44 = DRF = 3
+
+    // WGR = 13 = URF = 4
+    // WBO = 19 = ULB = 5
+    // YGO = 38 = DLF = 6
+    // YBR = 56 = DRB = 7
+
+    uint8_t result = ((1 << (uint8_t)corner[0]) + (1 << (uint8_t)corner[1]) + (1 << (uint8_t)corner[2]));
+
+    switch (result)
+    {
+    case 7:
+        return 0;
+    case 13:
+        return 4;
+    case 19:
+        return 5;
+    case 25:
+        return 1;
+    case 38:
+        return 6;
+    case 44:
+        return 3;
+    case 50:
+        return 2;
+    case 56:
+        return 7;
+    default:
+        std::string colourComb = getColourName(corner[0]) + getColourName(corner[1]) + getColourName(corner[2]);
+        throw std::logic_error("Rubiks::getCornerInd invalid combination of edge colours:" + colourComb);
     }
 }
 

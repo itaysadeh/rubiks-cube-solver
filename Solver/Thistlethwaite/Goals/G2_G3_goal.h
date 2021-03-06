@@ -6,8 +6,12 @@ struct G2_G3_Goal : public Goal
 {
 	G2_G3_Goal()
 		: Goal({
-			Rubiks::EMOVE::L , Rubiks::EMOVE::Lp , Rubiks::EMOVE::L2,
-			Rubiks::EMOVE::R , Rubiks::EMOVE::Rp , Rubiks::EMOVE::R2,
+			Rubiks::EMOVE::L , 
+			Rubiks::EMOVE::Lp , 
+			Rubiks::EMOVE::L2,
+			Rubiks::EMOVE::R , 
+			Rubiks::EMOVE::Rp , 
+			Rubiks::EMOVE::R2,
 			Rubiks::EMOVE::F2,
 			Rubiks::EMOVE::B2,
 			Rubiks::EMOVE::U2,

@@ -5,6 +5,7 @@
 #include "../Cube.h"
 #include "../Util/MovesSimplifier.h"
 #include "../Solver/Thistlethwaite/Thistlethwaite.h"
+#include "../Solver/Thistlethwaite/Databases/G2_G3_database.h"
 
 #include <iostream>
 #include <cstdint>

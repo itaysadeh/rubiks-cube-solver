@@ -1,15 +1,8 @@
 #pragma once
 
-#include <bitset>
 #include <array>
-
-#include <array>
-using std::array;
 #include <bitset>
-using std::bitset;
 #include <iostream>
-using std::cout;
-using std::endl;
 
 // medium.com/@benjamin.botto/sequentially-indexing-permutations-a-linear-algorithm-for-computing-lexicographic-rank-a22220ffd6e3
 // currently not in use
@@ -17,16 +10,16 @@ using std::endl;
 template <uint8_t N, uint8_t K = N>
 class PermutationIndexer
 {
-    static array<std::size_t, (1 << N) - 1> onesCountLookup;
+    static std::array<std::size_t, (1 << N) - 1> onesCountLookup;
 
-    static array<std::size_t, K> factorials;
+    static std::array<std::size_t, K> factorials;
 
 public:
     PermutationIndexer()
     {
         for (std::size_t i = 0; i < (1 << N) - 1; ++i)
         {
-            bitset<N> bits(i);
+            std::bitset<N> bits(i);
             this->onesCountLookup[i] = bits.count();
         }
 
@@ -46,11 +39,11 @@ public:
         return factorial(n) / factorial(n - k);
     }
 
-    uint32_t getInd(const array<uint8_t, K>& perm) const
+    uint32_t getInd(const std::array<uint8_t, K>& perm) const
     {
-        array<std::size_t, K> lehmer;
+        std::array<std::size_t, K> lehmer;
 
-        bitset<N> seen;
+        std::bitset<N> seen;
         lehmer[0] = perm[0];
 
         seen[N - 1 - perm[0]] = 1;
@@ -75,7 +68,7 @@ public:
 
 // Static member definitions.
 template <uint8_t N, uint8_t K>
-array<size_t, (1 << N) - 1> PermutationIndexer<N, K>::onesCountLookup;
+std::array<size_t, (1 << N) - 1> PermutationIndexer<N, K>::onesCountLookup;
 
 template <uint8_t N, uint8_t K>
-array<size_t, K> PermutationIndexer<N, K>::factorials;
+std::array<size_t, K> PermutationIndexer<N, K>::factorials;

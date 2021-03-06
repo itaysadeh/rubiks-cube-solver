@@ -11,7 +11,7 @@ bool Database::load()
         for (size_t i = 0; i < m_size; ++i)
         {
             input >> value;
-            m_data[i] = value;
+            m_data[i] = (uint8_t)value;
             if (m_data[i] == 0xFF)
             {
                 std::cout << "Database doesn't match " << path << ". Failed to load.\n";

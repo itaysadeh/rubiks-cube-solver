@@ -35,12 +35,12 @@ public:
     };
     enum class ECORNER : uint8_t
     {
-        UBL = 0 ,   UBR = 2 ,   UFR = 4 ,   UFL = 6 ,
+        ULB = 0 ,   URB = 2 ,   URF = 4 ,   ULF = 6 ,
         LUB = 8 ,   LUF = 10,   LDF = 12,   LDB = 14,
-        FUL = 16,   FUR = 18,   FDR = 20,   FDL = 22,
-        RUF = 24,   RBU = 26,   RDB = 28,   RFD = 30,
-        BUR = 32,   BLU = 34,   BDL = 36,   BRD = 38,
-        DFL = 40,   DFR = 42,   DBR = 44,   DBL = 46,
+        FLU = 16,   FRU = 18,   FRD = 20,   FLD = 22,
+        RUF = 24,   RUB = 26,   RDB = 28,   RDF = 30,
+        BRU = 32,   BLU = 34,   BLD = 36,   BRD = 38,
+        DLF = 40,   DRF = 42,   DRB = 44,   DLB = 46,
     };
     enum class EMOVE : uint8_t
     {
@@ -91,7 +91,7 @@ public:
     // unique ids for edges and corners, to assoicate them based on colours
     // regardless of where they are on the cube
     uint8_t getEdgeInd(const Edge& edge) const;
-    uint8_t getCornerId(const Corner& edge) const;
+    uint8_t getCornerInd(const Corner& edge) const;
 
     // run a face rotation function based on a move
     void performMove(EMOVE move);

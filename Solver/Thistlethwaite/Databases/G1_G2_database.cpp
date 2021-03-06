@@ -9,17 +9,15 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     // store the orientation of all the corners (8th can be assumed based on the first 7)
     std::array<uint8_t, 7> cornerOrientations = {
         //                        {               L/R                          U/D                            F/B            }
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::UBL), cube.getColour(ECORNER::BLU) }), 
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::UFL), cube.getColour(ECORNER::FUL) }), 
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DFL), cube.getColour(ECORNER::FDL) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DBL), cube.getColour(ECORNER::BDL) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::UFR), cube.getColour(ECORNER::FUR) }), 
-        cube.getCornerOrientation({ cube.getColour(ECORNER::RBU), cube.getColour(ECORNER::UBR), cube.getColour(ECORNER::BUR) }), 
-        cube.getCornerOrientation({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DBR), cube.getColour(ECORNER::BRD) }) 
+        cube.getCornerOrientation({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }),
+        cube.getCornerOrientation({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }),
+        cube.getCornerOrientation({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DLF), cube.getColour(ECORNER::FLD) }),
+        cube.getCornerOrientation({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DLB), cube.getColour(ECORNER::BLD) }),
+        cube.getCornerOrientation({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::URF), cube.getColour(ECORNER::FRU) }),
+        cube.getCornerOrientation({ cube.getColour(ECORNER::RUB), cube.getColour(ECORNER::URB), cube.getColour(ECORNER::BRU) }),
+        cube.getCornerOrientation({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) })
     };
 
-    // store the positions of the 4 edges that need to be brought back to the M-slice
-    std::array<uint8_t, 4> edgePositionsPerm;
     // the first 4 edges positions are in the M-slice (solved positions = 0;1;2;3 = lowest permutation)
     std::array<uint8_t, 12> edgeIndices = {
         cube.getEdgeInd({ cube.getColour(EEDGE::UB), cube.getColour(EEDGE::BU) }),
@@ -36,8 +34,11 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
         cube.getEdgeInd({ cube.getColour(EEDGE::BL), cube.getColour(EEDGE::LB) })
     };
 
+    // store the positions of the 4 edges that need to be brought back to the M-slice
+    std::array<uint8_t, 4> edgePositionsPerm;
+
     uint8_t c = 0;
-    for (uint8_t i = 0; i < 12; ++i)
+    for (uint8_t i = 0; i < 12 && c < 4; ++i)
     {
         // indices of the M-slice edges are 1, 2, 9 and 10
         if (edgeIndices[i] == 1 || edgeIndices[i] == 2 ||

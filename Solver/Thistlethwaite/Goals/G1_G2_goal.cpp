@@ -22,9 +22,9 @@ bool G1_G2_Goal::contented(const Rubiks& cube) const
     ECOLOUR C_LUB = cube.getColour(ECORNER::LUB);
     ECOLOUR C_LDF = cube.getColour(ECORNER::LDF);
     ECOLOUR C_LBD = cube.getColour(ECORNER::LDB);
-    ECOLOUR C_RBU = cube.getColour(ECORNER::RBU);
+    ECOLOUR C_RBU = cube.getColour(ECORNER::RUB);
     ECOLOUR C_RDB = cube.getColour(ECORNER::RDB);
-    ECOLOUR C_RFD = cube.getColour(ECORNER::RFD);
+    ECOLOUR C_RFD = cube.getColour(ECORNER::RDF);
     ECOLOUR C_RUF = cube.getColour(ECORNER::RUF);
 
     return

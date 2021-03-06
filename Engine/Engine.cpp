@@ -267,6 +267,13 @@ void Engine::pollEvents()
                     m_cube.performMove(move);
                 }
             }
+
+            if (ev.key.keysym.sym == SDLK_F2)
+            {
+                G2_G3_Database d;
+
+                std::cout << (int)d.getIndex(m_cube) << "\n";
+            }
             break;
         }
     }
