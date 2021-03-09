@@ -2,7 +2,9 @@
 
 #include <string>
 #include <iostream>
-
+//
+#include <set>
+//
 #include "../Database/Database.h"
 #include "../Solver/Goal.h"
 

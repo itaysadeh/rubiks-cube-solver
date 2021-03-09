@@ -17,7 +17,7 @@ bool G1_G2_Goal::contented(const Rubiks& cube) const
     ECOLOUR E_UB = cube.getColour(EEDGE::UB);
     ECOLOUR E_DB = cube.getColour(EEDGE::DB);
 
-    // all the L/R corners
+    // all the L/R corners 
     ECOLOUR C_LFU = cube.getColour(ECORNER::LUF);
     ECOLOUR C_LUB = cube.getColour(ECORNER::LUB);
     ECOLOUR C_LDF = cube.getColour(ECORNER::LDF);

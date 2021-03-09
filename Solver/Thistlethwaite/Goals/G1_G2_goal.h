@@ -11,13 +11,12 @@ struct G1_G2_Goal : public Goal
 			Rubiks::EMOVE::F , Rubiks::EMOVE::Fp , Rubiks::EMOVE::F2,
 			Rubiks::EMOVE::B , Rubiks::EMOVE::Bp , Rubiks::EMOVE::B2,
 			Rubiks::EMOVE::U2,
-			Rubiks::EMOVE::D2 
-			},
+			Rubiks::EMOVE::D2 },
 			13, "G1 to G2")
 	{
 	}
 
-	// G2 is contented when all the edges are oriented correctly,
-	// and when the edges on the M slice belong in it (to remove the need of F / B moves)
+	// G2 is contented when all the corners are oriented correctly and the M-slice
+	// edges are brought back intro their slice
 	bool contented(const Rubiks& cube) const override;
 };

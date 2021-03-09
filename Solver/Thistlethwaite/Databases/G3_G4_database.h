@@ -5,7 +5,7 @@
 struct G3_G4_Database : public Database
 {
 	G3_G4_Database()
-		: Database(663'552, "thistlethwaite_g3g4")
+		: Database(663552, "thistlethwaite_g3g4")
 	{	
 	}
 

@@ -44,7 +44,7 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
     else
     {
         // prune a branch if a permutation has been visited at an earlier depth
-        if (depth <= database.at(index))
+        //if (depth <= database.at(index))
         {
             for (auto move : goal.legalMoves)
             {

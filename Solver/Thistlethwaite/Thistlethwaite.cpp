@@ -4,7 +4,7 @@ Thistlethwaite::Thistlethwaite()
 {
     m_G0G1.useDatabase = true;
     m_G1G2.useDatabase = true;
-     m_G2G3.useDatabase = true;
+    m_G2G3.useDatabase = true;
 
     m_groups = {
         &m_G0G1,
@@ -32,13 +32,13 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
 
     for (const auto& group : m_groups)
     {
+        timer.set();
+
         std::cout << "Solving " << group->goal->name << " :\n";
         // partial group solution
         std::vector<EMOVE> groupResult;
         groupResult.reserve(group->goal->maxDepth);
 
-        timer.set();
-        // Astar uses database heuristics
         groupResult = (group->useDatabase) ?
             Astar(currCubeState, *group->goal, *group->database) :
             IDDFS(currCubeState, *group->goal, *group->database);

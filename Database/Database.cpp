@@ -47,7 +47,7 @@ void Database::write() const
 
 bool Database::index(uint32_t index, uint8_t value)
 {
-    if (m_data[index] >= value)
+    if (m_data[index] > value)
     {
         if (m_data[index] == 0xFF)
         {

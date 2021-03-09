@@ -134,9 +134,9 @@ uint8_t Rubiks::getEdgeOrientation(const Edge& edge) const
 uint8_t Rubiks::getCornerOrientation(const Corner& corner) const
 {
     // notice that this is incorrect. www.ryanheise.com/cube/cube_laws.html
-    // mathematically speaking, this will return values that are unreachable,
-    // but for the context of this program, it works as long as it's "incorrect"
-    // in a reproducable way.
+    // orientation is determined by the twist of the corner, and this follows
+    // a differnet logic to avoid unnecessary extra code. this works for the
+    // purpose of this program
 
     // retrun 0 / 1 / 2 based on which axis the L/R colour is on
     if (corner[0] == ECOLOUR::R || corner[0] == ECOLOUR::O)
@@ -224,35 +224,35 @@ uint8_t Rubiks::getCornerInd(const Corner& corner) const
     // B : 4 | (1 << 4) = 16
     // Y : 5 | (1 << 5) = 32
 
-    // WGO = 7  = ULF = 0
+    // WBO = 19 = ULB = 0
     // WBR = 25 = URB = 1
-    // YBO = 50 = DLB = 2
-    // YGR = 44 = DRF = 3
-
-    // WGR = 13 = URF = 4
-    // WBO = 19 = ULB = 5
+    // WGR = 13 = URF = 2
+    // WGO = 7  = ULF = 3
+    // YBR = 56 = DRB = 4
+    // YBO = 50 = DLB = 5
     // YGO = 38 = DLF = 6
-    // YBR = 56 = DRB = 7
+    // YGR = 44 = DRF = 7
+
 
     uint8_t result = ((1 << (uint8_t)corner[0]) + (1 << (uint8_t)corner[1]) + (1 << (uint8_t)corner[2]));
 
     switch (result)
     {
-    case 7:
-        return 0;
-    case 13:
-        return 4;
     case 19:
-        return 5;
+        return 0;
     case 25:
         return 1;
+    case 13:
+        return 2;
+    case 7:
+        return 3;
+    case 56:
+        return 4;
+    case 50:
+        return 5;
     case 38:
         return 6;
     case 44:
-        return 3;
-    case 50:
-        return 2;
-    case 56:
         return 7;
     default:
         std::string colourComb = getColourName(corner[0]) + getColourName(corner[1]) + getColourName(corner[2]);
