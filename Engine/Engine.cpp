@@ -262,7 +262,7 @@ void Engine::pollEvents()
             {
                 std::cout << "Solving (Thistlethwaite's algorithm):\n";
                 std::vector<Rubiks::EMOVE> result = m_thistlethwaite.solve(m_cube);
-                for (auto move : result)
+                for (Rubiks::EMOVE move : result)
                 {
                     m_cube.performMove(move);
                 }

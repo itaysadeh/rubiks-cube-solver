@@ -45,7 +45,7 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
             break;
         }
 
-        for (const auto& move : goal.legalMoves)
+        for (const EMOVE move : goal.legalMoves)
         {
             if (!m_movesSimplifier.isRedundant(move, currentNode->move))
             {
@@ -123,7 +123,7 @@ bool Solver::searcher(Rubiks cube, EMOVE lastMove , const Goal& goal, const Data
         return true;
     }
 
-    for (auto move : goal.legalMoves)
+    for (const EMOVE move : goal.legalMoves)
     {
         if (!m_movesSimplifier.isRedundant(move, lastMove))
         {

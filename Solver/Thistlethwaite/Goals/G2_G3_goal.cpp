@@ -18,6 +18,28 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
         cube.getCornerInd({ cube.getColour(ECORNER::RDF), cube.getColour(ECORNER::DRF), cube.getColour(ECORNER::FRD) }),
     };
 
+    using compareRanks = std::array< uint8_t, 8>;
+
+    constexpr compareRanks unaffected      = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    constexpr compareRanks mirrored        = { 0, 1, 2, 3, 7, 6, 5, 4 };
+    constexpr compareRanks mirroredOrdered = { 0, 1, 2, 3, 6, 7, 4, 5 };
+
+    // tetrad comparators 
+    auto comparePerm = [&](const compareRanks& ind)->bool {
+        return
+            cornersPerm[ind[0]] == cornersPerm[ind[4]] &&
+            cornersPerm[ind[1]] == cornersPerm[ind[5]] &&
+            cornersPerm[ind[2]] == cornersPerm[ind[6]] &&
+            cornersPerm[ind[3]] == cornersPerm[ind[7]];
+    };
+    auto comparePermDiff = [&](const compareRanks& ind)->bool {
+        return
+            // this comparison is made when the tetrad's ranks are differnt
+            cornersPerm[ind[1]] == cornersPerm[ind[5]] ||
+            cornersPerm[ind[2]] == cornersPerm[ind[6]] ||
+            cornersPerm[ind[3]] == cornersPerm[ind[7]];
+    };
+
     // every corner gets a rank in relation to it's own tetrad (0..3)
     for (uint8_t i = 0; i < 8; ++i)
     {
@@ -29,82 +51,22 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
         cornersPerm[i] >>= 1;
     }
 
-    using compareIndices = std::array< uint8_t, 4>;
-
-    constexpr compareIndices r_tetrad                = { 4, 5, 6, 7 };
-    constexpr compareIndices r_tetradMirrored        = { 7, 6, 5, 4 };
-    constexpr compareIndices r_tetradMirroredOrdered = { 6, 7, 4, 5 };
-
-    // tetrad comparators 
-    auto comparePerm = [&](const compareIndices& ind)->bool {
-        return
-            cornersPerm[0] == cornersPerm[ind[0]] &&
-            cornersPerm[1] == cornersPerm[ind[1]] &&
-            cornersPerm[2] == cornersPerm[ind[2]] &&
-            cornersPerm[3] == cornersPerm[ind[3]];
-    };
-    auto comparePermDiff = [&](const compareIndices& ind, bool checkRank = true)->bool {
-        if (checkRank && cornersPerm[0] == cornersPerm[ind[0]])
-        {
-            return true;
-        }
-        return
-            cornersPerm[1] == cornersPerm[ind[1]] ||
-            cornersPerm[2] == cornersPerm[ind[2]] ||
-            cornersPerm[3] == cornersPerm[ind[3]];
-    };
-
     // the tetrad's rank is determined by the rank of the first corner
     uint8_t l_tetradRank = cornersPerm[0];
     uint8_t r_tetradRank = cornersPerm[4];
     // pairs in good states are (0,1) and (2,3) without regard to order
-    bool    pairsState   = cornersPerm[0] & 2 == cornersPerm[1] & 2;
+    bool    pairsState   = (cornersPerm[0] & 2) == (cornersPerm[1] & 2);
+    
+    // if ((l_tetradRank ^ r_tetradRank) == 3)
 
-    // both tetrads have the same rank
-    if (l_tetradRank == r_tetradRank)
+    if (pairsState)
     {
-        if (pairsState)
+        if (!comparePerm(unaffected))
         {
-            // if the pairs are good and the tetrads have the same rank, the permutation has to be the same
-            if (!comparePerm(r_tetrad))
+            if (l_tetradRank == r_tetradRank ||
+                comparePermDiff(unaffected))
+            {
                 return false;
-        }
-        else
-        {
-            // if the pairs are bad and the tetrads have the same rank, the 3 remaining corners can't match
-            if (comparePermDiff(r_tetrad, false))
-                return false;
-        }
-    }
-    else
-    {
-        // if the ranks are (0,3) or (1,2) with no relation to order
-        if ((l_tetradRank ^ r_tetradRank) == 3)
-        {
-            if (pairsState)
-            {
-                // if pairs are good, the permutation has to be mirrored
-                if (!comparePerm(r_tetradMirrored))
-                    return false;
-            }
-            else
-            {
-                // if pairs are bad, the permutation has to be mirrored
-            }
-        }
-        else
-        {
-            // if the state of pairs is good, the permutations has to be
-            // mirrored without changing the order of the pairs
-            if (pairsState)
-            {
-                if (cornersPerm[0] != cornersPerm[6] ||
-                    cornersPerm[1] != cornersPerm[7] ||
-                    cornersPerm[2] != cornersPerm[4] ||
-                    cornersPerm[3] != cornersPerm[5])
-                {
-                    return false;
-                }
             }
         }
     }

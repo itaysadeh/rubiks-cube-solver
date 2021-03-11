@@ -13,7 +13,7 @@ Thistlethwaite::Thistlethwaite()
         &m_G3G4
     };
     
-    for (auto group : m_groups)
+    for (auto& group : m_groups)
     {
         if (group->useDatabase)
         {
@@ -46,7 +46,7 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
         // add partial solution to the end result
         result.insert(result.end(), groupResult.begin(), groupResult.end());
         // perform the partial group solution to pass the new state to the next group
-        for (const auto& move : groupResult)
+        for (const EMOVE move : groupResult)
         {
             currCubeState.performMove(move);
         }
@@ -63,7 +63,7 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
     // print solving statistics
     std::cout << "Total Time to solve: " << (int)(timeToSolve / 1000) << " seconds. (" << timeToSolve << "ms)\n";
     std::cout << "Moves(" << result.size() << "): ";
-    for (const auto& move : result)
+    for (const EMOVE move : result)
     {
         std::cout << cube.getMoveName(move);
     }
