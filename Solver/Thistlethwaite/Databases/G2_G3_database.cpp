@@ -33,23 +33,19 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
     // stores the location of all corners
     std::array<uint8_t, 8> cornersPerm = {
         cube.getCornerInd({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DLF), cube.getColour(ECORNER::FLD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DLB), cube.getColour(ECORNER::BLD) }),
         cube.getCornerInd({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::URF), cube.getColour(ECORNER::FRU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RUB), cube.getColour(ECORNER::URB), cube.getColour(ECORNER::BRU) }),
         cube.getCornerInd({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) }),
+        cube.getCornerInd({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DLF), cube.getColour(ECORNER::FLD) }),
+        cube.getCornerInd({ cube.getColour(ECORNER::RUB), cube.getColour(ECORNER::URB), cube.getColour(ECORNER::BRU) }),
+        cube.getCornerInd({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }),
+        cube.getCornerInd({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DLB), cube.getColour(ECORNER::BLD) }),
         cube.getCornerInd({ cube.getColour(ECORNER::RDF), cube.getColour(ECORNER::DRF), cube.getColour(ECORNER::FRD) }),
     };
 
     // stores the location of the edges of the E-slice
     std::array<uint8_t, 4> edgesPosComb;
-    // stores the location of the corners in the first tetrad
-    std::array<uint8_t, 4> cornersPosComb;
 
-    uint8_t c = 0;
-    uint8_t e = 0;
-    for (uint8_t i = 0; i < 8; ++i)
+    for (uint8_t i = 0, e = 0; i < 8 && e < 3; ++i)
     {
         // indices of the E-slice edges are 4, 5, 6, 7
         if (edgesPerm[i] == 4 || edgesPerm[i] == 5 ||
@@ -57,19 +53,15 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
         {
             edgesPosComb[e++] = i + 1;
         }
-        // indices of corners in the first tetrad are all even
-        if (!(cornersPerm[i] & 1))
-        {
-            cornersPosComb[c++] = i + 1;
-        }
     }
 
     uint32_t cornersInd = 0;
+
+
     uint32_t edgesInd   = 0;
 
     for (uint8_t n = 4, k = 4; n > 0; --n, --k)
     {
-        cornersInd += nCk(cornersPosComb[n - 1] - 1, k);
         edgesInd   += nCk(edgesPosComb[n - 1]   - 1, k);
     }
 

@@ -45,7 +45,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     };
 
     // store the positions of the 4 edges that need to be brought back to the M-slice
-    std::array<uint8_t, 4> edgePositionsPerm;
+    std::array<uint8_t, 4> edgePositionsComb;
 
     for (uint8_t i = 0, c = 0; i < 12 && c < 4; ++i)
     {
@@ -53,7 +53,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
         if (edgeIndices[i] == 1 || edgeIndices[i] == 2 ||
             edgeIndices[i] == 9 || edgeIndices[i] == 10)
         {
-            edgePositionsPerm[c++] = i + 1;
+            edgePositionsComb[c++] = i + 1;
         }
     }
 
@@ -67,7 +67,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
 
     for (uint8_t n = 4, k = 4; n > 0; --n, --k)
     {
-        edgesInd += nCk(edgePositionsPerm[n - 1] - 1, k);
+        edgesInd += nCk(edgePositionsComb[n - 1] - 1, k);
     }
 
     uint32_t cornersInd = 0;
