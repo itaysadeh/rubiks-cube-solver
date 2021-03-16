@@ -23,7 +23,7 @@ struct G1_G2_Database : public Database
 	uint32_t getIndex(const Rubiks& cube) const override;
 
 private:
-    CombIndexer<4> indexer;
+    CombIndexer<4> combIndexer;
 };
 
 #endif // G1_G2_DATABASE_H

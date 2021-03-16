@@ -6,8 +6,10 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
     using ECORNER = Rubiks::ECORNER;
     using ECOLOUR = Rubiks::ECOLOUR;
 
+    using pair_t  = std::array<uint8_t, 2>;
+
     // store the location of all edges in the E and S slice
-    std::array<uint8_t, 8> edgePosPerm = {
+    std::array<uint8_t, 8> ePosPerm = {
         cube.getEdgeInd({cube.getColour(EEDGE::UL), cube.getColour(EEDGE::LU)}),
         cube.getEdgeInd({cube.getColour(EEDGE::UR), cube.getColour(EEDGE::RU)}),
         cube.getEdgeInd({cube.getColour(EEDGE::DL), cube.getColour(EEDGE::LD)}),
@@ -18,91 +20,113 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
         cube.getEdgeInd({cube.getColour(EEDGE::LB), cube.getColour(EEDGE::BL)}),
     };
 
-    // store the location of all corners
-    std::array<uint8_t, 8> a = {
-        cube.getCornerInd({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }), //ULB WBO 0
-        cube.getCornerInd({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }), //ULF WGO 1
-        cube.getCornerInd({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DLF), cube.getColour(ECORNER::FLD) }), //DLF YGO 2
-        cube.getCornerInd({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DLB), cube.getColour(ECORNER::BLD) }), //DLB YBO 3
-        cube.getCornerInd({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) }), //DRB YBR 4
-        cube.getCornerInd({ cube.getColour(ECORNER::RDF), cube.getColour(ECORNER::DRF), cube.getColour(ECORNER::FRD) }), //DRF YGR 5
-        cube.getCornerInd({ cube.getColour(ECORNER::RUB), cube.getColour(ECORNER::URB), cube.getColour(ECORNER::BRU) }), //URB WBR 6
-        cube.getCornerInd({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::URF), cube.getColour(ECORNER::FRU) }), //URF WGR 7
+    std::array<uint8_t, 8> cPosPerm = {
+        cube.getCornerInd({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }), // pos0
+        cube.getCornerInd({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }), // pos1
+        cube.getCornerInd({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DLF), cube.getColour(ECORNER::FLD) }), // pos2
+        cube.getCornerInd({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DLB), cube.getColour(ECORNER::BLD) }), // pos3
+        cube.getCornerInd({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) }), // pos4
+        cube.getCornerInd({ cube.getColour(ECORNER::RDF), cube.getColour(ECORNER::DRF), cube.getColour(ECORNER::FRD) }), // pos5
+        cube.getCornerInd({ cube.getColour(ECORNER::RUB), cube.getColour(ECORNER::URB), cube.getColour(ECORNER::BRU) }), // pos6
+        cube.getCornerInd({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::URF), cube.getColour(ECORNER::FRU) }), // pos7
     };
 
-    std::array<uint8_t, 8> cornerPosPerm;
+    // find where the corners are and update their positions
+    auto setPairPos = [&](pair_t& pair) {
+        for (uint8_t i = 0; i < 8; ++i)
+        {
+            if (pair[0] == cPosPerm[i])
+            {
+                pair[0] = i;
+            }
+            if (pair[1] == cPosPerm[i])
+            {
+                pair[1] = i;
+            }
+        }
+    };
 
-    for (uint8_t i = 0; i < 8; ++i)
+    // why is this not working?? std::array<pair_t, 4> cPairPerm = { {0, 2}, {4, 6}, {1, 3}, {5, 7} };
+    pair_t p0 = { 0, 2 };
+    pair_t p1 = { 4, 6 };
+    pair_t p2 = { 1, 3 };
+    pair_t p3 = { 5, 7 };
+
+    // store the position of each corner
+    std::array<pair_t, 4> cPairPerm = { p0, p1, p2, p3 };
+
+    for (pair_t& pair : cPairPerm)
     {
-        cornerPosPerm[a[i]] = i;
+        setPairPos(pair);
     }
 
     // store the positions of the 4 edges that need to be brought back to the E-slice
     // a solved E-slice dictates a solved S-slice (vice versa), only 1 slice has to be considered
-    std::array<uint8_t, 4> edgesPosComb;
+    std::array<uint8_t, 4> ePosComb;
 
     for (uint8_t i = 0, e = 0; i < 8 && e < 4; ++i)
     {
         // indices of the E-slice edges are 4, 5, 6, 7
-        if (edgePosPerm[i] == 4 || edgePosPerm[i] == 5 ||
-            edgePosPerm[i] == 6 || edgePosPerm[i] == 7)
+        if (ePosPerm[i] == 4 || ePosPerm[i] == 5 ||
+            ePosPerm[i] == 6 || ePosPerm[i] == 7)
         {
-            edgesPosComb[e++] = i + 1;
+            ePosComb[e++] = i + 1;
         }
     }
 
-    uint32_t eInd = indexer.getInd(edgesPosComb); // edge
+    uint32_t eInd = combIndexer.getInd(ePosComb); // edge
     uint32_t cInd = 0;                            // corner
-    uint32_t pInd = 0;                            // parity
+    uint32_t pInd = 0;                            // parity (0 = even, 1 = odd)
 
     // check if parity is even or odd
     // this works like a bubble-sort, but instead 0 / 1 is switched based on
-    // how many swaps were made from the root position
+    // how many swaps were made from the root position (0=even 1=odd)
     for (uint8_t i = 0; i < 8; ++i)
     {
         for (uint8_t j = i + 1; j < 8; ++j)
         {
-            pInd ^= cornerPosPerm[i] < cornerPosPerm[j];
+            pInd ^= cPosPerm[i] < cPosPerm[j];
         }
     }
 
     // pairRank[0] = 0..8C2, pairRank[1] = 0..6C2, pairRank[2] = 0..4C2
     uint8_t pairRank[3];
-    bool    seen[8]{}; // {} default initialises to false
+    bool    seen[8]{};
 
     // loop through the first 3 pairs (4th pair is forced by the first 3)
-    for (uint8_t i = 0; i < 6; i += 2)
+    for (uint8_t i = 0; i < 3; ++i)
     {
         // order the pairs in ascending order
-        if (cornerPosPerm[i] > cornerPosPerm[i + 1])
+        if (cPairPerm[i][0] > cPairPerm[i][1])
         {
-            std::swap(cornerPosPerm[i], cornerPosPerm[i + 1]);
+            std::swap(cPairPerm[i][0], cPairPerm[i][1]);
         }
 
         uint8_t rank = 0;
-        uint8_t pair[8][8];
+        uint8_t relativePairRank[8][8];
 
-        // set the rank of each pair relative to former pairs
-        for (uint8_t l = 0; l < 8; ++l)
+        // set the rank of each pair (accounting for previous pairs)
+        for (uint8_t x = 0; x < 8; ++x)
         {
-            if (seen[l]) continue;
-            for (uint8_t r = l + 1; r < 8; ++r)
+            if (seen[x]) continue;
+            for (uint8_t y = x + 1; y < 8; ++y)
             {
-                if (seen[r]) continue;
-                pair[l][r] = rank++;
+                if (seen[y]) continue;
+                relativePairRank[x][y] = rank++;
             }
         }
 
         // get the rank of the 3 pairs
-        pairRank[i >> 1] = pair[cornerPosPerm[i]][cornerPosPerm[i + 1]];
+        pairRank[i] = relativePairRank[cPairPerm[i][0]][cPairPerm[i][1]];
 
-        seen[cornerPosPerm[i]]     = true;
-        seen[cornerPosPerm[i + 1]] = true;
+        seen[cPairPerm[i][0]] = true;
+        seen[cPairPerm[i][1]] = true;
     }
 
     // 0..8C2 - 1 * (6C2 * 4C2 * 2C2) + 0..6C2 - 1 * (4C2 * 2C2) + 0..4C2 - 1 = 0..2519
     cInd = pairRank[0] * 90 + pairRank[1] * 6 + pairRank[2];
 
     // (0..2519 * 70 + 0..69) * 2 + 0..1 = 0..352799
-    return (cInd * 70 + eInd) * 2 + pInd;
+    return cInd;
+    //return (cInd * 70 + eInd) * 2 + pInd;
 }

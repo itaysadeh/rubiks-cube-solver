@@ -7,7 +7,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     using ECOLOUR = Rubiks::ECOLOUR;
 
     // store the orientation of all corners (by position, regardless of which corner is where)
-    std::array<uint8_t, 7> cornerOrientationPerm = {
+    std::array<uint8_t, 7> cOrientationPerm = {
         //  face:                 {               L/R                          U/D                            F/B            }
         cube.getCornerOrientation({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }),
         cube.getCornerOrientation({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }),
@@ -20,7 +20,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
 
     // store the positions of all edges
     // the first 4 positions are in the M-slice in order to make a solved state the lowest combination: 0,1,2,3
-    std::array<uint8_t, 12> edgePosPerm = {
+    std::array<uint8_t, 12> ePosPerm = {
         cube.getEdgeInd({ cube.getColour(EEDGE::UB), cube.getColour(EEDGE::BU) }),
         cube.getEdgeInd({ cube.getColour(EEDGE::UF), cube.getColour(EEDGE::FU) }),
         cube.getEdgeInd({ cube.getColour(EEDGE::DB), cube.getColour(EEDGE::BD) }),
@@ -36,30 +36,30 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     };
 
     // store the positions of the 4 edges that need to be brought back to the M-slice
-    std::array<uint8_t, 4> edgePosComb;
+    std::array<uint8_t, 4> ePosComb;
 
     for (uint8_t i = 0, e = 0; i < 12 && e < 4; ++i)
     {
         // indices of the M-slice edges are 1, 2, 9 and 10
-        if (edgePosPerm[i] == 1 || edgePosPerm[i] == 2 ||
-            edgePosPerm[i] == 9 || edgePosPerm[i] == 10)
+        if (ePosPerm[i] == 1 || ePosPerm[i] == 2 ||
+            ePosPerm[i] == 9 || ePosPerm[i] == 10)
         {
-            edgePosComb[e++] = i + 1;
+            ePosComb[e++] = i + 1;
         }
     }
 
-    uint32_t eInd = indexer.getInd(edgePosComb); // edge
-    uint32_t cInd = 0;                           // corner
+    uint32_t eInd = combIndexer.getInd(ePosComb); // edge
+    uint32_t cInd = 0;                            // corner
 
     // treat corner orientations as ternary numbers and convert it to decimal
     cInd +=
-        cornerOrientationPerm[0] +
-        cornerOrientationPerm[1] * 3 +
-        cornerOrientationPerm[2] * 9 +
-        cornerOrientationPerm[3] * 27 +
-        cornerOrientationPerm[4] * 81 +
-        cornerOrientationPerm[5] * 243 +
-        cornerOrientationPerm[6] * 729;
+        cOrientationPerm[0] +
+        cOrientationPerm[1] * 3 +
+        cOrientationPerm[2] * 9 +
+        cOrientationPerm[3] * 27 +
+        cOrientationPerm[4] * 81 +
+        cOrientationPerm[5] * 243 +
+        cOrientationPerm[6] * 729;
 
     // 0.....2186 * 495 + 0....494 = 0....1082565
     return cInd * 495 + eInd;

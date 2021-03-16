@@ -26,7 +26,7 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
     uint8_t rootScoreF = rootScoreG + rootScoreH;
 
     Node_S rootNode     = std::make_shared<Node>(Node{nullptr, EMOVE::NO_MOVE, cube, rootScoreG, rootScoreH, rootScoreF});
-    Node_S currentNode  = nullptr;
+    Node_S currNode  = nullptr;
     Node_S solvedNode   = nullptr;
 
     std::priority_queue<Node_S, std::vector<Node_S>, decltype(compareNodeFScore)> Q;
@@ -35,32 +35,37 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
     while (!Q.empty())
     {
         // node wit the lowest F score
-        currentNode = Q.top();
+        currNode = Q.top();
         Q.pop();
 
         // break when a solution is found
-        if (goal.contented(currentNode->cube))
+        if (goal.contented(currNode->cube))
         {
-            solvedNode = currentNode;
+            solvedNode = currNode;
             break;
+        }
+
+        if (database.getDistance(currNode->cube) == 0)
+        {
+            currNode->cube.displayCube();
         }
 
         for (const EMOVE move : goal.legalMoves)
         {
-            if (!m_movesSimplifier.isRedundant(move, currentNode->move))
+            if (!m_movesSimplifier.isRedundant(move, currNode->move))
             {
-                Rubiks copy = currentNode->cube;
+                Rubiks copy = currNode->cube;
                 copy.performMove(move);
 
                 uint32_t newIndex  = database.getIndex(copy);
-                uint8_t  newScoreG = currentNode->scoreG + 1;
+                uint8_t  newScoreG = currNode->scoreG + 1;
                 uint8_t  newScoreH = database.getDistance(newIndex);
                 uint8_t  newScoreF = newScoreG + newScoreH;
 
                 // ignore nodes that move away from a solution
-                if (newScoreF <= currentNode->scoreF)
+                if (newScoreF <= currNode->scoreF)
                 {
-                    Node_S newNode = std::make_shared<Node>(Node{currentNode, move, copy, newScoreG, newScoreH, newScoreF});
+                    Node_S newNode = std::make_shared<Node>(Node{currNode, move, copy, newScoreG, newScoreH, newScoreF});
                     Q.push(newNode);
                 }
                 copy.revertMove(move);

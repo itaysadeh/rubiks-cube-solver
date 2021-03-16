@@ -23,6 +23,7 @@ struct G2_G3_Goal : public Goal
 
 	// G3 is contented when it's possible to solve all the corners and edges using only
 	// 180-degree moves (half twists). this is possible when all corners are in their natural
-	// orbits (arranged in 2 tetrads) and all edges are in their home slice
+    // orbits (arranged in 2 tetrads split in 4 pairs), all edges are in their home slice and
+    // the parity is even
 	bool contented(const Rubiks& cube) const override;
 };

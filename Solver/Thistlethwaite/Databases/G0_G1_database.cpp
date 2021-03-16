@@ -8,7 +8,7 @@ uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
     // get the orientation (0/1) and convert the binary permutation to a decimal number
 
     // store the orientation of all edges (by position, regardless of which edge is where)
-    std::array<uint8_t, 11> edgeOrientationPerm = {
+    std::array<uint8_t, 11> eOrientationPerm = {
         cube.getEdgeOrientation({ cube.getColour(EEDGE::RB), cube.getColour(EEDGE::BR) }),
         cube.getEdgeOrientation({ cube.getColour(EEDGE::RF), cube.getColour(EEDGE::FR) }),
         cube.getEdgeOrientation({ cube.getColour(EEDGE::RU), cube.getColour(EEDGE::UR) }),
@@ -24,15 +24,15 @@ uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
 
     // convert to decimal: 0...2^11 - 1 = 0...2047
     return
-       edgeOrientationPerm[0]  +
-       edgeOrientationPerm[1]  * 2 +
-       edgeOrientationPerm[2]  * 4 +
-       edgeOrientationPerm[3]  * 8 +
-       edgeOrientationPerm[4]  * 16 +
-       edgeOrientationPerm[5]  * 32 +
-       edgeOrientationPerm[6]  * 64 +
-       edgeOrientationPerm[7]  * 128 +
-       edgeOrientationPerm[8]  * 256 +
-       edgeOrientationPerm[9]  * 512 +
-       edgeOrientationPerm[10] * 1024;
+       eOrientationPerm[0]  +
+       eOrientationPerm[1]  * 2 +
+       eOrientationPerm[2]  * 4 +
+       eOrientationPerm[3]  * 8 +
+       eOrientationPerm[4]  * 16 +
+       eOrientationPerm[5]  * 32 +
+       eOrientationPerm[6]  * 64 +
+       eOrientationPerm[7]  * 128 +
+       eOrientationPerm[8]  * 256 +
+       eOrientationPerm[9]  * 512 +
+       eOrientationPerm[10] * 1024;
 }
