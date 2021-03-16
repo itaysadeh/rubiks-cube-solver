@@ -47,7 +47,8 @@ std::vector<Rubiks::EMOVE> Solver::Astar(const Rubiks& cube, const Goal& goal, c
 
         if (database.getDistance(currNode->cube) == 0)
         {
-            currNode->cube.displayCube();
+            std::string a = (goal.contented(currNode->cube)) ? "Solved!" : "Not Solved!";
+            std::cout << "[" << (int)database.getIndex(currNode->cube) << "] = 0; is " << a << "\n";
         }
 
         for (const EMOVE move : goal.legalMoves)

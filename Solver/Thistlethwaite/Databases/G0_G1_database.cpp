@@ -4,10 +4,9 @@ uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
 {
     using EEDGE = Rubiks::EEDGE;
 
-    // for each of the 11 edges (12th can be assumed www.ryanheise.com/cube/cube_laws.html)
-    // get the orientation (0/1) and convert the binary permutation to a decimal number
+    // 11 edges dictate the orientation of the 12th www.ryanheise.com/cube/cube_laws.html)
 
-    // store the orientation of all edges (by position, regardless of which edge is where)
+    // stores the orientation of all edges (by position, regardless of which edge is where)
     std::array<uint8_t, 11> eOrientationPerm = {
         cube.getEdgeOrientation({ cube.getColour(EEDGE::RB), cube.getColour(EEDGE::BR) }),
         cube.getEdgeOrientation({ cube.getColour(EEDGE::RF), cube.getColour(EEDGE::FR) }),
@@ -22,7 +21,7 @@ uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
         cube.getEdgeOrientation({ cube.getColour(EEDGE::DB), cube.getColour(EEDGE::BD) }),
     };
 
-    // convert to decimal: 0...2^11 - 1 = 0...2047
+    // converts to decimal: 0...2^11 - 1 = 0...2047
     return
        eOrientationPerm[0]  +
        eOrientationPerm[1]  * 2 +

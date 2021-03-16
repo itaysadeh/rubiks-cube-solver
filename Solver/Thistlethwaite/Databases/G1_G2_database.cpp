@@ -6,7 +6,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     using ECORNER = Rubiks::ECORNER;
     using ECOLOUR = Rubiks::ECOLOUR;
 
-    // store the orientation of all corners (by position, regardless of which corner is where)
+    // stores the orientation of all corners (by position, regardless of which corner is where)
     std::array<uint8_t, 7> cOrientationPerm = {
         //  face:                 {               L/R                          U/D                            F/B            }
         cube.getCornerOrientation({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }),
@@ -18,7 +18,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
         cube.getCornerOrientation({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) })
     };
 
-    // store the positions of all edges
+    // stores the positions of all edges
     // the first 4 positions are in the M-slice in order to make a solved state the lowest combination: 0,1,2,3
     std::array<uint8_t, 12> ePosPerm = {
         cube.getEdgeInd({ cube.getColour(EEDGE::UB), cube.getColour(EEDGE::BU) }),
@@ -35,7 +35,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
         cube.getEdgeInd({ cube.getColour(EEDGE::BL), cube.getColour(EEDGE::LB) })
     };
 
-    // store the positions of the 4 edges that need to be brought back to the M-slice
+    // stores the positions of the 4 edges that need to be brought back to the M-slice
     std::array<uint8_t, 4> ePosComb;
 
     for (uint8_t i = 0, e = 0; i < 12 && e < 4; ++i)
@@ -51,7 +51,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     uint32_t eInd = combIndexer.getInd(ePosComb); // edge
     uint32_t cInd = 0;                            // corner
 
-    // treat corner orientations as ternary numbers and convert it to decimal
+    // treats corner orientations as ternary numbers and converts it to decimal
     cInd +=
         cOrientationPerm[0] +
         cOrientationPerm[1] * 3 +

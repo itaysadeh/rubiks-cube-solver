@@ -270,26 +270,6 @@ void Engine::pollEvents()
 
             if (ev.key.keysym.sym == SDLK_F2)
             {
-                using ECORNER = Rubiks::ECORNER;
-                // store the location of all corners
-                std::array<uint8_t, 8> cPosPerm = {
-                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::LUB), m_cube.getColour(ECORNER::ULB), m_cube.getColour(ECORNER::BLU) }), //ULB WBO 0
-                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::LUF), m_cube.getColour(ECORNER::ULF), m_cube.getColour(ECORNER::FLU) }), //ULF WGO 1
-                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::LDF), m_cube.getColour(ECORNER::DLF), m_cube.getColour(ECORNER::FLD) }), //DLF YGO 2
-                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::LDB), m_cube.getColour(ECORNER::DLB), m_cube.getColour(ECORNER::BLD) }), //DLB YBO 3
-                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::RDB), m_cube.getColour(ECORNER::DRB), m_cube.getColour(ECORNER::BRD) }), //DRB YBR 4
-                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::RDF), m_cube.getColour(ECORNER::DRF), m_cube.getColour(ECORNER::FRD) }), //DRF YGR 5
-                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::RUB), m_cube.getColour(ECORNER::URB), m_cube.getColour(ECORNER::BRU) }), //URB WBR 6
-                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::RUF), m_cube.getColour(ECORNER::URF), m_cube.getColour(ECORNER::FRU) }), //URF WGR 7
-                };
-
-                // convert 'perm[position] = piece;' to 'perm[piece] = position;'
-                std::array<uint8_t, 8> cPiecePerm;
-                for (uint8_t i = 0; i < 8; ++i)
-                {
-                    cPiecePerm[cPosPerm[i]] = i;
-                }
-
                 std::ifstream input("./a");
 
                 int* arr = new int[352800];
