@@ -1,10 +1,8 @@
-#pragma once
-
+#ifndef DATABASE_GENERATOR_H
+#define DATABASE_GENERATOR_H
 #include <string>
 #include <iostream>
-//
-#include <set>
-//
+
 #include "../Database/Database.h"
 #include "../Solver/Goal.h"
 
@@ -24,3 +22,5 @@ private:
 
     MovesSimplifier m_movesSimplifier;
 };
+
+#endif // DATABASE_GENERATOR_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef G3_G4_DATABASE_H
+#define G3_G4_DATABASE_H
 
 #include "../../../Database/Database.h"
 
@@ -12,3 +13,4 @@ struct G3_G4_Database : public Database
 	uint32_t getIndex(const Rubiks& cube) const override;
 };
 
+#endif // G3_G4_DATABASE_H

@@ -1,28 +1,30 @@
-#pragma once
+#ifndef G2_G3_DATABASE_H
+#define G2_G3_DATABASE_H
 
 #include "../../../Database/Database.h"
+#include "../../../Util/Indexer.h"
 
 struct G2_G3_Database : public Database
 {
 	G2_G3_Database()
-		// only 4 corners need to be checked to see whether all corners are in their natural
-		// orbits (can be solved using 180-degree moves only) due to even parity.
-		// because there's no regard to order, this results in 8C4 = 70 possible positions permutations
-		// of the 4 corners.
+        // 8 edges need to be brought back to their home slices (E and S slice)
+        // since the M-slice is already solved. once 1 slice is solved, so is the
+        // other so only 1 slice is checked resulting in 8C4 = 70 for the edges
 
-		// there are 4! * 4! = 576 possible permutations of the corners within their natural orbits, but only
-		// 96 of these permutations are reachable from a solved cube using G3 moves (180-degree moves only).
-		// this results in an added factor of 6 (576 / 96 = 6) to G2.
+        // 8 corners are split into 4 pairs, without regard to order (0:1 = 1:0)
+        // 8C2 * 6C2 * 4C2 * 2C2 = 2520 for the corners
 
-		// similarly to the corners, to get the edges into their slices (notice that the 4 M-slice edges are
-		// already solved) only half of the edge positions are possible due to even parity (there amount of 
-		// unsolved edges will always be even).
-		// this results in 8C4 = 70 possible permutations of the edges
+        // an additional factor of 2 is added due to parity
 		
-		// 8C4^2 * 6 = 29400
-		: Database(29400, "thistlethwaite_g2g3")
+        // 70 * 2520 * 2 = 352800
+        : Database(352800, "thistlethwaite_g2g3")
 	{
 	}
 
 	uint32_t getIndex(const Rubiks& cube) const override;
+
+private:
+    CombIndexer<4> indexer;
 };
+
+#endif // G2_G3_DATABASE_H

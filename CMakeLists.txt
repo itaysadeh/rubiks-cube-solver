@@ -22,12 +22,14 @@ set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
 
 add_executable(RubiksCubeSolver ${SRC})
 
-# The relative path of the output will be /root (working directory)
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
-
 # C++20 required for rotl/rotr
 set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD 20)
 set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD_REQUIRED ON)
+
+# Defaults to Release
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
 
 # SDL2
 #    Linux

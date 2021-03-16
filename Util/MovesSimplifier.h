@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MOVES_SIMPLIFIER_H
+#define MOVES_SIMPLIFIER_H
 
 #include "../Cube.h"
 
@@ -11,3 +12,4 @@ struct MovesSimplifier
     bool isRedundant(EMOVE curr, EMOVE last) const;
 };
 
+#endif // MOVES_SIMPLIFIER_H

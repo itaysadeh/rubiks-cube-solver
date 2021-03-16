@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GOAL_H
+#define GOAL_H
 
 #include <string>
 #include <vector>
@@ -27,4 +28,4 @@ struct Goal
 	std::string name;
 };
 
-
+#endif // GOAL_H

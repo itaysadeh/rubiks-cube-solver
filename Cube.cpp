@@ -225,14 +225,13 @@ uint8_t Rubiks::getCornerInd(const Corner& corner) const
     // Y : 5 | (1 << 5) = 32
 
     // WBO = 19 = ULB = 0
-    // WBR = 25 = URB = 1
-    // WGR = 13 = URF = 2
-    // WGO = 7  = ULF = 3
+    // WGO = 7  = ULF = 1
+    // YGO = 38 = DLF = 2
+    // YBO = 50 = DLB = 3
     // YBR = 56 = DRB = 4
-    // YBO = 50 = DLB = 5
-    // YGO = 38 = DLF = 6
-    // YGR = 44 = DRF = 7
-
+    // YGR = 44 = DRF = 5
+    // WGR = 13 = URF = 6
+    // WBR = 25 = URB = 7
 
     uint8_t result = ((1 << (uint8_t)corner[0]) + (1 << (uint8_t)corner[1]) + (1 << (uint8_t)corner[2]));
 
@@ -240,20 +239,21 @@ uint8_t Rubiks::getCornerInd(const Corner& corner) const
     {
     case 19:
         return 0;
-    case 25:
-        return 1;
-    case 13:
-        return 2;
     case 7:
+        return 1;
+    case 50:
+        return 2;
+    case 38:
         return 3;
     case 56:
         return 4;
-    case 50:
-        return 5;
-    case 38:
-        return 6;
     case 44:
+        return 5;
+    case 25:
+        return 6;
+    case 13:
         return 7;
+
     default:
         std::string colourComb = getColourName(corner[0]) + getColourName(corner[1]) + getColourName(corner[2]);
         throw std::logic_error("Rubiks::getCornerInd invalid combination of edge colours:" + colourComb);

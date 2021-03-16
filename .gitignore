@@ -47,3 +47,4 @@ CMakeSettings.json
 /.cmake
 /.codelite
 CMakeLists.txt.user
+/CMakeFiles

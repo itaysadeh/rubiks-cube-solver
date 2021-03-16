@@ -1,6 +1,8 @@
-#pragma once
+#ifndef G1_G2_DATABASE_H
+#define G1_G2_DATABASE_H
 
 #include "../../../Database/Database.h"
+#include "../../../Util/Indexer.h"
 
 struct G1_G2_Database : public Database
 {
@@ -19,4 +21,9 @@ struct G1_G2_Database : public Database
 	}
 
 	uint32_t getIndex(const Rubiks& cube) const override;
+
+private:
+    CombIndexer<4> indexer;
 };
+
+#endif // G1_G2_DATABASE_H

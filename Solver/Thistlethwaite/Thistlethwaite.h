@@ -1,4 +1,5 @@
-#pragma once
+#ifndef THISTLETHWAITE_H
+#define THISTLETHWAITE_H
 
 #include "../Solver.h"
 #include "Groups.h"
@@ -24,3 +25,4 @@ private:
 	std::vector<Group*> m_groups;
 };
 
+#endif // THISTLETHWAITE_H

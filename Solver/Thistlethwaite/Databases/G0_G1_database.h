@@ -1,7 +1,7 @@
-#pragma once
+#ifndef G0_G1_DATABASE_H
+#define G0_G1_DATABASE_H
 
 #include "../../../Database/Database.h"
-#include <bitset>
 
 struct G0_G1_Database : public Database
 {
@@ -17,3 +17,4 @@ struct G0_G1_Database : public Database
 	uint32_t getIndex(const Rubiks& cube) const override;
 };
 
+#endif // G0_G1_DATABASE_H

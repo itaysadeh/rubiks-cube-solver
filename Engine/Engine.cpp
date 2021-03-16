@@ -270,9 +270,75 @@ void Engine::pollEvents()
 
             if (ev.key.keysym.sym == SDLK_F2)
             {
-                G2_G3_Database d;
+                using ECORNER = Rubiks::ECORNER;
+                std::array<uint8_t, 8> cornerPosPerm = {
+                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::LUB), m_cube.getColour(ECORNER::ULB), m_cube.getColour(ECORNER::BLU) }),
+                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::LUF), m_cube.getColour(ECORNER::ULF), m_cube.getColour(ECORNER::FLU) }),
+                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::LDB), m_cube.getColour(ECORNER::DLB), m_cube.getColour(ECORNER::BLD) }),
+                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::LDF), m_cube.getColour(ECORNER::DLF), m_cube.getColour(ECORNER::FLD) }),
+                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::RDB), m_cube.getColour(ECORNER::DRB), m_cube.getColour(ECORNER::BRD) }),
+                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::RDF), m_cube.getColour(ECORNER::DRF), m_cube.getColour(ECORNER::FRD) }),
+                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::RUF), m_cube.getColour(ECORNER::URF), m_cube.getColour(ECORNER::FRU) }),
+                    m_cube.getCornerInd({ m_cube.getColour(ECORNER::RUB), m_cube.getColour(ECORNER::URB), m_cube.getColour(ECORNER::BRU) }),
 
-                std::cout << (int)d.getIndex(m_cube) << "\n";
+                };
+
+                // check for parity
+                bool parity = true;
+
+                for (uint8_t i = 0; i < 8; ++i)
+                {
+                    for (uint8_t j = i + 1; j < 8; ++j)
+                    {
+                        parity ^= cornerPosPerm[i] < cornerPosPerm[j];
+                    }
+                }
+                if (!parity)
+                {
+                    std::cout << "!parity\n";
+                }
+                else
+                {
+                    std::cout << "parity\n";
+                }
+
+//                std::ifstream input("./a");
+
+//                int* arr = new int[55500];
+
+//                for (size_t i = 0; i < 55500; ++i)
+//                {
+//                    arr[i] = -1;
+//                }
+
+//                if (input)
+//                {
+//                    size_t value;
+//                    for (size_t i = 0; i < 55500; ++i)
+//                    {
+//                        input >> value;
+//                        if (value == 0xFF)
+//                        {
+//                            arr[i] = -1;
+//                        }
+//                        else
+//                        {
+//                            arr[i] = (int)value;
+//                        }
+//                    }
+//                }
+//                else
+//                {
+//                    std::cout << "Failed to open";
+//                }
+
+//                for (size_t i = 0; i < 55500; ++i)
+//                {
+//                    if (arr[i] != -1)
+//                    {
+//                        std::cout << i << "\n";
+//                    }
+//                }
             }
             break;
         }

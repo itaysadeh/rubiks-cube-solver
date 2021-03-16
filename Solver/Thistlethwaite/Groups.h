@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GROUPS_H
+#define GROUPS_H
 
 #include <memory>
 #include <iostream>
@@ -54,3 +55,5 @@ private:
     DatabaseType m_database;
     GoalType m_goal;
 };
+
+#endif // GROUPS_H

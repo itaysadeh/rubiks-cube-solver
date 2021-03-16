@@ -1,6 +1,7 @@
-#pragma once
+#ifndef CUBE_H
+#define CUBE_H
 
-#include <bit> // rotr & rotl
+#include <bit>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -126,3 +127,4 @@ private:
     std::array<ECOLOUR, 48> m_cube;
 };
 
+#endif // CUBE_H

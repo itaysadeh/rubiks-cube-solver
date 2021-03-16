@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ENGINE_H
+#define ENGINE_H
 
 #include "SDL.h"
 
@@ -7,6 +8,7 @@
 #include "../Solver/Thistlethwaite/Thistlethwaite.h"
 #include "../Solver/Thistlethwaite/Databases/G2_G3_database.h"
 
+#include <array>
 #include <iostream>
 #include <cstdint>
 
@@ -52,3 +54,5 @@ private:
 
     Thistlethwaite m_thistlethwaite;
 };
+
+#endif // ENGINE_H

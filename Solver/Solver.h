@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SOLVER_H
+#define SOLVER_H
 
 #include <vector>
 #include <array>
@@ -7,7 +8,6 @@
 #include <queue>
 
 #include "../Util/Timer.h"
-#include "../Util/PermutationIndexer.h"
 #include "../Util/MovesSimplifier.h"
 #include "../Cube.h"
 
@@ -36,3 +36,5 @@ protected:
 private:
     MovesSimplifier m_movesSimplifier;
 };
+
+#endif // SOLVER_H

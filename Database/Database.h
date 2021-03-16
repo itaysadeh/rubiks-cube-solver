@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DATABASE_H
+#define DATABASE_H
 
 #include <iostream>
 #include <istream>
@@ -10,7 +11,6 @@
 #include <filesystem>
 
 #include "../Cube.h"
-#include "../Util/PermutationIndexer.h"
 
 class Database
 {
@@ -59,3 +59,4 @@ private:
     size_t m_size;
 };
 
+#endif // DATABASE_H
