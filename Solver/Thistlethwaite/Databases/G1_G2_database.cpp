@@ -18,7 +18,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
         cube.getCornerOrientation({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) })
     };
 
-    // stores the positions of all edges
+    // stores the edges that are currently occupying each position
     // the first 4 positions are in the M-slice in order to make a solved state the lowest combination: 0,1,2,3
     std::array<uint8_t, 12> ePosPerm = {
         cube.getEdgeInd({ cube.getColour(EEDGE::UB), cube.getColour(EEDGE::BU) }),

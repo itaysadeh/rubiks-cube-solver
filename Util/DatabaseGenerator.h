@@ -3,11 +3,11 @@
 #include <string>
 #include <iostream>
 
-#include "../Database/Database.h"
+#include "../Solver/Database.h"
 #include "../Solver/Goal.h"
 
 #include "../Util/Timer.h"
-#include "../Util/MovesSimplifier.h"
+#include "../Util/SearchUtil.h"
 
 // IDDFS is used to search for all possible cube states reachable from a solved state
 // and assign each state the distance from the root position
@@ -20,7 +20,7 @@ public:
 private:
     bool databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth) const;
 
-    MovesSimplifier m_movesSimplifier;
+    SearchUtil searchUtil;
 };
 
 #endif // DATABASE_GENERATOR_H

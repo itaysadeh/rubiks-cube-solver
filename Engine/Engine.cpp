@@ -147,10 +147,8 @@ void Engine::scramble(size_t movesAmount)
 {
     using EMOVE = Rubiks::EMOVE;
 
-    // TODO: replace rand with a better random number generator
-    //std::cout << "Cube has been scrambled with: ";
-
-    MovesSimplifier movesSimplifier;
+    SearchUtil         searchUtil;
+    RandomNumGenerator generator(1, 18);
 
     size_t movesPerformed = 0;
 
@@ -159,17 +157,14 @@ void Engine::scramble(size_t movesAmount)
 
     while (movesPerformed <= movesAmount)
     {
-        curr = (EMOVE)(rand() % 18 + 1);
-        if (!movesSimplifier.isRedundant(curr, last))
+        curr = (EMOVE)generator.getNum();
+        if (!searchUtil.isRedundant(curr, last))
         {
             m_cube.performMove(curr);
-            //std::cout << m_cube.getMoveName(curr);
             last = curr;
             movesPerformed++;
         }
     }
-
-    //std::cout << "\n";
 }
 
 void Engine::pollEvents()
@@ -260,7 +255,6 @@ void Engine::pollEvents()
             // solve
             if (ev.key.keysym.sym == SDLK_F1)
             {
-                std::cout << "Solving (Thistlethwaite's algorithm):\n";
                 std::vector<Rubiks::EMOVE> result = m_thistlethwaite.solve(m_cube);
                 for (Rubiks::EMOVE move : result)
                 {
@@ -270,6 +264,7 @@ void Engine::pollEvents()
 
             if (ev.key.keysym.sym == SDLK_F2)
             {
+                // TEMP
                 std::ifstream input("./a");
 
                 int* arr = new int[352800];

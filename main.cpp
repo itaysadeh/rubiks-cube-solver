@@ -2,12 +2,8 @@
 
 #include "Engine/Engine.h"
 
-#include <ctime>
-
 int main(int argc, char* argv[])
 {
-	srand(0);
-
 	Engine engine;
 	engine.run();
 

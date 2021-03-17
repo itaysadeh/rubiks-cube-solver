@@ -31,9 +31,9 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
 
     // root (solved) pair positions. for a solved state a corner index matches the position index in cPosPerm
     constexpr std::array<pair_t, 4> rootPairs = {{ {0, 2}, {4, 6}, {1, 3}, {5, 7} }};
-    // stores the positions of the pair
-    std::array<pair_t, 4> cPairPerm;
 
+    // stores the positions of paired corners
+    std::array<pair_t, 4> cPairPerm;
     for (uint8_t i = 0; i < 4; ++i)
     {
         setPairPos(rootPairs[i], cPairPerm[i]);
@@ -47,12 +47,9 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
         }
     }
 
-    // even (good) parity = 0, odd (bad) parity = 1
     uint8_t parity = 0;
 
     // checks if parity is even or odd
-    // this works like a bubble-sort, but instead 0 / 1 is switched based on
-    // how many swaps were made from the root position
     for (uint8_t i = 0; i < 8; ++i)
     {
         for (uint8_t j = i + 1; j < 8; ++j)
@@ -66,7 +63,7 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
         return false;
     }
 
-    // check if all the edges are in their home slice (M-slice edges are already solved)
+    // checks if all the edges are in their home slice (M-slice edges are already solved)
     return
         (cube.getColour(EEDGE::UR) == ECOLOUR::W || cube.getColour(EEDGE::UR) == ECOLOUR::Y) &&
         (cube.getColour(EEDGE::UL) == ECOLOUR::W || cube.getColour(EEDGE::UL) == ECOLOUR::Y) &&

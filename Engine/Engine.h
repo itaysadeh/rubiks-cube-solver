@@ -4,11 +4,10 @@
 #include "SDL.h"
 
 #include "../Cube.h"
-#include "../Util/MovesSimplifier.h"
+#include "../Util/SearchUtil.h"
+#include "../Util/RandomNumGenerator.h"
 #include "../Solver/Thistlethwaite/Thistlethwaite.h"
-#include "../Solver/Thistlethwaite/Databases/G2_G3_database.h"
 
-#include <array>
 #include <iostream>
 #include <cstdint>
 

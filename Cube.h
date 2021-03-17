@@ -13,18 +13,14 @@ class Rubiks
 {
 public: 
     Rubiks();
-
-    // the EFACE and ECOLOUR enums correspond (up face is white, left face is orange....)
+    // colour of EFACE::X is ECOLOUR::X
     enum class EFACE   : uint8_t { U, L, F, R, B, D }; // up,    left,   front, right, back, down
     enum class ECOLOUR : uint8_t { W, O, G, R, B, Y }; // white, orange, green, red,   blue, yellow
 
-    // comparing two cubes
     bool operator==(const Rubiks& lhs);
-
-    // copy asigment operator
     Rubiks& operator=(const Rubiks& lhs);
 
-    // for indexing edges and corners using a readable name
+    // indexing pieces with positions
     enum class EEDGE : uint8_t
     {
         UB = 1 ,    UR = 3 ,    UF = 5 ,    UL = 7,
@@ -70,37 +66,34 @@ public:
     void rotateAdjacents(const AdjacentIndices& adj);
     void rotateAdjacents180(const AdjacentIndices& adj);
 
-    // set a face (8 colours) from a 64bit integer
+    // updates a face (8 colours) from a 64bit integer
     void setFace(EFACE face, uint64_t newFace);
 
-    using Edge   = std::array<ECOLOUR, 2>;
-    using Corner = std::array<ECOLOUR, 3>;
-
+    ECOLOUR     getColour(uint8_t index) const;
+    ECOLOUR     getColour(ECORNER index) const;
+    ECOLOUR     getColour(EEDGE   index) const;
     uint64_t    getFace(EFACE face) const;
-    ECOLOUR     getColour(std::size_t index) const;
-    ECOLOUR     getColour(EEDGE edge) const;
-    ECOLOUR     getColour(ECORNER corner) const;
     std::string getColourName(ECOLOUR colour) const;
     std::string getMoveName(EMOVE move) const;
     EMOVE       getMoveFromStr(const std::string& name) const;
 
+    using edge_t   = std::array<ECOLOUR, 2>;
+    using corner_t = std::array<ECOLOUR, 3>;
+
     // first index is the facelet on the R/L face, or U/D for the M slice
-    uint8_t getEdgeOrientation(const Edge& edge) const;
+    uint8_t getEdgeOrientation(const edge_t& edge) const;
     // first index is the facelet on the R/L face
-    uint8_t getCornerOrientation(const Corner& corner) const;
+    uint8_t getCornerOrientation(const corner_t& corner) const;
 
-    // unique ids for edges and corners, to assoicate them based on colours
-    // regardless of where they are on the cube
-    uint8_t getEdgeInd(const Edge& edge) const;
-    uint8_t getCornerInd(const Corner& edge) const;
-
-    // run a face rotation function based on a move
-    void performMove(EMOVE move);
-    // make a move that cancels the given move (L => L')
-    void revertMove(EMOVE move);
+    // get the index of a piece based on it's colours
+    uint8_t getEdgeInd(const edge_t& edge) const;
+    uint8_t getCornerInd(const corner_t& edge) const;
 
     // display the cube state in ASCII
     void displayCube() const;
+
+    void performMove(EMOVE move);
+    void revertMove(EMOVE move);
 
     // face rotations
     void U();
@@ -123,7 +116,6 @@ public:
     void D2();
 
 private:
-    // 6 faces * 8 facelets = 48, for easier indexing of colours (doesn't store centre facelets)
     std::array<ECOLOUR, 48> m_cube;
 };
 

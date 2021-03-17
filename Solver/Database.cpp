@@ -2,8 +2,7 @@
 
 bool Database::load()
 {
-    const std::string path = "./Database/Generated_Databases/" + m_fileName;
-    std::ifstream input(path);
+    std::ifstream input(m_dataPath + m_filePath);
 
     if (input)
     {
@@ -14,7 +13,7 @@ bool Database::load()
             m_data[i] = (uint8_t)value;
             if (m_data[i] == 0xFF)
             {
-                std::cout << "Database doesn't match " << path << ". Failed to load.\n";
+                std::cout << "Database doesn't match " << m_filePath << ". Failed to load.\n";
                 reset();
                 return false;
             }
@@ -23,7 +22,7 @@ bool Database::load()
     }
     else
     {
-        std::cout << "Failed to open database file \"" << m_fileName << "\".\n";
+        std::cout << "Failed to open database file \"" << m_filePath << "\".\n";
         return false;
     }
 
@@ -33,9 +32,8 @@ bool Database::load()
 
 void Database::write() const
 {
-    const std::string path = "./Database/Generated_Databases/" + m_fileName;
     std::ofstream outfile;
-    outfile.open(path);
+    outfile.open(m_dataPath + m_filePath);
 
     for (size_t i = 0; i < m_size; ++i)
     {
@@ -45,7 +43,7 @@ void Database::write() const
 }
 
 
-bool Database::index(uint32_t index, uint8_t value)
+bool Database::set(uint32_t index, uint8_t value)
 {
     if (m_data[index] > value)
     {
@@ -61,9 +59,9 @@ bool Database::index(uint32_t index, uint8_t value)
     return false;
 }
 
-bool Database::index(const Rubiks& cube, uint8_t value)
+bool Database::set(const Rubiks& cube, uint8_t value)
 {
-    return index(getIndex(cube), value);
+    return set(getIndex(cube), value);
 }
 
 bool Database::isSet(uint32_t index) const
@@ -88,7 +86,7 @@ std::size_t Database::currentSize() const
 
 void Database::reset()
 {
-    // fills the data with 0xFF (unset)
+    // fills the data with 0xFF (= unset)
     std::fill(m_data.begin(), m_data.end(), 0xFF);
     m_currentCapacity = 0;
 }
@@ -98,17 +96,17 @@ std::size_t Database::size() const
     return m_size;
 }
 
-uint8_t Database::at(uint32_t index) const
-{
-    return m_data[index];
-}
-
 uint8_t Database::getDistance(const Rubiks& cube) const
 {
     return m_data[getIndex(cube)];
 }
 
 uint8_t Database::getDistance(uint32_t index) const
+{
+    return m_data[index];
+}
+
+uint8_t Database::operator [](uint32_t index) const
 {
     return m_data[index];
 }

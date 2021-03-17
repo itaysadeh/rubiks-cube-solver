@@ -5,45 +5,39 @@ bool G0_G1_Goal::contented(const Rubiks& cube) const
     using ECOLOUR   = Rubiks::ECOLOUR;
     using EEDGE     = Rubiks::EEDGE;
 
-    // all the edges in the cube
-
-    // Up face
+    // all edges
     ECOLOUR E_UB = cube.getColour(EEDGE::UB);
     ECOLOUR E_UR = cube.getColour(EEDGE::UR);
     ECOLOUR E_UF = cube.getColour(EEDGE::UF);
     ECOLOUR E_UL = cube.getColour(EEDGE::UL);
-    // Left face
+
     ECOLOUR E_LU = cube.getColour(EEDGE::LU);
     ECOLOUR E_LF = cube.getColour(EEDGE::LF);
     ECOLOUR E_LD = cube.getColour(EEDGE::LD);
     ECOLOUR E_LB = cube.getColour(EEDGE::LB);
-    // Front face
+
     ECOLOUR E_FU = cube.getColour(EEDGE::FU);
     ECOLOUR E_FR = cube.getColour(EEDGE::FR);
     ECOLOUR E_FD = cube.getColour(EEDGE::FD);
     ECOLOUR E_FL = cube.getColour(EEDGE::FL);
-    // Right face
+
     ECOLOUR E_RU = cube.getColour(EEDGE::RU);
     ECOLOUR E_RB = cube.getColour(EEDGE::RB);
     ECOLOUR E_RD = cube.getColour(EEDGE::RD);
     ECOLOUR E_RF = cube.getColour(EEDGE::RF);
-    // Back face
+
     ECOLOUR E_BU = cube.getColour(EEDGE::BU);
     ECOLOUR E_BL = cube.getColour(EEDGE::BL);
     ECOLOUR E_BD = cube.getColour(EEDGE::BD);
     ECOLOUR E_BR = cube.getColour(EEDGE::BR);
-    // Down face
+
     ECOLOUR E_DF = cube.getColour(EEDGE::DF);
     ECOLOUR E_DR = cube.getColour(EEDGE::DR);
     ECOLOUR E_DB = cube.getColour(EEDGE::DB);
     ECOLOUR E_DL = cube.getColour(EEDGE::DL);
 
-    // an edge is good when it's possible to solve it with without using 90 degree moves of the U & D face
-
-    // check if the colour matches the face. if it's not, then if it's white / yellow check the adjacent colour
-    // and see if the adjacent colour is different than the face you were initaliy checking. otherwise it's bad
-
-    // this can also be implemented using the cube.getEdgeOrientation() function
+    // checks if a facelet is one of the colours from it's axis, if not, checks if it's from the U/D axis and the adjacent edge
+    // facelet is from the 3rd axis (can be implemented using cube.getEdgeOrientation() too)
 
     return 
         ((E_FR == ECOLOUR::B || E_FR == ECOLOUR::G) || ((E_FR == ECOLOUR::W || E_FR == ECOLOUR::Y) && (E_RF == ECOLOUR::O || E_RF == ECOLOUR::R))) &&

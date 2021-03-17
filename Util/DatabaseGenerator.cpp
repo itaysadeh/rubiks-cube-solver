@@ -16,13 +16,12 @@ void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rub
         }
 
         std::cout << "visited states: " << database.currentSize() << " / " << database.size() << "\n";
-
         depth++;
     }
 
     // all permutations visited, write the result to a file
     database.write();
-    std::cout << "Finished generating tables for " << goal.name << " (" << timer.get() / 1000 << " seconds)" << "\n";
+    std::cout << "Finished generating (" << timer.get() / 1000 << " seconds)" << "\n";
 }
 
 bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth) const
@@ -40,16 +39,16 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
     if (depth == maxDepth)
     {
         // index() only updates the database if the value is lower then the current entry
-        database.index(index, depth);
+        database.set(index, depth);
     }
     else
     {
         // prune a branch if a permutation has been visited at an earlier depth
-        if (depth <= database.at(index))
+        if (depth <= database[index])
         {
             for (const Rubiks::EMOVE move : goal.legalMoves)
             {
-                if (!m_movesSimplifier.isRedundant(move, lastMove))
+                if (!searchUtil.isRedundant(move, lastMove))
                 {
                     cube.performMove(move);
 
@@ -64,5 +63,6 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
         }
     }
 
+    // branch led to a dead end
     return false;
 }

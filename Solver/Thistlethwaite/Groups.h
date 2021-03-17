@@ -1,8 +1,8 @@
 #ifndef GROUPS_H
 #define GROUPS_H
 
-#include <memory>
 #include <iostream>
+#include <string>
 
 #include "Databases/G0_G1_database.h"
 #include "Databases/G1_G2_database.h"
@@ -16,30 +16,31 @@
 
 #include "../../Util/DatabaseGenerator.h"
 
-// base class for a group to use for polymorphysm in solvers and database generations
-// contains a database and a goal for a group, and loads databases / generates them
+// base class for the 4 groups in Thistlethwaite's algorithm
 struct Group
 {
+    // loads the database or generates it if a file is not provided
     void loadDatabase()
     {
-        // load database
-        std::cout << "Loading database for " << goal->name << "...\n";
+        std::cout << "Loading database for " << name << "...\n";
         if (database->load())
         {
-            std::cout << "Loaded database for " << goal->name << " successfully.\n";
+            std::cout << "Loaded database for " << name << " successfully.\n";
         }
         else
         {
-            // generate a new database if a database file is not provided
-            std::cout << "Failed to load database for " << goal->name << ". generating:\n";
-            DatabaseGenerator databaseGen;
+            std::cout << "Failed to load database for " << name << ". generating:\n";
             databaseGen.generate(*goal, *database);
         }
     }
 
-    bool	  useDatabase = false;
-    Database* database    = nullptr;
-    Goal*     goal        = nullptr;
+    bool        useDatabase = false;
+    Database*   database    = nullptr;
+    Goal*       goal        = nullptr;
+    std::string name;
+
+protected:
+    DatabaseGenerator databaseGen;
 };
 
 template<typename DatabaseType, typename GoalType>

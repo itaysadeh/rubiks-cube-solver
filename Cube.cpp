@@ -19,7 +19,7 @@ bool Rubiks::operator==(const Rubiks& lhs)
 
 Rubiks& Rubiks::operator=(const Rubiks& lhs)
 {
-    // copy in 6 chunks of 64 bits (48 bytes total)
+    // copy 6 chunks of 64 bits (48 bytes total)
     memcpy(&m_cube[0], &lhs.m_cube[0], sizeof(uint64_t) * 6);
     return *this;
 }
@@ -66,7 +66,6 @@ void Rubiks::rotateFace180(EFACE face)
 void Rubiks::rotateAdjacents(const AdjacentIndices& adj)
 {
     uint16_t tmpi0;
-    // copy 2 bytes (facelets) together
     memcpy(&tmpi0, &m_cube[adj.i0], sizeof(uint16_t));
     memcpy(&m_cube[adj.i0], &m_cube[adj.i1], sizeof(uint16_t));
     memcpy(&m_cube[adj.i1], &m_cube[adj.i2], sizeof(uint16_t));
@@ -75,7 +74,7 @@ void Rubiks::rotateAdjacents(const AdjacentIndices& adj)
 
     uint8_t tmpi4;
     // 3rd byte (facelet) needs to be copied by itself because it might not be continious in memory
-    // (Ex: m_cube[6, 7, 0] is affected after a right face rotation)
+    // (e.g m_cube[6, 7, 0] is affected after a right face rotation)
     memcpy(&tmpi4, &m_cube[adj.i4], sizeof(uint8_t));
     memcpy(&m_cube[adj.i4], &m_cube[adj.i5], sizeof(uint8_t));
     memcpy(&m_cube[adj.i5], &m_cube[adj.i6], sizeof(uint8_t));
@@ -85,58 +84,54 @@ void Rubiks::rotateAdjacents(const AdjacentIndices& adj)
 
 void Rubiks::rotateAdjacents180(const AdjacentIndices& adj)
 {
-    // 6 swaps for 3 facelets on 2 faces and their opposites faces
     std::swap(*(uint16_t*)&m_cube[adj.i0], *(uint16_t*)&m_cube[adj.i2]);
     std::swap(*(uint16_t*)&m_cube[adj.i1], *(uint16_t*)&m_cube[adj.i3]);
+    // same as rotateAdjacents
     std::swap(m_cube[adj.i4], m_cube[adj.i6]);
     std::swap(m_cube[adj.i5], m_cube[adj.i7]);
 }
 
 void Rubiks::setFace(EFACE face, uint64_t new_face)
 {
-    // replace 8 bytes in the array with a 64 bit integer
-    memcpy(&m_cube[(size_t)face * 8], &new_face, sizeof(uint64_t));
+    memcpy(&m_cube[(unsigned)face * 8], &new_face, sizeof(uint64_t));
 }
 
 uint64_t Rubiks::getFace(EFACE face) const
 {
-    return *(uint64_t*)&m_cube[(size_t)face * 8];
+    return *(uint64_t*)&m_cube[(unsigned)face * 8];
 }
 
-Rubiks::ECOLOUR Rubiks::getColour(std::size_t index) const
+Rubiks::ECOLOUR Rubiks::getColour(uint8_t index) const
 {
     return m_cube[index];
 }
 
-Rubiks::ECOLOUR Rubiks::getColour(EEDGE edge) const
+Rubiks::ECOLOUR Rubiks::getColour(ECORNER index) const
 {
-    return m_cube[size_t(edge)];
+    return m_cube[(unsigned)index];
 }
 
-Rubiks::ECOLOUR Rubiks::getColour(ECORNER corner) const
+Rubiks::ECOLOUR Rubiks::getColour(EEDGE index) const
 {
-    return m_cube[size_t(corner)];
+    return m_cube[(unsigned)index];
 }
 
-// first index is the facelet on the R/L face, or U/D for the M slice
-uint8_t Rubiks::getEdgeOrientation(const Edge& edge) const
+uint8_t Rubiks::getEdgeOrientation(const edge_t& edge) const
 {
-    uint8_t result = (edge[0] == ECOLOUR::G || edge[0] == ECOLOUR::B) ||
-                     (edge[0] == ECOLOUR::W || edge[0] == ECOLOUR::Y) &&
-                     (edge[1] == ECOLOUR::R || edge[1] == ECOLOUR::O)
-        ? 1 : 0;
-    // 0 = good, means the edge can be solved without using 90 degree turns of the U / D face.
-    // otherwise it's bad = 1
-    return result;
+    return
+         ((edge[0] == ECOLOUR::G || edge[0] == ECOLOUR::B) ||
+         ((edge[0] == ECOLOUR::W || edge[0] == ECOLOUR::Y) &&
+          (edge[1] == ECOLOUR::R || edge[1] == ECOLOUR::O)));
+
+    // checks if a facelet has one of the colours from it's axis, if not, checks if it's from the U/D axis and
+    // that the adjacent edge facelet has a colour from the 3rd axis
 }
 
-// first index is the facelet on the L/R face, second index is U/D face, third index is F/B face
-uint8_t Rubiks::getCornerOrientation(const Corner& corner) const
+uint8_t Rubiks::getCornerOrientation(const corner_t& corner) const
 {
     // notice that this is incorrect. www.ryanheise.com/cube/cube_laws.html
     // orientation is determined by the twist of the corner, and this follows
-    // a differnet logic to avoid unnecessary extra code. this works for the
-    // purpose of this program
+    // a differnet logic to avoid unnecessary extra code
 
     // retrun 0 / 1 / 2 based on which axis the L/R colour is on
     if (corner[0] == ECOLOUR::R || corner[0] == ECOLOUR::O)
@@ -157,10 +152,8 @@ uint8_t Rubiks::getCornerOrientation(const Corner& corner) const
     }
 }
 
-uint8_t Rubiks::getEdgeInd(const Edge& edge) const
+uint8_t Rubiks::getEdgeInd(const edge_t& edge) const
 {
-    // github.com/benbotto/rubiks-cube-cracker/
-
     // W : 0 | (1 << 0) = 1
     // O : 1 | (1 << 1) = 2
     // G : 2 | (1 << 2) = 4
@@ -215,7 +208,7 @@ uint8_t Rubiks::getEdgeInd(const Edge& edge) const
     }
 }
 
-uint8_t Rubiks::getCornerInd(const Corner& corner) const
+uint8_t Rubiks::getCornerInd(const corner_t& corner) const
 {
     // W : 0 | (1 << 0) = 1
     // O : 1 | (1 << 1) = 2
@@ -311,37 +304,37 @@ std::string Rubiks::getMoveName(EMOVE move) const
     case EMOVE::U:
         return "U";
     case EMOVE::Up:
-        return "Up";
+        return "U'";
     case EMOVE::U2:
         return "U2";
     case EMOVE::L:
         return "L";
     case EMOVE::Lp:
-        return "Lp";
+        return "L'";
     case EMOVE::L2:
         return "L2";
     case EMOVE::F:
         return "F";
     case EMOVE::Fp:
-        return "Fp";
+        return "F'";
     case EMOVE::F2:
         return "F2";
     case EMOVE::R:
         return "R";
     case EMOVE::Rp:
-        return "Rp";
+        return "R'";
     case EMOVE::R2:
         return "R2";
     case EMOVE::B:
         return "B";
     case EMOVE::Bp:
-        return "Bp";
+        return "B'";
     case EMOVE::B2:
         return "B2";
     case EMOVE::D:
         return "D";
     case EMOVE::Dp:
-        return "Dp";
+        return "D'";
     case EMOVE::D2:
         return "D2";
     case EMOVE::NO_MOVE:

@@ -7,6 +7,8 @@
 class Thistlethwaite : public Solver
 {
 public:
+    using EMOVE = Rubiks::EMOVE;
+
 	Thistlethwaite();
 
 	std::vector<EMOVE> solve(const Rubiks& cube) const override;

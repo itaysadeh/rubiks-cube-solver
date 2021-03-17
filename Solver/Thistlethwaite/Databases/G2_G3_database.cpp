@@ -8,7 +8,7 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
 
     using pair_t  = std::array<uint8_t, 2>;
 
-    // stores the positions of all edges in the E and S slice
+    // stores which edge is currently occupying which position on the E- and S-slices (M-slice was solved in G1)
     std::array<uint8_t, 8> ePosPerm = {
         cube.getEdgeInd({cube.getColour(EEDGE::UL), cube.getColour(EEDGE::LU)}),
         cube.getEdgeInd({cube.getColour(EEDGE::UR), cube.getColour(EEDGE::RU)}),
@@ -44,7 +44,7 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
     constexpr std::array<pair_t, 4> rootPairPos = {{ {0, 2}, {4, 6}, {1, 3}, {5, 7} }};
 
     std::array<pair_t, 4> cPairPerm;
-    // stores the positions of the pair
+    // stores the positions of the corners in a pair
     for (uint8_t i = 0; i < 4; ++i)
     {
         setPairPos(rootPairPos[i], cPairPerm[i]);
@@ -69,8 +69,6 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
     uint32_t pInd = 0;                            // parity (0 = even, 1 = odd)
 
     // checks if parity is even or odd
-    // this works like a bubble-sort, but instead 0 / 1 is switched based on
-    // how many swaps were made from the root position (0=even 1=odd)
     for (uint8_t i = 0; i < 8; ++i)
     {
         for (uint8_t j = i + 1; j < 8; ++j)
@@ -79,14 +77,12 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
         }
     }
 
-    // pairRank[0] = 0..8C2, pairRank[1] = 0..6C2, pairRank[2] = 0..4C2
     int pairRank[3];
-    bool    seen[8]{};
+    bool seen[8]{};
 
-    // loop through the first 3 pairs (4th pair is forced by the first 3)
     for (uint8_t i = 0; i < 3; ++i)
     {
-        // order the pairs in ascending order
+        // order the corners in the pair in ascending order
         if (cPairPerm[i][0] > cPairPerm[i][1])
         {
             std::swap(cPairPerm[i][0], cPairPerm[i][1]);
@@ -95,7 +91,7 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
         uint8_t rank = 0;
         uint8_t relativePairRank[8][8];
 
-        // set the rank of each pair (accounting for previous pairs)
+        // set the rank of each pair (realtivly, accounting for previous pairs)
         for (uint8_t x = 0; x < 8; ++x)
         {
             if (seen[x]) continue;
@@ -113,8 +109,9 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
         seen[cPairPerm[i][1]] = true;
     }
 
-    // 0..8C2 - 1 * (6C2 * 4C2 * 2C2) + 0..6C2 - 1 * (4C2 * 2C2) + 0..4C2 - 1 = 0..2519
+    // corner index = 0..8C2 - 1 * (6C2 * 4C2 * 2C2) + 0..6C2 - 1 * (4C2 * 2C2) + 0..4C2 - 1 = 0..2519
     cInd = pairRank[0] * 90 + pairRank[1] * 6 + pairRank[2];
+
     // (0..2519 * 70 + 0..69) * 2 + 0..1 = 0..352799
     return (cInd * 70 + eInd) * 2 + pInd;
 }

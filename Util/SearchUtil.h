@@ -1,10 +1,10 @@
-#ifndef MOVES_SIMPLIFIER_H
-#define MOVES_SIMPLIFIER_H
+#ifndef SEARCH_UTIL_H
+#define SEARCH_UTIL_H
 
 #include "../Cube.h"
 
 // speeds searches by pruning redundant moves (moves that lead to identical states) from a search tree
-struct MovesSimplifier
+struct SearchUtil
 {
     using EMOVE = Rubiks::EMOVE;
 
@@ -12,4 +12,4 @@ struct MovesSimplifier
     bool isRedundant(EMOVE curr, EMOVE last) const;
 };
 
-#endif // MOVES_SIMPLIFIER_H
+#endif // SEARCH_UTIL_H

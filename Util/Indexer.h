@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <array>
 
-// input combination has to be in a descending order
 template<uint8_t K>
 struct CombIndexer
 {

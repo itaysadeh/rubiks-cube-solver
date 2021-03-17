@@ -4,9 +4,8 @@ uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
 {
     using EEDGE = Rubiks::EEDGE;
 
-    // 11 edges dictate the orientation of the 12th www.ryanheise.com/cube/cube_laws.html)
-
     // stores the orientation of all edges (by position, regardless of which edge is where)
+    // the orientation of 11 edges dictates the orientation of the 12th edge (even orientation value)
     std::array<uint8_t, 11> eOrientationPerm = {
         cube.getEdgeOrientation({ cube.getColour(EEDGE::RB), cube.getColour(EEDGE::BR) }),
         cube.getEdgeOrientation({ cube.getColour(EEDGE::RF), cube.getColour(EEDGE::FR) }),
