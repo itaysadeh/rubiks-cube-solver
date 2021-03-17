@@ -73,7 +73,7 @@ std::vector<Rubiks::EMOVE> IDDFS::search(const Rubiks& cube, const Goal& goal, c
     uint8_t depth  = 0;
     bool    solved = false;
 
-    Node_IDDFS rootNode = { cube, (EMOVE)0, 0 };
+    Node_IDDFS rootNode = Node_IDDFS{ cube, EMOVE::NO_MOVE, 0 };
 
     while (!solved)
     {
