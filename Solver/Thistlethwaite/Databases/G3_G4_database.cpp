@@ -17,7 +17,8 @@ uint32_t G3_G4_Database::getIndex(const Rubiks& cube) const
         cube.getPieceInd(EPIECE::DB),
         cube.getPieceInd(EPIECE::UB),
     };
-    // only half the pieces in the S-slice
+    // only half the pieces in the S-slice are stored, the positions of the first 10
+    // edges dictate the positions of the last 2 (they have to have even parity)
     std::array<uint8_t, 2> ePosPermS = {
         cube.getPieceInd(EPIECE::UL),
         cube.getPieceInd(EPIECE::DL),
