@@ -18,6 +18,7 @@ is treated as a "simpler" puzzle for the computer to solve.
 - Positions: 4.33·10^19
 - Unique states: 2^11 = 2048
 - Legal moves: All moves
+
 In G1, the orientation of all 12 edges is solved (good orientation means an edge can be solved without using a 90-degre Up or Down move)
 G0->G1 only looks at edge orientations (0 for good, 1 for bad), which gives 2^12 unique states. Only half of these states is reachable because
 it's impossible to flip an odd number of edges.
@@ -27,6 +28,7 @@ Therefore, there are  2^12 / 2 = 2^11 = 2048 states to store in a database.
 - Positions: 2.11·10^16
 - Unique states: 8C4 * 3^7 = 1082565
 - Legal moves: 90-degre Up/Down turns are excluded
+
 In G2, all the M-slice edges are brought back to their home slice and the orientation of all the corners is solved (their Left or Right facelet is in the Left or Right face)
 G1->G2 stores 8C4 possible combinations, 8 possible positions for the 4 M-slice edges, and 3^8 states for the corners.
 Like edge orientations, only 3^7 corner states are actually stored. Only a 3rd of these states are reachable because the total orientation value of the corners is always divisible by 3.
@@ -36,6 +38,7 @@ Therefore, there are 8C4 * 3^8 / 3 = 8C4 * 3^7 = 1082565 states to store in a da
 - Positions: 1.95·10^10
 - Unique states: 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800
 - Legal moves: 90-degre Up/Down and Front/Back turns are excluded
+
 In G3, a cube is solvable using 180-degre moves only. This means that all edges are in their home slice and all corners are in their natural orbits.
 I couldn't find a nice way to rank each corner state. Instead, I split the 2 tetrads and formed 4 pairs (like [Stefan](https://tomas.rokicki.com/cubecontest/stefan1.txt)'s approach).
 Since the M-slice is already solved in G2, a solved E-slice dictates a solved S-slice (vice versa), therefore only 8C4 edge states are stored in the database.
@@ -46,6 +49,7 @@ Therefore, there are 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800 states to store 
 - Positions: 6.63·10^5
 - Unique states: 4!^2 / 6 * 4!^3 / 2 = 96 * 4!^3 / 2 = 663552
 - Legal moves: Only 180-degre moves are allowed (all 90-degre moves are excluded)
+
 In G3->G4, finally the cube is solved. In this state the cube is seperated to 3 edge slices and 2 corner tetrads (each containing 4 pieces). Because only 180-degre moves are allowed the
 pieces will never leave these orbits. Each slice/tetrad can be permuted in 4! ways which gives 4!^5, but there are some restrictions:
 
