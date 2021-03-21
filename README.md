@@ -2,7 +2,7 @@
 
 ## Input
 - To apply moves (perform face twists) use: `U`-up, `L`-left, `F`-front, `R`-right, `B`-back and `D`-down.
-  (For counter-clockwise hold `shift`, for 180-degree (half twist) hold `lctrl`)
+  (for counter-clockwise hold `shift`, for 180-degree (half twist) hold `lctrl`)
 - To scramble the cube use `S`.
 - To solve the cube with [Thistlethwaite's algorithm](https://www.jaapsch.net/puzzles/thistle.htm) use `F1`
 
@@ -13,26 +13,46 @@ The cube is split into 5 sub-groups: G0, G1, G2, G3 and G4.
 G0 is any scrambled cube (4.33·10^19 states), and G4 is a solved cube (1 state).
 Instead of looking for a solution directly, the algorithm works by moving from one group to the other where each group
 is treated as a "simpler" puzzle for the computer to solve.
-By using a brute-force apporach (BFS) a computer can solve a cube using this algorithm in a relatively short amount of time,
-but lookup tables can be used as heuristics in a search algorithm to speed solve times.
 
 ##### G0->G1:
 - Positions: 4.33·10^19
 - Unique states: 2^11 = 2048
 - Legal moves: All moves
+In G1, the orientation of all 12 edges is solved (good orientation means an edge can be solved without using a 90-degre Up or Down move)
+G0->G1 only looks at edge orientations (0 for good, 1 for bad), which gives 2^12 unique states. Only half of these states is reachable because
+it's impossible to flip an odd number of edges.
+
+Therefore, there are  2^12 / 2 = 2^11 = 2048 states to store in a database.
 ##### G1->G2:
 - Positions: 2.11·10^16
 - Unique states: 8C4 * 3^7 = 1082565
 - Legal moves: 90-degre Up/Down turns are excluded
+In G2, all the M-slice edges are brought back to their home slice and the orientation of all the corners is solved (their Left or Right facelet is in the Left or Right face)
+G1->G2 stores 8C4 possible combinations, 8 possible positions for the 4 M-slice edges, and 3^8 states for the corners.
+Like edge orientations, only 3^7 corner states are actually stored. Only a 3rd of these states are reachable because the total orientation value of the corners is always divisible by 3.
+
+Therefore, there are 8C4 * 3^8 / 3 = 8C4 * 3^7 = 1082565 states to store in a database.
 ##### G2->G3:
 - Positions: 1.95·10^10
 - Unique states: 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800
 - Legal moves: 90-degre Up/Down and Front/Back turns are excluded
+In G3, a cube is solvable using 180-degre moves only. This means that all edges are in their home slice and all corners are in their natural orbits.
+I couldn't find a nice way to rank each corner state. Instead, I split the 2 tetrads and formed 4 pairs (like [Stefan](https://tomas.rokicki.com/cubecontest/stefan1.txt)'s approach).
+Since the M-slice is already solved in G2, a solved E-slice dictates a solved S-slice (vice versa), therefore only 8C4 edge states are stored in the database.
+An extra factor of 2 is added due to parity (corners): All G3 states have even parity because only 180-degre moves are allowed (even amount of twists), and G2 also stores states with odd parity.
+
+Therefore, there are 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800 states to store in the database.
 ##### G3->G4:
 - Positions: 6.63·10^5
-- Unique states: 96 * 4!^3 / 2 = 663552
+- Unique states: 4!^2 / 6 * 4!^3 / 2 = 96 * 4!^3 / 2 = 663552
 - Legal moves: Only 180-degre moves are allowed (all 90-degre moves are excluded)
+In G3->G4, finally the cube is solved. In this state the cube is seperated to 3 edge slices and 2 corner tetrads (each containing 4 pieces). Because only 180-degre moves are allowed the
+pieces will never leave these orbits. Each slice/tetrad can be permuted in 4! ways which gives 4!^5, but there are some restrictions:
 
+Corners: only 4!^2 / 6 of the corner states are reachable due to parity and disallowed lone 3-cycles (explained [here](https://puzzling.stackexchange.com/questions/5402/what-is-the-meaning-of-a-tetrad-twist-in-thistlethwaites-algorithm)).
+Edges: only 4!^4 / 2 of the edge states are reachable due to parity.
+
+Therefore, there are 4!^5 / 12 = 96 * 4!^3 / 2 = 663552 states to store in the database.
 
 ## Building
 Set the working directory to the root project folder or run the executable from there
