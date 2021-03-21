@@ -38,7 +38,7 @@ Therefore, there are 8C4 * 3^8 / 3 = 8C4 * 3^7 = 1082565 states to store in a da
 - Legal moves: 90-degre Up/Down and Front/Back turns are excluded
 
 In G3, a cube is solvable using 180-degre moves only. This means that all edges are in their home slice and all corners are in their natural orbits.
-I couldn't find a nice way to rank each corner state. Instead, I split the 2 tetrads and formed 4 pairs (like [Stefan](https://tomas.rokicki.com/cubecontest/stefan1.txt)'s approach).
+I couldn't find a nice way to rank each corner state so I split the 2 tetrads into 4 pairs (like in [Stefan](https://tomas.rokicki.com/cubecontest/stefan1.txt)'s approach).
 Since the M-slice is already solved in G2, a solved E-slice dictates a solved S-slice (vice versa), therefore only 8C4 edge states are stored in the database.
 An extra factor of 2 is added due to parity (corners): All G3 states have even parity because only 180-degre moves are allowed (even amount of twists), and G2 also stores states with odd parity.
 
