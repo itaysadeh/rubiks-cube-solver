@@ -1,14 +1,15 @@
 # rubiks-cube-solver
 
 ## Input
-- To apply moves (perform face twists) use: `U`p, `L`eft, `F`ront, `R`ight, `B`ack and `D`own.
+- To apply moves (perform face twists) use: `U`-up, `L`-left, `F`-front, `R`-right, `B`-back and `D`-down.
   (For counter-clockwise hold `shift`, for 180-degree (half twist) hold `lctrl`)
 - To scramble the cube use `S`.
 - To solve the cube with [Thistlethwaite's algorithm](https://www.jaapsch.net/puzzles/thistle.htm) use `F1`
 
 ## Thistlethwaite's algorithm
 [Thistlethwaite's algorithm](https://www.jaapsch.net/puzzles/thistle.htm) solves the cube in less than 52 moves.
-The cube is split into 5 sub-groups: G0, G1, G2, G3 and G4:
+The cube is split into 5 sub-groups: G0, G1, G2, G3 and G4.
+
 G0 is any scrambled cube (4.33·10^19 states), and G4 is a solved cube (1 state).
 Instead of looking for a solution directly, the algorithm works by moving from one group to the other where each group
 is treated as a "simpler" puzzle for the computer to solve.
