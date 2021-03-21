@@ -5,7 +5,6 @@ bool G0_G1_Goal::contented(const Rubiks& cube) const
     using ECOLOUR   = Rubiks::ECOLOUR;
     using EEDGE     = Rubiks::EEDGE;
 
-    // all edges
     ECOLOUR E_UB = cube.getColour(EEDGE::UB);
     ECOLOUR E_UR = cube.getColour(EEDGE::UR);
     ECOLOUR E_UF = cube.getColour(EEDGE::UF);
@@ -36,8 +35,7 @@ bool G0_G1_Goal::contented(const Rubiks& cube) const
     ECOLOUR E_DB = cube.getColour(EEDGE::DB);
     ECOLOUR E_DL = cube.getColour(EEDGE::DL);
 
-    // checks if a facelet is one of the colours from it's axis, if not, checks if it's from the U/D axis and the adjacent edge
-    // facelet is from the 3rd axis (can be implemented using cube.getEdgeOrientation() too)
+    // same logic from Rubiks::getEdgeOrientation
 
     return 
         ((E_FR == ECOLOUR::B || E_FR == ECOLOUR::G) || ((E_FR == ECOLOUR::W || E_FR == ECOLOUR::Y) && (E_RF == ECOLOUR::O || E_RF == ECOLOUR::R))) &&

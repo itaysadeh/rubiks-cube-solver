@@ -4,6 +4,7 @@
 #include "../Solver.h"
 #include "Groups.h"
 
+// jaapsch.net/puzzles/thistle.htm
 class Thistlethwaite : public Solver
 {
 public:

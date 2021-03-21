@@ -2,34 +2,35 @@
 
 uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
 {
-    using EEDGE   = Rubiks::EEDGE;
-    using ECORNER = Rubiks::ECORNER;
-    using ECOLOUR = Rubiks::ECOLOUR;
+    using EPIECE = Rubiks::EPIECE;
 
     using pair_t  = std::array<uint8_t, 2>;
 
     // stores which edge is currently occupying which position on the E- and S-slices (M-slice was solved in G1)
     std::array<uint8_t, 8> ePosPerm = {
-        cube.getEdgeInd({cube.getColour(EEDGE::UL), cube.getColour(EEDGE::LU)}),
-        cube.getEdgeInd({cube.getColour(EEDGE::UR), cube.getColour(EEDGE::RU)}),
-        cube.getEdgeInd({cube.getColour(EEDGE::DL), cube.getColour(EEDGE::LD)}),
-        cube.getEdgeInd({cube.getColour(EEDGE::DR), cube.getColour(EEDGE::RD)}),
-        cube.getEdgeInd({cube.getColour(EEDGE::RF), cube.getColour(EEDGE::FR)}),
-        cube.getEdgeInd({cube.getColour(EEDGE::RB), cube.getColour(EEDGE::BR)}),
-        cube.getEdgeInd({cube.getColour(EEDGE::LF), cube.getColour(EEDGE::FL)}),
-        cube.getEdgeInd({cube.getColour(EEDGE::LB), cube.getColour(EEDGE::BL)}),
+        cube.getPieceInd(EPIECE::UL),
+        cube.getPieceInd(EPIECE::UR),
+        cube.getPieceInd(EPIECE::DL),
+        cube.getPieceInd(EPIECE::DR),
+        cube.getPieceInd(EPIECE::RF),
+        cube.getPieceInd(EPIECE::RB),
+        cube.getPieceInd(EPIECE::LF),
+        cube.getPieceInd(EPIECE::LB),
     };
     // stores which corner is currently occupying which position
     std::array<uint8_t, 8> cPosPerm = {
-        cube.getCornerInd({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DLF), cube.getColour(ECORNER::FLD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DLB), cube.getColour(ECORNER::BLD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RDF), cube.getColour(ECORNER::DRF), cube.getColour(ECORNER::FRD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::URF), cube.getColour(ECORNER::FRU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RUB), cube.getColour(ECORNER::URB), cube.getColour(ECORNER::BRU) }),
+        cube.getPieceInd(EPIECE::ULB),
+        cube.getPieceInd(EPIECE::ULF),
+        cube.getPieceInd(EPIECE::DLF),
+        cube.getPieceInd(EPIECE::DLB),
+        cube.getPieceInd(EPIECE::DRB),
+        cube.getPieceInd(EPIECE::DRF),
+        cube.getPieceInd(EPIECE::URF),
+        cube.getPieceInd(EPIECE::URB),
     };
+
+    // root pair positions
+    constexpr std::array<pair_t, 4> rootPairPos = {{ {0, 2}, {4, 6}, {1, 3}, {5, 7} }};
 
     // finds the positions of a pair and writes it to result
     auto setPairPos = [&](const pair_t& target, pair_t& result) {
@@ -39,9 +40,6 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
             if (target[1] == cPosPerm[i]) result[1] = i;
         }
     };
-
-    // root pair positions
-    constexpr std::array<pair_t, 4> rootPairPos = {{ {0, 2}, {4, 6}, {1, 3}, {5, 7} }};
 
     std::array<pair_t, 4> cPairPerm;
     // stores the positions of the corners in a pair
@@ -64,9 +62,9 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
         }
     }
 
-    uint32_t eInd = combIndexer.getInd(ePosComb); // edge
-    uint32_t cInd = 0;                            // corner
-    uint32_t pInd = 0;                            // parity (0 = even, 1 = odd)
+    uint32_t eInd = combIndexer4.getInd(ePosComb); // edge
+    uint32_t cInd = 0;                             // corner
+    uint32_t pInd = 0;                             // parity (0 = even, 1 = odd)
 
     // checks if parity is even or odd
     for (uint8_t i = 0; i < 8; ++i)
@@ -109,9 +107,9 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
         seen[cPairPerm[i][1]] = true;
     }
 
-    // corner index = 0..8C2 - 1 * (6C2 * 4C2 * 2C2) + 0..6C2 - 1 * (4C2 * 2C2) + 0..4C2 - 1 = 0..2519
+    // (0..8C2 - 1) * (6C2 * 4C2 * 2C2) + (0..6C2 - 1) * (4C2 * 2C2) + (0..4C2 - 1) = 0..2519
     cInd = pairRank[0] * 90 + pairRank[1] * 6 + pairRank[2];
 
-    // (0..2519 * 70 + 0..69) * 2 + 0..1 = 0..352799
+    // (0..2519 * (8C4) + (0..8C4 - 1)) * 2 + 0|1 = 0..352799
     return (cInd * 70 + eInd) * 2 + pInd;
 }

@@ -2,7 +2,7 @@
 
 std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, const Database& database) const
 {
-    // compare node scores for logarithmic insertions
+    // compares node scores for logarithmic insertions
     auto compareNodeScore = [](pNode_t lhs, pNode_t rhs)->bool {
         return lhs->score > rhs->score;
     };
@@ -15,6 +15,7 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
     pNode_t solvedNode = nullptr;
 
     std::priority_queue<pNode_t, std::vector<pNode_t>, decltype(compareNodeScore)> Q;
+
     Q.push(rootNode);
 
     while (!Q.empty())
@@ -51,10 +52,10 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
         }
     }
 
+    // no solution was found and the queue is empty, invalid database led to wrong assumptions
     if (!solved) throw std::logic_error("Searcher::Astar Didn't find a solution, invalid database.");
 
     std::vector<EMOVE> result;
-    // push moves to result
     while (solvedNode->parent)
     {
         result.push_back(solvedNode->move);
@@ -91,9 +92,9 @@ std::vector<Rubiks::EMOVE> IDDFS::search(const Rubiks& cube, const Goal& goal, c
 
 bool IDDFS::IDDFS_searcher(Node_IDDFS node, const Goal& goal, uint8_t maxDepth, std::vector<EMOVE>& result) const
 {
+    // IDDFS looks at nodes multiple times, only checks for solutions at leaf level
     if (node.depth == maxDepth)
     {
-        // found a solution
         return goal.contented(node.cube);
     }
 
@@ -106,7 +107,7 @@ bool IDDFS::IDDFS_searcher(Node_IDDFS node, const Goal& goal, uint8_t maxDepth, 
 
             if (IDDFS_searcher(Node_IDDFS{node.cube, move, currDepth}, goal, maxDepth, result))
             {
-                // solution found, push moves to result
+                // solution found, moves pushed to result
                 result.push_back(move);
                 return true;
             }

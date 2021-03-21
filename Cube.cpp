@@ -7,7 +7,6 @@ Rubiks::Rubiks()
 
 bool Rubiks::operator==(const Rubiks& lhs)
 {
-    // each face is an unsigned 64 bit integer, 8 bytes for 8 colours
     return
         getFace(EFACE::U) == lhs.getFace(EFACE::U) &&
         getFace(EFACE::L) == lhs.getFace(EFACE::L) &&
@@ -19,7 +18,7 @@ bool Rubiks::operator==(const Rubiks& lhs)
 
 Rubiks& Rubiks::operator=(const Rubiks& lhs)
 {
-    // copy 6 chunks of 64 bits (48 bytes total)
+    // copies in 6 chunks of 64 bits
     memcpy(&m_cube[0], &lhs.m_cube[0], sizeof(uint64_t) * 6);
     return *this;
 }
@@ -65,16 +64,16 @@ void Rubiks::rotateFace180(EFACE face)
 
 void Rubiks::rotateAdjacents(const AdjacentIndices& adj)
 {
+    // rotates 16 bits (2 facelets) in 1 operation
     uint16_t tmpi0;
     memcpy(&tmpi0, &m_cube[adj.i0], sizeof(uint16_t));
     memcpy(&m_cube[adj.i0], &m_cube[adj.i1], sizeof(uint16_t));
     memcpy(&m_cube[adj.i1], &m_cube[adj.i2], sizeof(uint16_t));
     memcpy(&m_cube[adj.i2], &m_cube[adj.i3], sizeof(uint16_t));
     memcpy(&m_cube[adj.i3], &tmpi0, sizeof(uint16_t));
-
+    // 3rd facelet is coppied by itself in case it's not continious in memory
+    // (e.g indices 6,7,0 are affected in a L face rotation)
     uint8_t tmpi4;
-    // 3rd byte (facelet) needs to be copied by itself because it might not be continious in memory
-    // (e.g m_cube[6, 7, 0] is affected after a right face rotation)
     memcpy(&tmpi4, &m_cube[adj.i4], sizeof(uint8_t));
     memcpy(&m_cube[adj.i4], &m_cube[adj.i5], sizeof(uint8_t));
     memcpy(&m_cube[adj.i5], &m_cube[adj.i6], sizeof(uint8_t));
@@ -86,13 +85,14 @@ void Rubiks::rotateAdjacents180(const AdjacentIndices& adj)
 {
     std::swap(*(uint16_t*)&m_cube[adj.i0], *(uint16_t*)&m_cube[adj.i2]);
     std::swap(*(uint16_t*)&m_cube[adj.i1], *(uint16_t*)&m_cube[adj.i3]);
-    // same as rotateAdjacents
+
     std::swap(m_cube[adj.i4], m_cube[adj.i6]);
     std::swap(m_cube[adj.i5], m_cube[adj.i7]);
 }
 
 void Rubiks::setFace(EFACE face, uint64_t new_face)
 {
+    // sets the 8 bytes (facelets) in a face from a 64-bit integer
     memcpy(&m_cube[(unsigned)face * 8], &new_face, sizeof(uint64_t));
 }
 
@@ -123,14 +123,14 @@ uint8_t Rubiks::getEdgeOrientation(const edge_t& edge) const
          ((edge[0] == ECOLOUR::W || edge[0] == ECOLOUR::Y) &&
           (edge[1] == ECOLOUR::R || edge[1] == ECOLOUR::O)));
 
-    // checks if a facelet has one of the colours from it's axis, if not, checks if it's from the U/D axis and
-    // that the adjacent edge facelet has a colour from the 3rd axis
+    // checks if a facelet has one of the colours from the R/L axis, if not, checks if it's from the U/D axis and
+    // that the adjacent edge facelet has a colour from the F/B axis
 }
 
 uint8_t Rubiks::getCornerOrientation(const corner_t& corner) const
 {
-    // notice that this is incorrect. www.ryanheise.com/cube/cube_laws.html
-    // orientation is determined by the twist of the corner, and this follows
+    // www.ryanheise.com/cube/cube_laws.html
+    // orientation is determined by the twist of the corner, but this follows
     // a differnet logic to avoid unnecessary extra code
 
     // retrun 0 / 1 / 2 based on which axis the L/R colour is on
@@ -153,36 +153,16 @@ uint8_t Rubiks::getCornerOrientation(const corner_t& corner) const
 }
 
 uint8_t Rubiks::getEdgeInd(const edge_t& edge) const
-{
-    // W : 0 | (1 << 0) = 1
-    // O : 1 | (1 << 1) = 2
-    // G : 2 | (1 << 2) = 4
-    // R : 3 | (1 << 3) = 8
-    // B : 4 | (1 << 4) = 16
-    // Y : 5 | (1 << 5) = 32
-
-    // WO = 3  = 0
-    // WG = 5  = 1
-    // WB = 17 = 2
-    // WR = 9  = 3
-    // OG = 6  = 4
-    // OB = 18 = 5
-    // RG = 12 = 6
-    // RB = 24 = 7
-    // YO = 34 = 8
-    // YG = 36 = 9
-    // YB = 48 = 10
-    // YR = 40 = 11
-
+{ 
     uint8_t result = ((1 << (uint8_t)edge[0]) + (1 << (uint8_t)edge[1]));
 
     switch (result)
     {
     case 3:
         return 0;
-    case 5:
+    case 34:
         return 1;
-    case 17:
+    case 40:
         return 2;
     case 9:
         return 3;
@@ -194,13 +174,13 @@ uint8_t Rubiks::getEdgeInd(const edge_t& edge) const
         return 6;
     case 24:
         return 7;
-    case 34:
+    case 5:
         return 8;
     case 36:
         return 9;
     case 48:
         return 10;
-    case 40:
+    case 17:
         return 11;
     default:
         std::string edgeComb = getColourName(edge[0]) + getColourName(edge[1]);
@@ -210,22 +190,6 @@ uint8_t Rubiks::getEdgeInd(const edge_t& edge) const
 
 uint8_t Rubiks::getCornerInd(const corner_t& corner) const
 {
-    // W : 0 | (1 << 0) = 1
-    // O : 1 | (1 << 1) = 2
-    // G : 2 | (1 << 2) = 4
-    // R : 3 | (1 << 3) = 8
-    // B : 4 | (1 << 4) = 16
-    // Y : 5 | (1 << 5) = 32
-
-    // WBO = 19 = ULB = 0
-    // WGO = 7  = ULF = 1
-    // YGO = 38 = DLF = 2
-    // YBO = 50 = DLB = 3
-    // YBR = 56 = DRB = 4
-    // YGR = 44 = DRF = 5
-    // WGR = 13 = URF = 6
-    // WBR = 25 = URB = 7
-
     uint8_t result = ((1 << (uint8_t)corner[0]) + (1 << (uint8_t)corner[1]) + (1 << (uint8_t)corner[2]));
 
     switch (result)
@@ -249,6 +213,55 @@ uint8_t Rubiks::getCornerInd(const corner_t& corner) const
     default:
         std::string colourComb = getColourName(corner[0]) + getColourName(corner[1]) + getColourName(corner[2]);
         throw std::logic_error("Rubiks::getCornerInd invalid combination of edge colours:" + colourComb);
+    }
+}
+
+uint8_t Rubiks::getPieceInd(EPIECE piece) const
+{
+    switch (piece)
+    {
+    case EPIECE::UL:
+        return getEdgeInd({ getColour(EEDGE::UL), getColour(EEDGE::LU) });
+    case EPIECE::DL:
+        return getEdgeInd({ getColour(EEDGE::DL), getColour(EEDGE::LD) });
+    case EPIECE::DR:
+        return getEdgeInd({ getColour(EEDGE::DR), getColour(EEDGE::RD) });
+    case EPIECE::UR:
+        return getEdgeInd({ getColour(EEDGE::UR), getColour(EEDGE::RU) });
+    case EPIECE::LF:
+        return getEdgeInd({ getColour(EEDGE::LF), getColour(EEDGE::FL) });
+    case EPIECE::LB:
+        return getEdgeInd({ getColour(EEDGE::LB), getColour(EEDGE::BL) });
+    case EPIECE::RF:
+        return getEdgeInd({ getColour(EEDGE::RF), getColour(EEDGE::FR) });
+    case EPIECE::RB:
+        return getEdgeInd({ getColour(EEDGE::RB), getColour(EEDGE::BR) });
+    case EPIECE::UF:
+        return getEdgeInd({ getColour(EEDGE::UF), getColour(EEDGE::FU) });
+    case EPIECE::DF:
+        return getEdgeInd({ getColour(EEDGE::DF), getColour(EEDGE::FD) });
+    case EPIECE::DB:
+        return getEdgeInd({ getColour(EEDGE::DB), getColour(EEDGE::BD) });
+    case EPIECE::UB:
+        return getEdgeInd({ getColour(EEDGE::UB), getColour(EEDGE::BU) });
+    case EPIECE::ULB:
+        return getCornerInd({ getColour(ECORNER::LUB), getColour(ECORNER::ULB), getColour(ECORNER::BLU) });
+    case EPIECE::ULF:
+        return getCornerInd({ getColour(ECORNER::LUF), getColour(ECORNER::ULF), getColour(ECORNER::FLU) });
+    case EPIECE::DLF:
+        return getCornerInd({ getColour(ECORNER::LDF), getColour(ECORNER::DLF), getColour(ECORNER::FLD) });
+    case EPIECE::DLB:
+        return getCornerInd({ getColour(ECORNER::LDB), getColour(ECORNER::DLB), getColour(ECORNER::BLD) });
+    case EPIECE::DRB:
+        return getCornerInd({ getColour(ECORNER::RDB), getColour(ECORNER::DRB), getColour(ECORNER::BRD) });
+    case EPIECE::DRF:
+        return getCornerInd({ getColour(ECORNER::RDF), getColour(ECORNER::DRF), getColour(ECORNER::FRD) });
+    case EPIECE::URF:
+        return getCornerInd({ getColour(ECORNER::RUF), getColour(ECORNER::URF), getColour(ECORNER::FRU) });
+    case EPIECE::URB:
+        return getCornerInd({ getColour(ECORNER::RUB), getColour(ECORNER::URB), getColour(ECORNER::BRU) });
+    default:
+        throw std::logic_error("Rubiks::getPieceInd invalid enum value" + (int)piece);
     }
 }
 
@@ -293,6 +306,8 @@ Rubiks::EMOVE Rubiks::getMoveFromStr(const std::string& name) const
     if (name == "D")  return EMOVE::D;
     if (name == "D'") return EMOVE::Dp;
     if (name == "D2") return EMOVE::D2;
+    if (name == "")   return EMOVE::NO_MOVE;
+    if (name == " ")  return EMOVE::NO_MOVE;
     
     throw std::logic_error("Rubiks::getMove invalid move name" + name);
 }

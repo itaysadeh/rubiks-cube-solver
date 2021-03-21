@@ -9,12 +9,11 @@
 #include "../Util/Timer.h"
 #include "../Util/SearchUtil.h"
 
-// IDDFS is used to search for all possible cube states reachable from a solved state
-// and assign each state the distance from the root position
+// searches the cube (IDDFS) for all possible states and stores the depth of each state in a file
 class DatabaseGenerator
 {
 public:
-    // if a cube isn't passed, database will be generated using a solved cube
+    // if a cube isn't passed the database will be generated using a solved cube
     void generate(const Goal& goal, Database& database, const Rubiks& pBaseCube = Rubiks());
 
 private:

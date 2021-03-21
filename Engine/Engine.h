@@ -7,16 +7,17 @@
 #include "../Util/SearchUtil.h"
 #include "../Util/RandomNumGenerator.h"
 #include "../Solver/Thistlethwaite/Thistlethwaite.h"
+#include "../Solver/Thistlethwaite/Goals/G3_G4_goal.h"
 
 #include <iostream>
 #include <cstdint>
+#include <string>
 
 // renders cube and handles user input
 class Engine
 {
 public:
     Engine();
-    ~Engine();
 
     void run();
 

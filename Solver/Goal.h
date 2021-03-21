@@ -15,6 +15,7 @@ struct Goal
 	{
 	}
 
+    // checks if a cube is in a state that satisfies the goal
 	virtual bool contented(const Rubiks& cube) const = 0;
 
 	std::vector<Rubiks::EMOVE> legalMoves;

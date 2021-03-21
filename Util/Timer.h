@@ -28,7 +28,7 @@ public:
 		return ms;
 	}
 
-	// same, but also prints the result with a message
+    // get elapsed time and print the result with a message
 	double get(const std::string& message)
 	{
 		auto endTimePoint = std::chrono::high_resolution_clock::now();

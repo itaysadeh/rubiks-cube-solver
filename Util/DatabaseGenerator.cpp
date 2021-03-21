@@ -5,6 +5,7 @@ void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rub
     Rubiks  cube  = baseCube;
     uint8_t depth = 0;
     Timer   timer;
+
     timer.set();
 
     while (!database.full())
@@ -19,14 +20,14 @@ void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rub
         depth++;
     }
 
-    // all permutations visited, write the result to a file
+    // all states visited, write the result to a file
     database.write();
     std::cout << "Finished generating (" << timer.get() / 1000 << " seconds)" << "\n";
 }
 
 bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth) const
 {
-    // all permutations visited
+    // all states visited
     if (database.full())
     {
         return true;
@@ -35,15 +36,14 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
     uint32_t index = database.getIndex(cube);
 
     // IDDFS looks at nodes multiple times, so indexing should only
-    // be done at leaf level, since lower depths have already been visited
+    // be done at leaf level since lower depths have already been visited
     if (depth == maxDepth)
     {
-        // index() only updates the database if the value is lower then the current entry
         database.set(index, depth);
     }
     else
     {
-        // prune a branch if a permutation has been visited at an earlier depth
+        // prune a branch if a state has been visited at an earlier depth
         if (depth <= database[index])
         {
             for (const Rubiks::EMOVE move : goal.legalMoves)

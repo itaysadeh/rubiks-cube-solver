@@ -2,15 +2,16 @@
 
 Thistlethwaite::Thistlethwaite()
 {
+    // init groups
     m_G0G1.useDatabase = true;
     m_G1G2.useDatabase = true;
     m_G2G3.useDatabase = true;
-    m_G3G4.useDatabase = false;
+    m_G3G4.useDatabase = true;
 
-    m_G0G1.name = "G0G1";
-    m_G1G2.name = "G1G2";
-    m_G2G3.name = "G2G3";
-    m_G3G4.name = "G3G4";
+    m_G0G1.name = "G0->G1";
+    m_G1G2.name = "G1->G2";
+    m_G2G3.name = "G2->G3";
+    m_G3G4.name = "G3->G4";
 
     m_groups = {
         &m_G0G1,
@@ -35,11 +36,13 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
     std::vector<EMOVE> result;
     double             combinedSolveTime = 0;
 
+    std::cout << "Thistlethwaite's algorithm:\n";
+
     for (Group* group : m_groups)
     {
         timer.set();
 
-        std::cout << "Solving " << group->name << " :\n";
+        std::cout << group->name << " :\n";
 
         // partial group solution
         std::vector<EMOVE> groupResult;
@@ -58,13 +61,14 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
         // group solve statistics
         double groupSolveTime = timer.get();
 
-        std::cout << "Elapsed time: (" << groupSolveTime << "ms)" << "\n";
+        std::cout << "Elapsed time: (" << groupSolveTime << "ms), ";
         std::cout << "Moves: (" << groupResult.size() << ")\n";
         combinedSolveTime += groupSolveTime;
     }
 
-    // solve statistics
-    std::cout << "Solved in: (" << (float)combinedSolveTime << "ms)\n";
+    // overall solve statistics
+    std::cout << "\n";
+    std::cout << "Solved in: " << (int)combinedSolveTime / 1000 << " seconds " << "(" << (float)combinedSolveTime << "ms).\n";
     std::cout << "Moves(" << result.size() << "): ";
     for (const EMOVE move : result)
     {

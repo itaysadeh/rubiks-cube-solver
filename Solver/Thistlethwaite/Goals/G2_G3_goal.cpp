@@ -3,21 +3,21 @@
 bool G2_G3_Goal::contented(const Rubiks& cube) const
 {
     using ECOLOUR = Rubiks::ECOLOUR;
-    using ECORNER = Rubiks::ECORNER;
+    using EPIECE  = Rubiks::EPIECE;
     using EEDGE   = Rubiks::EEDGE;
 
     using pair_t  = std::array<uint8_t, 2>;
 
     // stores which corner is currently occupying which position
     std::array<uint8_t, 8> cPosPerm = {
-        cube.getCornerInd({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DLF), cube.getColour(ECORNER::FLD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DLB), cube.getColour(ECORNER::BLD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RDF), cube.getColour(ECORNER::DRF), cube.getColour(ECORNER::FRD) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::URF), cube.getColour(ECORNER::FRU) }),
-        cube.getCornerInd({ cube.getColour(ECORNER::RUB), cube.getColour(ECORNER::URB), cube.getColour(ECORNER::BRU) }),
+        cube.getPieceInd(EPIECE::ULB),
+        cube.getPieceInd(EPIECE::ULF),
+        cube.getPieceInd(EPIECE::DLF),
+        cube.getPieceInd(EPIECE::DLB),
+        cube.getPieceInd(EPIECE::DRB),
+        cube.getPieceInd(EPIECE::DRF),
+        cube.getPieceInd(EPIECE::URF),
+        cube.getPieceInd(EPIECE::URB),
     };
 
     // finds the positions of a pair and writes it to result

@@ -3,12 +3,12 @@
 
 #include "../Cube.h"
 
-// speeds searches by pruning redundant moves (moves that lead to identical states) from a search tree
+// helper functions for searching the cube or generating moves
 struct SearchUtil
 {
     using EMOVE = Rubiks::EMOVE;
 
-    // retruns whether a move should be considered based on the last move
+    // checks if a sequence of moves is redundant
     bool isRedundant(EMOVE curr, EMOVE last) const;
 };
 

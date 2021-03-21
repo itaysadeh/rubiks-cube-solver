@@ -5,10 +5,6 @@ Engine::Engine()
     init();
 }
 
-Engine::~Engine()
-{
-}
-
 void Engine::run()
 {
     mainLoop();
@@ -155,16 +151,23 @@ void Engine::scramble(size_t movesAmount)
     EMOVE last = EMOVE::NO_MOVE;
     EMOVE curr = EMOVE::NO_MOVE;
 
+    std::cout << "Scrambled with: \n";
+
     while (movesPerformed <= movesAmount)
     {
+
         curr = (EMOVE)generator.getNum();
         if (!searchUtil.isRedundant(curr, last))
         {
             m_cube.performMove(curr);
+            if (movesPerformed == movesAmount / 2) std::cout << "\n";
+            std::cout << m_cube.getMoveName(curr);
+
             last = curr;
             movesPerformed++;
         }
     }
+    std::cout << "\n";
 }
 
 void Engine::pollEvents()
@@ -252,7 +255,7 @@ void Engine::pollEvents()
             {
                 m_cube.resetCube();
             }
-            // solve
+            // solve thistlethwaite
             if (ev.key.keysym.sym == SDLK_F1)
             {
                 std::vector<Rubiks::EMOVE> result = m_thistlethwaite.solve(m_cube);
@@ -262,40 +265,6 @@ void Engine::pollEvents()
                 }
             }
 
-            if (ev.key.keysym.sym == SDLK_F2)
-            {
-                // TEMP
-                std::ifstream input("./a");
-
-                int* arr = new int[352800];
-
-                for (size_t i = 0; i < 352800; ++i)
-                {
-                    arr[i] = 0;
-                }
-
-                if (input)
-                {
-                    size_t value;
-                    for (size_t i = 0; i < 352800; ++i)
-                    {
-                        input >> value;
-                        if (value != 0xFF)
-                        {
-                            arr[value]++;
-                        }
-                    }
-                }
-                else
-                {
-                    std::cout << "Failed to open";
-                }
-
-                for (size_t i = 0; i < 352800; ++i)
-                {
-                    std::cout << i << " -> " << arr[i] << "\n";
-                }
-            }
             break;
         }
     }

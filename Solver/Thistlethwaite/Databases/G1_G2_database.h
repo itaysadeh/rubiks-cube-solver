@@ -7,7 +7,7 @@
 struct G1_G2_Database : public Database
 {
 	G1_G2_Database()
-        // 8C4 * 3^7 = 495 * 2187 = 1082565
+        // 8C4 * 3^7 = 1082565
         : Database(1082565, "Thistlethwaite/G1")
 	{
 	}
@@ -15,7 +15,7 @@ struct G1_G2_Database : public Database
 	uint32_t getIndex(const Rubiks& cube) const override;
 
 private:
-    CombIndexer<4> combIndexer;
+    CombIndexer<4> combIndexer4;
 };
 
 #endif // G1_G2_DATABASE_H

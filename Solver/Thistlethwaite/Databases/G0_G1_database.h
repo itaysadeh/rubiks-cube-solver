@@ -6,7 +6,7 @@
 struct G0_G1_Database : public Database
 {
 	G0_G1_Database()
-        // 2048 = 2^11
+        // 2^11 = 2048
         : Database(2048, "Thistlethwaite/G0")
 	{
 	}

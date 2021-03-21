@@ -13,14 +13,15 @@ class Rubiks
 {
 public: 
     Rubiks();
-    // colour of EFACE::X is ECOLOUR::X
     enum class EFACE   : uint8_t { U, L, F, R, B, D }; // up,    left,   front, right, back, down
     enum class ECOLOUR : uint8_t { W, O, G, R, B, Y }; // white, orange, green, red,   blue, yellow
 
     bool operator==(const Rubiks& lhs);
     Rubiks& operator=(const Rubiks& lhs);
 
-    // indexing pieces with positions
+    // piece indexing
+    enum class EPIECE : uint8_t { UL,  DL,  DR,  UR,  LF,  LB,  RF,  RB,  UF,  DF,  DB,  UB,
+                                  ULB, ULF, DLF, DLB, DRB, DRF, URF, URB };
     enum class EEDGE : uint8_t
     {
         UB = 1 ,    UR = 3 ,    UF = 5 ,    UL = 7,
@@ -39,9 +40,10 @@ public:
         BRU = 32,   BLU = 34,   BLD = 36,   BRD = 38,
         DLF = 40,   DRF = 42,   DRB = 44,   DLB = 46,
     };
+    // move indexing
     enum class EMOVE : uint8_t
     {
-        NO_MOVE, // = NULL, when comparing moves with a root position (no move was made)
+        NO_MOVE,
         U, Up, U2,
         L, Lp, L2,
         F, Fp, F2,
@@ -50,7 +52,7 @@ public:
         D, Dp, D2,
     };
 
-    // indices of ajacent facelets of the face when performing a face rotation
+    // indices of affected facelets in a face rotation (ajacents)
     struct AdjacentIndices
     {
         uint8_t i0, i1, i2, i3, i4, i5, i6, i7;
@@ -59,14 +61,12 @@ public:
     void resetCube();
     bool isSovled() const;
 
-    // face rotations logic
     void rotateFaceCW(EFACE face);
     void rotateFaceCCW(EFACE face);
     void rotateFace180(EFACE face);
     void rotateAdjacents(const AdjacentIndices& adj);
     void rotateAdjacents180(const AdjacentIndices& adj);
 
-    // updates a face (8 colours) from a 64bit integer
     void setFace(EFACE face, uint64_t newFace);
 
     ECOLOUR     getColour(uint8_t index) const;
@@ -85,17 +85,17 @@ public:
     // first index is the facelet on the R/L face
     uint8_t getCornerOrientation(const corner_t& corner) const;
 
-    // get the index of a piece based on it's colours
+    // unique indices of pieces derived from their colours
     uint8_t getEdgeInd(const edge_t& edge) const;
     uint8_t getCornerInd(const corner_t& edge) const;
+    uint8_t getPieceInd(EPIECE piece) const;
 
-    // display the cube state in ASCII
+    // prints cube states in ASCII
     void displayCube() const;
 
     void performMove(EMOVE move);
     void revertMove(EMOVE move);
 
-    // face rotations
     void U();
     void Up();
     void U2();
