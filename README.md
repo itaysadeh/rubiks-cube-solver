@@ -14,7 +14,7 @@ G0 is any scrambled cube (4.33·10^19 states), and G4 is a solved cube (1 state)
 Instead of looking for a solution directly, the algorithm works by moving from one group to the other where each group
 is treated as a "simpler" puzzle for the computer to solve.
 
-##### G0->G1:
+#### G0->G1:
 - Positions: 4.33·10^19
 - Unique states: 2^11 = 2048
 - Legal moves: All moves
@@ -24,7 +24,7 @@ G0->G1 only looks at edge orientations (0 for good, 1 for bad), which gives 2^12
 it's impossible to flip an odd number of edges.
 
 Therefore, there are  2^12 / 2 = 2^11 = 2048 states to store in a database.
-##### G1->G2:
+#### G1->G2:
 - Positions: 2.11·10^16
 - Unique states: 8C4 * 3^7 = 1082565
 - Legal moves: 90-degre Up/Down turns are excluded
@@ -34,7 +34,7 @@ G1->G2 stores 8C4 possible combinations, 8 possible positions for the 4 M-slice 
 Like edge orientations, only 3^7 corner states are actually stored. Only a 3rd of these states are reachable because the total orientation value of the corners is always divisible by 3.
 
 Therefore, there are 8C4 * 3^8 / 3 = 8C4 * 3^7 = 1082565 states to store in a database.
-##### G2->G3:
+#### G2->G3:
 - Positions: 1.95·10^10
 - Unique states: 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800
 - Legal moves: 90-degre Up/Down and Front/Back turns are excluded
@@ -45,7 +45,7 @@ Since the M-slice is already solved in G2, a solved E-slice dictates a solved S-
 An extra factor of 2 is added due to parity (corners): All G3 states have even parity because only 180-degre moves are allowed (even amount of twists), and G2 also stores states with odd parity.
 
 Therefore, there are 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800 states to store in the database.
-##### G3->G4:
+#### G3->G4:
 - Positions: 6.63·10^5
 - Unique states: 4!^2 / 6 * 4!^3 / 2 = 96 * 4!^3 / 2 = 663552
 - Legal moves: Only 180-degre moves are allowed (all 90-degre moves are excluded)
@@ -59,12 +59,19 @@ Edges: only 4!^4 / 2 of the edge states are reachable due to parity.
 Therefore, there are 4!^5 / 12 = 96 * 4!^3 / 2 = 663552 states to store in the database.
 
 ## Building
-Set the working directory to the root project folder or run the executable from there
+Set the working directory to the root project folder or run the executable from there (for loading files), otherwise these files will be regenerated which takes 2-3 minutes.
 
 **Make sure that your compiler supports C++20**
 
 ##### Building on Linux
 1. `sudo apt install cmake libsdl2-dev g++`
+2.
+```
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ##### Building on Windows
 1. Write the path to your SDL2 folder in CMakeLists.txt
