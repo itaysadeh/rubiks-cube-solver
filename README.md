@@ -54,6 +54,7 @@ In G3->G4, finally the cube is solved. In this state the cube is seperated to 3 
 pieces will never leave these orbits. Each slice/tetrad can be permuted in 4! ways which gives 4!^5, but there are some restrictions:
 
 Corners: only 4!^2 / 6 of the corner states are reachable due to parity and disallowed lone 3-cycles (explained [here](https://puzzling.stackexchange.com/questions/5402/what-is-the-meaning-of-a-tetrad-twist-in-thistlethwaites-algorithm)).
+
 Edges: only 4!^4 / 2 of the edge states are reachable due to parity.
 
 Therefore, there are 4!^5 / 12 = 96 * 4!^3 / 2 = 663552 states to store in the database.
