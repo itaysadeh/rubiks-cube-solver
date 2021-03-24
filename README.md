@@ -2,7 +2,7 @@
 
 ## Input
 - To apply moves (perform face twists) use: `U`-up, `L`-left, `F`-front, `R`-right, `B`-back and `D`-down.
-  (for counter-clockwise hold `shift`, for 180-degree (half twist) hold `lctrl`)
+  (for counter-clockwise hold `shift`, for 180-degre (half twist) hold `lctrl`)
 - To scramble the cube use `S`.
 - To solve the cube with [Thistlethwaite's algorithm](https://www.jaapsch.net/puzzles/thistle.htm) use `F1`
 
@@ -21,7 +21,7 @@ is treated as a "simpler" puzzle for the computer to solve.
 
 In G1, the orientation of all 12 edges is solved (good orientation means an edge can be solved without using a 90-degre Up or Down move)
 G0->G1 only looks at edge orientations (0 for good, 1 for bad), which gives 2^12 unique states. Only half of these states is reachable because
-it's impossible to flip an odd number of edges.
+the total edge orientation value is always even (each move affects 0 or 4 edges which gives an overall even value).
 
 Therefore, there are  2^12 / 2 = 2^11 = 2048 states to store in a database.
 #### G1->G2:
@@ -29,9 +29,7 @@ Therefore, there are  2^12 / 2 = 2^11 = 2048 states to store in a database.
 - Unique states: 8C4 * 3^7 = 1082565
 - Legal moves: 90-degre Up/Down turns are excluded
 
-In G2, all the M-slice edges are brought back to their home slice and the orientation of all the corners is solved (their Left or Right facelet is in the Left or Right face)
-G1->G2 stores 8C4 possible combinations, 8 possible positions for the 4 M-slice edges, and 3^8 states for the corners.
-Like edge orientations, only 3^7 corner states are actually stored. Only a 3rd of these states are reachable because the total orientation value of the corners is always divisible by 3.
+In G2, all the M-slice edges are brought back to their home slice and the orientation of all the corners is solved (their Left or Right facelet is in the Left or Right face). There are 3 ways a corner can be oriented which gives 3^8 corner states. Similar to the edges in G0, only 3^8 / 3 of the corner states are actually reachable because the total orientation value of the corners is always divisible by 3. 8C4 for the edges is for 8 positions where the 4 M-slice edges can be (without regard to order)
 
 Therefore, there are 8C4 * 3^8 / 3 = 8C4 * 3^7 = 1082565 states to store in a database.
 #### G2->G3:
@@ -40,7 +38,7 @@ Therefore, there are 8C4 * 3^8 / 3 = 8C4 * 3^7 = 1082565 states to store in a da
 - Legal moves: 90-degre Up/Down and Front/Back turns are excluded
 
 In G3, a cube is solvable using 180-degre moves only. This means that all edges are in their home slice and all corners are in their natural orbits.
-I couldn't find a nice way to rank each corner state. Instead, I split the 2 tetrads and formed 4 pairs (like [Stefan](https://tomas.rokicki.com/cubecontest/stefan1.txt)'s approach).
+I couldn't find a nice way to rank each corner state so I split the 2 tetrads into 4 pairs (like in [Stefan](https://tomas.rokicki.com/cubecontest/stefan1.txt)'s approach).
 Since the M-slice is already solved in G2, a solved E-slice dictates a solved S-slice (vice versa), therefore only 8C4 edge states are stored in the database.
 An extra factor of 2 is added due to parity (corners): All G3 states have even parity because only 180-degre moves are allowed (even amount of twists), and G2 also stores states with odd parity.
 

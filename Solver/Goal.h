@@ -5,7 +5,6 @@
 #include <memory>
 
 #include "../Cube.h"
-#include "Database.h"
 
 // base class for a goal that checks if a goal is reached and provides the moves to reach it
 struct Goal
