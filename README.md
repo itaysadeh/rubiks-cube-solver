@@ -3,8 +3,8 @@
 ## Input
 - To apply moves (perform face twists) use: <kbd>U</kbd>-up, <kbd>L</kbd>-left, <kbd>F</kbd>-front, <kbd>R</kbd>-right, <kbd>B</kbd>-back and <kbd>D</kbd>-down.
   (for counter-clockwise hold <kbd>Shift</kbd>, for 180-degre (half twist) hold <kbd>l-Ctrl</kbd>)
-- To scramble the cube use `S`.
-- To solve the cube with [Thistlethwaite's algorithm](https://www.jaapsch.net/puzzles/thistle.htm) use `F1`
+- To scramble the cube use <kbd>S</kbd>.
+- To solve the cube with [Thistlethwaite's algorithm](https://www.jaapsch.net/puzzles/thistle.htm) use <kbd>F1</kbd>
 
 ## Thistlethwaite's algorithm
 #### Program statistics:
