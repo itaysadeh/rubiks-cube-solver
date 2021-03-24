@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <string>
 
-// renders cube and handles user input
+// renders the cube and handles user input
 class Engine
 {
 public:

@@ -41,6 +41,7 @@ void Engine::renderFacelet(size_t ind)
 
 void Engine::update()
 {
+    // updates current cube state
     for (size_t i = 0; i < 48; ++i)
     {
         m_faceletsColour[i] = (uint8_t)m_cube.getColour(i);

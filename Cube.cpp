@@ -154,6 +154,7 @@ uint8_t Rubiks::getCornerOrientation(const corner_t& corner) const
 
 uint8_t Rubiks::getEdgeInd(const edge_t& edge) const
 { 
+    // unique index based on colour combinations
     uint8_t result = ((1 << (uint8_t)edge[0]) + (1 << (uint8_t)edge[1]));
 
     switch (result)
@@ -190,6 +191,7 @@ uint8_t Rubiks::getEdgeInd(const edge_t& edge) const
 
 uint8_t Rubiks::getCornerInd(const corner_t& corner) const
 {
+    // unique index based on colour combinations
     uint8_t result = ((1 << (uint8_t)corner[0]) + (1 << (uint8_t)corner[1]) + (1 << (uint8_t)corner[2]));
 
     switch (result)
@@ -218,6 +220,8 @@ uint8_t Rubiks::getCornerInd(const corner_t& corner) const
 
 uint8_t Rubiks::getPieceInd(EPIECE piece) const
 {
+    // same as getCorner/EedgeInd, only requires the position of the edge / corner piece
+    // instead of all the colours
     switch (piece)
     {
     case EPIECE::UL:

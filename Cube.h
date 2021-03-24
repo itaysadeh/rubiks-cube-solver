@@ -116,6 +116,7 @@ public:
     void D2();
 
 private:
+    // 6 faces * 8 facelets = 48
     std::array<ECOLOUR, 48> m_cube;
 };
 
