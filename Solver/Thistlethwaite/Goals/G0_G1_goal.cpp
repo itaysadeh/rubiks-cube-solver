@@ -36,7 +36,6 @@ bool G0_G1_Goal::contented(const Rubiks& cube) const
     ECOLOUR E_DL = cube.getColour(EEDGE::DL);
 
     // same logic from Rubiks::getEdgeOrientation
-
     return 
         ((E_FR == ECOLOUR::B || E_FR == ECOLOUR::G) || ((E_FR == ECOLOUR::W || E_FR == ECOLOUR::Y) && (E_RF == ECOLOUR::O || E_RF == ECOLOUR::R))) &&
         ((E_FL == ECOLOUR::B || E_FL == ECOLOUR::G) || ((E_FL == ECOLOUR::W || E_FL == ECOLOUR::Y) && (E_LF == ECOLOUR::O || E_LF == ECOLOUR::R))) &&
