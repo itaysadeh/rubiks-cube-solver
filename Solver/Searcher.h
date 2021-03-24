@@ -14,7 +14,6 @@
 struct Algorithm
 {
     using EMOVE = Rubiks::EMOVE;
-
     virtual std::vector<Rubiks::EMOVE> search(const Rubiks& cube, const Goal& goal, const Database& database) const = 0;
 protected:
     SearchUtil searchUtil;

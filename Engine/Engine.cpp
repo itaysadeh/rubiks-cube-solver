@@ -259,7 +259,7 @@ void Engine::pollEvents()
             if (ev.key.keysym.sym == SDLK_F1)
             {
                 std::vector<Rubiks::EMOVE> result = m_thistlethwaite.solve(m_cube);
-                for (Rubiks::EMOVE move : result)
+                for (const auto& move : result)
                 {
                     m_cube.performMove(move);
                 }

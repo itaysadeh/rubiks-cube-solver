@@ -20,7 +20,7 @@ Thistlethwaite::Thistlethwaite()
         &m_G3G4
     };
     
-    for (Group* group : m_groups)
+    for (auto& group : m_groups)
     {
         if (group->useDatabase)
         {
@@ -38,7 +38,7 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
 
     std::cout << "Thistlethwaite's algorithm:\n";
 
-    for (Group* group : m_groups)
+    for (const auto& group : m_groups)
     {
         timer.set();
 
@@ -70,7 +70,7 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
     std::cout << "\n";
     std::cout << "Solved in: " << (int)combinedSolveTime / 1000 << " seconds " << "(" << (float)combinedSolveTime << "ms).\n";
     std::cout << "Moves(" << result.size() << "): ";
-    for (const EMOVE move : result)
+    for (const auto& move : result)
     {
         std::cout << cube.getMoveName(move);
     }

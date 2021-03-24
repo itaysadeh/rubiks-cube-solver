@@ -32,9 +32,9 @@ uint32_t G3_G4_Database::getIndex(const Rubiks& cube) const
     };
 
     // sets the indices of all edge and corner pieces to a value between 0 and 3
-    for (uint8_t& c : cTetradPosPerm) c >>= 1;
-    for (uint8_t& e : ePosPermE) e &= 3;
-    for (uint8_t& e : ePosPermM) e &= 3;
+    for (auto& c : cTetradPosPerm) c >>= 1;
+    for (auto& e : ePosPermE) e &= 3;
+    for (auto& e : ePosPermM) e &= 3;
     // indices of the S-slice edges are 0..3 by default
 
     // rank of corner tetrads and edge slices

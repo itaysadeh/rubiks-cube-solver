@@ -39,7 +39,7 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
         setPairPos(rootPairs[i], cPairPerm[i]);
     }
     // checks if the pairs are formed
-    for (const pair_t& pair : cPairPerm)
+    for (auto& pair : cPairPerm)
     {
         if ((pair[0] & 5) != (pair[1] & 5))
         {

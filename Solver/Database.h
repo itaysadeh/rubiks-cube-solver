@@ -46,10 +46,10 @@ public:
     
 private:
     std::vector<uint8_t> m_data;
-    std::string m_filePath;
-    const std::string m_dataPath = "./Data/";
     size_t m_currentCapacity = 0;
     size_t m_size;
+    std::string m_filePath;
+    const std::string m_dataPath = "./Data/";
 };
 
 #endif // DATABASE_H

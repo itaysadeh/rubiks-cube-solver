@@ -25,6 +25,8 @@ add_executable(RubiksCubeSolver ${SRC})
 set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD 20)
 set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall")
+
 # Defaults to Release
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
