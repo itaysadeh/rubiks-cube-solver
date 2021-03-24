@@ -46,7 +46,7 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
         // prune a branch if a state has been visited at an earlier depth
         if (depth <= database[index])
         {
-            for (const Rubiks::EMOVE move : goal.legalMoves)
+            for (const auto move : goal.legalMoves)
             {
                 if (!searchUtil.isRedundant(move, lastMove))
                 {

@@ -3,8 +3,7 @@
 uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
 {
     using EPIECE = Rubiks::EPIECE;
-
-    using pair_t  = std::array<uint8_t, 2>;
+    using pair_t = std::array<uint8_t, 2>;
 
     // stores which edge is currently occupying which position on the E- and S-slices (M-slice was solved in G1)
     std::array<uint8_t, 8> ePosPerm = {
