@@ -1,8 +1,8 @@
 # rubiks-cube-solver
 
 ## Input
-- To apply moves (perform face twists) use: `U`-up, `L`-left, `F`-front, `R`-right, `B`-back and `D`-down.
-  (for counter-clockwise hold `shift`, for 180-degre (half twist) hold `lctrl`)
+- To apply moves (perform face twists) use: <kbd>U</kbd>-up, <kbd>L</kbd>-left, <kbd>F</kbd>-front, <kbd>R</kbd>-right, <kbd>B</kbd>-back and <kbd>D</kbd>-down.
+  (for counter-clockwise hold <kbd>Shift</kbd>, for 180-degre (half twist) hold <kbd>l-Ctrl</kbd>)
 - To scramble the cube use `S`.
 - To solve the cube with [Thistlethwaite's algorithm](https://www.jaapsch.net/puzzles/thistle.htm) use `F1`
 
