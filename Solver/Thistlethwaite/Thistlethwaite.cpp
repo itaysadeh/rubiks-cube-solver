@@ -68,7 +68,7 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
 
     // overall solve statistics
     std::cout << "\n";
-    std::cout << "Solved in: " << (int)combinedSolveTime / 1000 << " seconds " << "(" << (float)combinedSolveTime << "ms).\n";
+    std::cout << "Solved in: " << (int)combinedSolveTime / 1000 << " seconds " << "(" << combinedSolveTime << "ms).\n";
     std::cout << "Moves(" << result.size() << "): ";
     for (const auto& move : result)
     {
