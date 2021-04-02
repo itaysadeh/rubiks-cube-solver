@@ -13,8 +13,8 @@ class Rubiks
 {
 public: 
     Rubiks();
-    enum class EFACE   : uint8_t { U, L, F, R, B, D }; // up,    left,   front, right, back, down
-    enum class ECOLOUR : uint8_t { W, O, G, R, B, Y }; // white, orange, green, red,   blue, yellow
+    enum class EFACE   : uint8_t { U, L, F, R, B, D };
+    enum class ECOLOUR : uint8_t { W, O, G, R, B, Y };
 
     bool operator==(const Rubiks& lhs);
     Rubiks& operator=(const Rubiks& lhs);
@@ -116,7 +116,6 @@ public:
     void D2();
 
 private:
-    // 6 faces * 8 facelets = 48
     std::array<ECOLOUR, 48> m_cube;
 };
 
