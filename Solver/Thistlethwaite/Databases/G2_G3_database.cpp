@@ -74,7 +74,7 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
         }
     }
 
-    int pairRank[3];
+    uint8_t pairRank[3];
     bool seen[8]{};
 
     for (uint8_t i = 0; i < 3; ++i)
