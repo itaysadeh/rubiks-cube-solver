@@ -3,21 +3,21 @@ cmake_minimum_required(VERSION 3.5)
 project(RubiksCubeSolver)
 
 set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
-         "${CMAKE_SOURCE_DIR}/Cube.cpp"
-         "${CMAKE_SOURCE_DIR}/Engine/Engine.cpp"
-         "${CMAKE_SOURCE_DIR}/Util/DatabaseGenerator.cpp"
-         "${CMAKE_SOURCE_DIR}/Util/SearchUtil.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Searcher.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Thistlethwaite.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Databases/G0_G1_database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Databases/G1_G2_database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Databases/G2_G3_database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Databases/G3_G4_database.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Goals/G0_G1_goal.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Goals/G1_G2_goal.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Goals/G2_G3_goal.cpp"
-         "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Goals/G3_G4_goal.cpp")
+        "${CMAKE_SOURCE_DIR}/Cube.cpp"
+        "${CMAKE_SOURCE_DIR}/Engine/Engine.cpp"
+        "${CMAKE_SOURCE_DIR}/Util/DatabaseGenerator.cpp"
+        "${CMAKE_SOURCE_DIR}/Util/SearchUtil.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Database.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Searcher.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Thistlethwaite.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Databases/G0_G1_database.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Databases/G1_G2_database.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Databases/G2_G3_database.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Databases/G3_G4_database.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Goals/G0_G1_goal.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Goals/G1_G2_goal.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Goals/G2_G3_goal.cpp"
+        "${CMAKE_SOURCE_DIR}/Solver/Thistlethwaite/Goals/G3_G4_goal.cpp")
 
 add_executable(RubiksCubeSolver ${SRC})
 
