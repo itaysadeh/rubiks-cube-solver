@@ -38,7 +38,8 @@ uint32_t G3_G4_Database::getIndex(const Rubiks& cube) const
     for (auto& e : ePosPermM) e &= 3;
     // indices of the S-slice edges are 0..3 by default
 
-    // rank of corner tetrads and edge slices
+    // for every permutation of the first tetrad the second tetrad will start 
+    // with either 0/1/2/3 which dictates the "rank" of the permutation
     uint8_t cTetradRank = cube.getPieceInd(EPIECE::ULF);
     uint8_t eSliceRankS = permIndexer4p2.getInd(ePosPermS);
 
