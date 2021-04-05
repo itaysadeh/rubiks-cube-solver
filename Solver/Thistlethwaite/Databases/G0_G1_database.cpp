@@ -6,7 +6,7 @@ uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
 
     // stores the orientation of all edges (by position, regardless of which edge is where)
     // the orientation of 11 edges dictates the orientation of the 12th edge (even orientation values)
-    std::array<uint8_t, 11> eOrientationPerm = {
+    std::array<uint8_t, 11> E_orientationPerm = {
         cube.getEdgeOrientation(cube.getEdge(EPIECE::RB)),
         cube.getEdgeOrientation(cube.getEdge(EPIECE::RF)),
         cube.getEdgeOrientation(cube.getEdge(EPIECE::UR)),
@@ -24,15 +24,15 @@ uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
 
     // 0..2^11 - 1 = 0..2047
     return
-       eOrientationPerm[0]  +
-       eOrientationPerm[1]  * 2 +
-       eOrientationPerm[2]  * 4 +
-       eOrientationPerm[3]  * 8 +
-       eOrientationPerm[4]  * 16 +
-       eOrientationPerm[5]  * 32 +
-       eOrientationPerm[6]  * 64 +
-       eOrientationPerm[7]  * 128 +
-       eOrientationPerm[8]  * 256 +
-       eOrientationPerm[9]  * 512 +
-       eOrientationPerm[10] * 1024;
+       E_orientationPerm[0]  +
+       E_orientationPerm[1]  * 2 +
+       E_orientationPerm[2]  * 4 +
+       E_orientationPerm[3]  * 8 +
+       E_orientationPerm[4]  * 16 +
+       E_orientationPerm[5]  * 32 +
+       E_orientationPerm[6]  * 64 +
+       E_orientationPerm[7]  * 128 +
+       E_orientationPerm[8]  * 256 +
+       E_orientationPerm[9]  * 512 +
+       E_orientationPerm[10] * 1024;
 }
