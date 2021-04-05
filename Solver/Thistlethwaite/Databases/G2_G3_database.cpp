@@ -62,15 +62,15 @@ uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
     }
 
     uint32_t E_ind = combIndexer4.getInd(E_posComb); // edge
-    uint32_t C_ind = 0;                             // corner
-    uint32_t P_ind = 0;                             // parity (0 = even, 1 = odd)
+    uint32_t C_ind = 0;                              // corner
+    uint32_t P_ind = 0;                              // parity (0 = even, 1 = odd)
 
     // checks if parity is even or odd
     for (uint8_t i = 0; i < 8; ++i)
     {
         for (uint8_t j = i + 1; j < 8; ++j)
         {
-            pInd ^= C_posPerm[i] < C_posPerm[j];
+            P_ind ^= C_posPerm[i] < C_posPerm[j];
         }
     }
 

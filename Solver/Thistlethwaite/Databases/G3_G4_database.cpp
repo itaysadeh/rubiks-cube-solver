@@ -45,10 +45,10 @@ uint32_t G3_G4_Database::getIndex(const Rubiks& cube) const
     // for every permutation of the first tetrad the second tetrad will start 
     // with either 0/1/2/3 which dictates the "rank" of the permutation
     uint8_t C_tetradRank = cube.getPieceInd(EPIECE::ULF);
-    uint8_t E_sliceRankS = permIndexer4p2.getInd(ePosPermS);
+    uint8_t E_sliceRankS = permIndexer4p2.getInd(E_posPermS);
 
     // (0..4! - 1) * 4 + 0..3 = 0..96
-    uint32_t C_ind = permIndexer4.getInd(cTetradPosPerm) * 4 + (cTetradRank >> 1);
+    uint32_t C_ind = permIndexer4.getInd(C_tetradPosPerm) * 4 + (C_tetradRank >> 1);
     // (0..4! - 1) * (4!^2 / 2) + (0..4! - 1) * (4! / 2) + (0..4! / 2) = 0..6911
     uint32_t E_ind = permIndexer4.getInd(E_posPermM) * 288 + permIndexer4.getInd(E_posPermE) * 12 + E_sliceRankS;
     // 0..9611 * 96 + 0..95 = 0..663551
