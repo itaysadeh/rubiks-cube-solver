@@ -22,14 +22,14 @@ struct Group
     // loads the database or generates it if a file is not provided
     void loadDatabase()
     {
-        std::cout << "Loading database for " << name << "...\n";
+        std::cout << "Loading database for " << name << "..." << std::endl;
         if (database->load())
         {
-            std::cout << "Loaded database for " << name << " successfully.\n";
+            std::cout << "Loaded database for " << name << " successfully." << std::endl;
         }
         else
         {
-            std::cout << "Failed to load database for " << name << ". generating:\n";
+            std::cout << "Failed to load database for " << name << ". generating:" << std::endl;
             databaseGen.generate(*goal, *database);
         }
     }

@@ -28,9 +28,8 @@ public:
     // sets all values to 0xFF and resets current capacity
     void reset();
 
-    uint8_t getDistance(uint32_t index) const;
-    uint8_t getDistance(const Rubiks& cube) const;
     uint8_t operator[](uint32_t index) const;
+    uint8_t operator[](const Rubiks& cube) const;
 
     bool set(uint32_t index, uint8_t value);
     bool set(const Rubiks& cube, uint8_t value);

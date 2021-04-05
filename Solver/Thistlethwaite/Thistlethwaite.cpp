@@ -36,13 +36,13 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
     std::vector<EMOVE> result;
     double             combinedSolveTime = 0;
 
-    std::cout << "Thistlethwaite's algorithm:\n";
+    std::cout << "Thistlethwaite's algorithm:" << std::endl;
 
     for (const auto& group : m_groups)
     {
         timer.set();
 
-        std::cout << group->name << " :\n";
+        std::cout << group->name << ": ";
 
         // partial group solution
         std::vector<EMOVE> groupResult;
@@ -61,20 +61,20 @@ std::vector<Rubiks::EMOVE> Thistlethwaite::solve(const Rubiks& cube) const
         // group solve statistics
         double groupSolveTime = timer.get();
 
-        std::cout << "Elapsed time: (" << groupSolveTime << "ms), ";
-        std::cout << "Moves: (" << groupResult.size() << ")\n";
+        std::cout << "Elapsed time: " << groupSolveTime << "ms, ";
+        std::cout << "Moves: " << groupResult.size() << std::endl;
         combinedSolveTime += groupSolveTime;
     }
 
     // overall solve statistics
-    std::cout << "\n";
-    std::cout << "Solved in: " << (int)combinedSolveTime / 1000 << " seconds " << "(" << combinedSolveTime << "ms).\n";
+    std::cout << std::endl;
+    std::cout << "Solved in: " << (int)combinedSolveTime / 1000 << " seconds " << "(" << combinedSolveTime << "ms)." << std::endl;
     std::cout << "Moves(" << result.size() << "): ";
     for (const auto& move : result)
     {
         std::cout << cube.getMoveName(move);
     }
-    std::cout << "\n";
+    std::cout << std::endl;
 
     return result;
 }

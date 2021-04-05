@@ -90,6 +90,9 @@ public:
     uint8_t getCornerInd(const corner_t& edge) const;
     uint8_t getPieceInd(EPIECE piece) const;
 
+    corner_t getCorner(EPIECE piece) const;
+    edge_t getEdge(EPIECE piece) const;
+
     // prints cube states in ASCII
     void displayCube() const;
 

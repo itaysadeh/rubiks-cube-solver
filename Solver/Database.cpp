@@ -13,7 +13,7 @@ bool Database::load()
             m_data[i] = (uint8_t)value;
             if (m_data[i] == 0xFF)
             {
-                std::cout << "Database doesn't match " << m_filePath << ". Failed to load.\n";
+                std::cout << "Database doesn't match " << m_filePath << ". Failed to load." << std::endl;
                 reset();
                 return false;
             }
@@ -22,7 +22,7 @@ bool Database::load()
     }
     else
     {
-        std::cout << "Failed to open database file \"" << m_filePath << "\".\n";
+        std::cout << "Failed to open database file \"" << m_filePath << "\"." << std::endl;
         return false;
     }
 
@@ -37,7 +37,7 @@ void Database::write() const
 
     for (size_t i = 0; i < m_size; ++i)
     {
-        outfile << (size_t)m_data[i] << "\n";
+        outfile << (size_t)m_data[i] << std::endl;
     }
     outfile.close();
 }
@@ -96,17 +96,12 @@ std::size_t Database::size() const
     return m_size;
 }
 
-uint8_t Database::getDistance(const Rubiks& cube) const
-{
-    return m_data[getIndex(cube)];
-}
-
-uint8_t Database::getDistance(uint32_t index) const
-{
-    return m_data[index];
-}
-
 uint8_t Database::operator [](uint32_t index) const
 {
     return m_data[index];
+}
+
+uint8_t Database::operator [](const Rubiks& cube) const
+{
+    return m_data[getIndex(cube)];
 }

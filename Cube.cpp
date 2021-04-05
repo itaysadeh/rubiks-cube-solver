@@ -269,6 +269,68 @@ uint8_t Rubiks::getPieceInd(EPIECE piece) const
     }
 }
 
+Rubiks::edge_t Rubiks::getEdge(EPIECE piece) const
+{
+    // same as getCorner/EedgeInd, only requires the position of the edge / corner piece
+    // instead of all the colours
+    switch (piece)
+    {
+    case EPIECE::UL:
+        return { getColour(EEDGE::LU), getColour(EEDGE::UL) };
+    case EPIECE::DL:
+        return { getColour(EEDGE::LD), getColour(EEDGE::DL) };
+    case EPIECE::DR:
+        return { getColour(EEDGE::RD), getColour(EEDGE::DR) };
+    case EPIECE::UR:
+        return { getColour(EEDGE::RU), getColour(EEDGE::UR) };
+    case EPIECE::LF:
+        return { getColour(EEDGE::LF), getColour(EEDGE::FL) };
+    case EPIECE::LB:
+        return { getColour(EEDGE::LB), getColour(EEDGE::BL) };
+    case EPIECE::RF:
+        return { getColour(EEDGE::RF), getColour(EEDGE::FR) };
+    case EPIECE::RB:
+        return { getColour(EEDGE::RB), getColour(EEDGE::BR) };
+    case EPIECE::UF:
+        return { getColour(EEDGE::UF), getColour(EEDGE::FU) };
+    case EPIECE::DF:
+        return { getColour(EEDGE::DF), getColour(EEDGE::FD) };
+    case EPIECE::DB:
+        return { getColour(EEDGE::DB), getColour(EEDGE::BD) };
+    case EPIECE::UB:
+        return { getColour(EEDGE::UB), getColour(EEDGE::BU) };
+    default:
+        throw std::logic_error("Rubiks::getPieceInd invalid enum value" + (int)piece);
+    }
+}
+
+Rubiks::corner_t Rubiks::getCorner(EPIECE piece) const
+{
+    // same as getCorner/EedgeInd, only requires the position of the edge / corner piece
+    // instead of all the colours
+    switch (piece)
+    {
+    case EPIECE::ULB:
+        return { getColour(ECORNER::LUB), getColour(ECORNER::ULB), getColour(ECORNER::BLU) };
+    case EPIECE::ULF:
+        return { getColour(ECORNER::LUF), getColour(ECORNER::ULF), getColour(ECORNER::FLU) };
+    case EPIECE::DLF:
+        return { getColour(ECORNER::LDF), getColour(ECORNER::DLF), getColour(ECORNER::FLD) };
+    case EPIECE::DLB:
+        return { getColour(ECORNER::LDB), getColour(ECORNER::DLB), getColour(ECORNER::BLD) };
+    case EPIECE::DRB:
+        return { getColour(ECORNER::RDB), getColour(ECORNER::DRB), getColour(ECORNER::BRD) };
+    case EPIECE::DRF:
+        return { getColour(ECORNER::RDF), getColour(ECORNER::DRF), getColour(ECORNER::FRD) };
+    case EPIECE::URF:
+        return { getColour(ECORNER::RUF), getColour(ECORNER::URF), getColour(ECORNER::FRU) };
+    case EPIECE::URB:
+        return { getColour(ECORNER::RUB), getColour(ECORNER::URB), getColour(ECORNER::BRU) };
+    default:
+        throw std::logic_error("Rubiks::getPieceInd invalid enum value" + (int)piece);
+    }
+}
+
 std::string Rubiks::getColourName(ECOLOUR colour) const
 {
     switch (colour)

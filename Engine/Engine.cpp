@@ -152,7 +152,7 @@ void Engine::scramble(size_t movesAmount)
     EMOVE last = EMOVE::NO_MOVE;
     EMOVE curr = EMOVE::NO_MOVE;
 
-    std::cout << "Scrambled with: \n";
+    std::cout << "Scrambled with:" << std::endl;
 
     while (movesPerformed <= movesAmount)
     {
@@ -161,14 +161,14 @@ void Engine::scramble(size_t movesAmount)
         if (!searchUtil.isRedundant(curr, last))
         {
             m_cube.performMove(curr);
-            if (movesPerformed == movesAmount / 2) std::cout << "\n";
+            if (movesPerformed == movesAmount / 2) std::cout << std::endl;
             std::cout << m_cube.getMoveName(curr);
 
             last = curr;
             movesPerformed++;
         }
     }
-    std::cout << "\n";
+    std::cout << std::endl;
 }
 
 void Engine::pollEvents()

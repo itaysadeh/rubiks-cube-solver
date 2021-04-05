@@ -16,13 +16,13 @@ void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rub
             break;
         }
 
-        std::cout << "visited states: " << database.currentSize() << " / " << database.size() << "\n";
+        std::cout << "visited states: " << database.currentSize() << " / " << database.size() << std::endl;
         depth++;
     }
 
     // all states visited, write the result to a file
     database.write();
-    std::cout << "Finished generating (" << timer.get() / 1000 << " seconds)" << "\n";
+    std::cout << "Finished generating (" << timer.get() / 1000 << " seconds)" << std::endl;
 }
 
 bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth) const

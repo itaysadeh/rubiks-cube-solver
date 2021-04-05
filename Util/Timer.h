@@ -38,7 +38,7 @@ public:
 
 		auto duration = end - start;
 		double ms = duration * 0.001;
-		std::cout << message << "(" << ms << "ms)." << "\n";
+        std::cout << message << "(" << ms << "ms)." << std::endl;
 
 		return ms;
 	}

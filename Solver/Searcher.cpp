@@ -8,7 +8,7 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
     };
 
     bool    solved     = false;
-    uint8_t rootScore  = database.getDistance(cube);
+    uint8_t rootScore  = database[cube];
 
     pNode_t rootNode   = std::make_shared<Node_Astar>(Node_Astar{ cube, nullptr, EMOVE::NO_MOVE, rootScore });
     pNode_t currNode   = nullptr;
@@ -31,7 +31,7 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
             break;
         }
         // generate child nodes
-        for (const EMOVE move : goal.legalMoves)
+        for (const auto& move : goal.legalMoves)
         {
             if (!searchUtil.isRedundant(move, currNode->move))
             {
@@ -39,7 +39,7 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
                 copy.performMove(move);
 
                 uint32_t newIndex = database.getIndex(copy);
-                uint8_t  newScore = database.getDistance(newIndex);
+                uint8_t  newScore = database[newIndex];
 
                 // don't consider nodes that move away from a solution
                 if (newScore <= currNode->score)
@@ -98,7 +98,7 @@ bool IDDFS::IDDFS_searcher(Node_IDDFS node, const Goal& goal, uint8_t maxDepth, 
         return goal.contented(node.cube);
     }
 
-    for (const EMOVE move : goal.legalMoves)
+    for (const auto& move : goal.legalMoves)
     {
         if (!searchUtil.isRedundant(move, node.move))
         {

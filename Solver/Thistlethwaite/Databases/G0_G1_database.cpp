@@ -2,22 +2,22 @@
 
 uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
 {
-    using EEDGE = Rubiks::EEDGE;
+    using EPIECE = Rubiks::EPIECE;
 
     // stores the orientation of all edges (by position, regardless of which edge is where)
     // the orientation of 11 edges dictates the orientation of the 12th edge (even orientation values)
     std::array<uint8_t, 11> eOrientationPerm = {
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::RB), cube.getColour(EEDGE::BR) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::RF), cube.getColour(EEDGE::FR) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::RU), cube.getColour(EEDGE::UR) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::RD), cube.getColour(EEDGE::DR) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::LB), cube.getColour(EEDGE::BL) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::LF), cube.getColour(EEDGE::FL) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::LU), cube.getColour(EEDGE::UL) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::LD), cube.getColour(EEDGE::DL) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::UB), cube.getColour(EEDGE::BU) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::UF), cube.getColour(EEDGE::FU) }),
-        cube.getEdgeOrientation({ cube.getColour(EEDGE::DB), cube.getColour(EEDGE::BD) }),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::RB)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::RF)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::UR)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::DR)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::LB)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::LF)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::UL)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::DL)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::UB)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::UF)),
+        cube.getEdgeOrientation(cube.getEdge(EPIECE::DB)),
     };
 
     // converts to decimal

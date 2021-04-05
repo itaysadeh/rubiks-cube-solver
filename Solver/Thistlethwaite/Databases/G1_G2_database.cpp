@@ -3,18 +3,16 @@
 uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
 {
     using EPIECE  = Rubiks::EPIECE;
-    using ECORNER = Rubiks::ECORNER;
 
     // stores the orientation of all corners (by position, regardless of which corner is where)
     std::array<uint8_t, 7> cOrientationPerm = {
-        //  face:                 {               L/R                          U/D                            F/B            }
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LUB), cube.getColour(ECORNER::ULB), cube.getColour(ECORNER::BLU) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LUF), cube.getColour(ECORNER::ULF), cube.getColour(ECORNER::FLU) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LDF), cube.getColour(ECORNER::DLF), cube.getColour(ECORNER::FLD) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::LDB), cube.getColour(ECORNER::DLB), cube.getColour(ECORNER::BLD) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::RUF), cube.getColour(ECORNER::URF), cube.getColour(ECORNER::FRU) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::RUB), cube.getColour(ECORNER::URB), cube.getColour(ECORNER::BRU) }),
-        cube.getCornerOrientation({ cube.getColour(ECORNER::RDB), cube.getColour(ECORNER::DRB), cube.getColour(ECORNER::BRD) })
+        cube.getCornerOrientation(cube.getCorner(EPIECE::ULB)),
+        cube.getCornerOrientation(cube.getCorner(EPIECE::ULF)),
+        cube.getCornerOrientation(cube.getCorner(EPIECE::DLF)),
+        cube.getCornerOrientation(cube.getCorner(EPIECE::DLB)),
+        cube.getCornerOrientation(cube.getCorner(EPIECE::URF)),
+        cube.getCornerOrientation(cube.getCorner(EPIECE::URB)),
+        cube.getCornerOrientation(cube.getCorner(EPIECE::DRB))
     };
 
     // stores the edges that are currently occupying each position
