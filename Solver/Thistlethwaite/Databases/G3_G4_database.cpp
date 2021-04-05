@@ -5,27 +5,31 @@ uint32_t G3_G4_Database::getIndex(const Rubiks& cube) const
     using EPIECE = Rubiks::EPIECE;
 
     // stores which edge is currently occupying each position in it's slice
-    std::array<uint8_t, 4> ePosPermE = {
+    
+    // E-slice
+    std::array<uint8_t, 4> E_posPermE = {
         cube.getPieceInd(EPIECE::LF),
         cube.getPieceInd(EPIECE::LB),
         cube.getPieceInd(EPIECE::RF),
         cube.getPieceInd(EPIECE::RB),
     };
-    std::array<uint8_t, 4> ePosPermM = {
+    // M-slice
+    std::array<uint8_t, 4> E_posPermM = {
         cube.getPieceInd(EPIECE::UF),
         cube.getPieceInd(EPIECE::DF),
         cube.getPieceInd(EPIECE::DB),
         cube.getPieceInd(EPIECE::UB),
     };
+    // S-slice
     // only half the pieces in the S-slice are stored, the positions of the first 10
     // edges dictate the positions of the last 2 (they have to have even parity)
-    std::array<uint8_t, 2> ePosPermS = {
+    std::array<uint8_t, 2> E_posPermS = {
         cube.getPieceInd(EPIECE::UL),
         cube.getPieceInd(EPIECE::DL),
     };
 
     // stores which corner is currently occupying which position in it's tetrad
-    std::array<uint8_t, 4> cTetradPosPerm = {
+    std::array<uint8_t, 4> C_tetradPosPerm = {
         cube.getPieceInd(EPIECE::ULB),
         cube.getPieceInd(EPIECE::DLF),
         cube.getPieceInd(EPIECE::DRB),
@@ -33,20 +37,20 @@ uint32_t G3_G4_Database::getIndex(const Rubiks& cube) const
     };
 
     // sets the indices of all edge and corner pieces to a value between 0 and 3
-    for (auto& c : cTetradPosPerm) c >>= 1;
-    for (auto& e : ePosPermE) e &= 3;
-    for (auto& e : ePosPermM) e &= 3;
+    for (auto& c : C_tetradPosPerm) c >>= 1;
+    for (auto& e : E_posPermE) e &= 3;
+    for (auto& e : E_posPermM) e &= 3;
     // indices of the S-slice edges are 0..3 by default
 
     // for every permutation of the first tetrad the second tetrad will start 
     // with either 0/1/2/3 which dictates the "rank" of the permutation
-    uint8_t cTetradRank = cube.getPieceInd(EPIECE::ULF);
-    uint8_t eSliceRankS = permIndexer4p2.getInd(ePosPermS);
+    uint8_t C_tetradRank = cube.getPieceInd(EPIECE::ULF);
+    uint8_t E_sliceRankS = permIndexer4p2.getInd(ePosPermS);
 
     // (0..4! - 1) * 4 + 0..3 = 0..96
-    uint32_t cInd = permIndexer4.getInd(cTetradPosPerm) * 4 + (cTetradRank >> 1);
+    uint32_t C_ind = permIndexer4.getInd(cTetradPosPerm) * 4 + (cTetradRank >> 1);
     // (0..4! - 1) * (4!^2 / 2) + (0..4! - 1) * (4! / 2) + (0..4! / 2) = 0..6911
-    uint32_t eInd = permIndexer4.getInd(ePosPermM) * 288 + permIndexer4.getInd(ePosPermE) * 12 + eSliceRankS;
+    uint32_t E_ind = permIndexer4.getInd(E_posPermM) * 288 + permIndexer4.getInd(E_posPermE) * 12 + E_sliceRankS;
     // 0..9611 * 96 + 0..95 = 0..663551
-    return eInd * 96 + cInd;
+    return E_ind * 96 + C_ind;
 }
