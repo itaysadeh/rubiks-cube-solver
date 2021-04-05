@@ -5,7 +5,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     using EPIECE  = Rubiks::EPIECE;
 
     // stores the orientation of all corners (by position, regardless of which corner is where)
-    std::array<uint8_t, 7> cOrientationPerm = {
+    std::array<uint8_t, 7> C_orientationPerm = {
         cube.getCornerOrientation(cube.getCorner(EPIECE::ULB)),
         cube.getCornerOrientation(cube.getCorner(EPIECE::ULF)),
         cube.getCornerOrientation(cube.getCorner(EPIECE::DLF)),
@@ -17,7 +17,7 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
 
     // stores the edges that are currently occupying each position
     // the first 4 positions are in the M-slice in order to make a solved state the lowest combination: 0,1,2,3
-    std::array<uint8_t, 12> ePosPerm = {
+    std::array<uint8_t, 12> E_posPerm = {
         cube.getPieceInd(EPIECE::UB),
         cube.getPieceInd(EPIECE::UF),
         cube.getPieceInd(EPIECE::DB),
@@ -33,31 +33,31 @@ uint32_t G1_G2_Database::getIndex(const Rubiks& cube) const
     };
 
     // stores the positions of the 4 edges that need to be brought back to the M-slice
-    std::array<uint8_t, 4> ePosComb;
+    std::array<uint8_t, 4> E_posComb;
 
     for (uint8_t i = 0, e = 0; i < 12 && e < 4; ++i)
     {
         // indices of the M-slice edges are 8, 9, 10, 11
-        if (ePosPerm[i] == 8  || ePosPerm[i] == 9 ||
-            ePosPerm[i] == 10 || ePosPerm[i] == 11)
+        if (E_posPerm[i] == 8  || E_posPerm[i] == 9 ||
+            E_posPerm[i] == 10 || E_posPerm[i] == 11)
         {
-            ePosComb[e++] = i + 1;
+            E_posComb[e++] = i + 1;
         }
     }
 
-    uint32_t eInd = combIndexer4.getInd(ePosComb); // edge
-    uint32_t cInd = 0;                             // corner
+    uint32_t E_ind = combIndexer4.getInd(E_posComb); // edge
+    uint32_t C_ind = 0;                             // corner
 
     // treats corner orientations as ternary numbers and converts it to decimal
-    cInd +=
-        cOrientationPerm[0] +
-        cOrientationPerm[1] * 3 +
-        cOrientationPerm[2] * 9 +
-        cOrientationPerm[3] * 27 +
-        cOrientationPerm[4] * 81 +
-        cOrientationPerm[5] * 243 +
-        cOrientationPerm[6] * 729;
+    C_ind +=
+        C_orientationPerm[0] +
+        C_orientationPerm[1] * 3 +
+        C_orientationPerm[2] * 9 +
+        C_orientationPerm[3] * 27 +
+        C_orientationPerm[4] * 81 +
+        C_orientationPerm[5] * 243 +
+        C_orientationPerm[6] * 729;
 
     // (0..3^7 - 1) * 12C4 + (0..12C4 - 1) = 0..1082565
-    return cInd * 495 + eInd;
+    return C_ind * 495 + E_ind;
 }
