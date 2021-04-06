@@ -31,6 +31,7 @@ public:
     uint8_t operator[](uint32_t index) const;
     uint8_t operator[](const Rubiks& cube) const;
 
+    // updates value in a given index
     bool set(uint32_t index, uint8_t value);
     bool set(const Rubiks& cube, uint8_t value);
 

@@ -21,16 +21,8 @@ set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
 
 add_executable(RubiksCubeSolver ${SRC})
 
-# C++20 required for rotl/rotr
-set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD 20)
-set_property(TARGET RubiksCubeSolver PROPERTY CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall")
-
-# Defaults to Release
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -std=c++20")
+set(CMAKE_BUILD_TYPE Release)
 
 # SDL2
 #    Linux
