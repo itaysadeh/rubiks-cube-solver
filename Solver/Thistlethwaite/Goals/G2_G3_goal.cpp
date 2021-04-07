@@ -9,7 +9,7 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
     using pair_t  = std::array<uint8_t, 2>;
 
     // stores which corner is currently occupying which position
-    std::array<uint8_t, 8> cPosPerm = {
+    std::array<uint8_t, 8> C_posPerm = {
         cube.getPieceInd(EPIECE::ULB),
         cube.getPieceInd(EPIECE::ULF),
         cube.getPieceInd(EPIECE::DLF),
@@ -24,22 +24,22 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
     auto setPairPos = [&](const pair_t& target, pair_t& result) {
         for (uint8_t i = 0; i < 8; ++i)
         {
-            if (target[0] == cPosPerm[i]) result[0] = i;
-            if (target[1] == cPosPerm[i]) result[1] = i;
+            if (target[0] == C_posPerm[i]) result[0] = i;
+            if (target[1] == C_posPerm[i]) result[1] = i;
         }
     };
 
     // root (solved) pair positions. for a solved state a corner index matches the position index in cPosPerm
-    constexpr std::array<pair_t, 4> rootPairs = {{ {0, 2}, {4, 6}, {1, 3}, {5, 7} }};
+    constexpr std::array<pair_t, 4> C_rootPairs = {{ {0, 2}, {4, 6}, {1, 3}, {5, 7} }};
 
     // stores the positions of paired corners
-    std::array<pair_t, 4> cPairPerm;
+    std::array<pair_t, 4> C_pairPerm;
     for (uint8_t i = 0; i < 4; ++i)
     {
-        setPairPos(rootPairs[i], cPairPerm[i]);
+        setPairPos(C_rootPairs[i], C_pairPerm[i]);
     }
     // checks if the pairs are formed
-    for (auto& pair : cPairPerm)
+    for (const auto& pair : C_pairPerm)
     {
         if ((pair[0] & 5) != (pair[1] & 5))
         {
@@ -54,7 +54,7 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
     {
         for (uint8_t j = i + 1; j < 8; ++j)
         {
-            parity ^= cPosPerm[i] < cPosPerm[j];
+            parity ^= C_posPerm[i] < C_posPerm[j];
         }
     }
     // returns false if parity is odd
