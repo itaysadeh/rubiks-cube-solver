@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "../cube.h"
+#include "../Cube/cube.h"
 
 class Database
 {

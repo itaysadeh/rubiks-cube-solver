@@ -1,7 +1,7 @@
 #ifndef SEARCH_UTIL_H
 #define SEARCH_UTIL_H
 
-#include "../cube.h"
+#include "../Cube/cube.h"
 
 // helper functions for searching the cube or generating moves
 struct SearchUtil

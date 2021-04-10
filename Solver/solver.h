@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "../Util/timer.h"
-#include "../cube.h"
+#include "../Cube/cube.h"
 #include "searcher.h"
 
 // base class for solvers that ensures a solver will have the means to search for a solution and return the result

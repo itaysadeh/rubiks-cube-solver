@@ -7,7 +7,7 @@
 #include <queue>
 
 #include "../Util/searchutil.h"
-#include "../cube.h"
+#include "../Cube/cube.h"
 #include "database.h"
 #include "goal.h"
 

@@ -2,7 +2,7 @@
 #define TDATABASE_H
 
 #include <cstdint>
-#include "../../cube.h"
+#include "../../Cube/cube.h"
 #include "../database.h"
 
 #include <array>

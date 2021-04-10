@@ -3,7 +3,7 @@
 
 #include "SDL.h"
 
-#include "../cube.h"
+#include "../Cube/cube.h"
 #include "../Util/searchutil.h"
 #include "../Util/randomnumgenerator.h"
 #include "../Solver/Thistlethwaite/thistlethwaite.h"

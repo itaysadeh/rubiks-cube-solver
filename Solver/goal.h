@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-#include "../cube.h"
+#include "../Cube/cube.h"
 
 // base class for a goal that checks if a goal is reached and provides the moves to reach it
 struct Goal

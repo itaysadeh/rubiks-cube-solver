@@ -5,6 +5,7 @@ project(RubiksCubeSolver)
 set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
         "${CMAKE_SOURCE_DIR}/Cube/cube.cpp"
         "${CMAKE_SOURCE_DIR}/Cube/cubeind.cpp"
+        "${CMAKE_SOURCE_DIR}/Cube/rubikscube.cpp"
         "${CMAKE_SOURCE_DIR}/Engine/engine.cpp"
         "${CMAKE_SOURCE_DIR}/Util/databasegenerator.cpp"
         "${CMAKE_SOURCE_DIR}/Util/searchutil.cpp"

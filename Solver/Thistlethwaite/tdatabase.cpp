@@ -30,4 +30,6 @@ uint32_t TDatabase::getInd(const Rubiks& cube) const
         cube.getCornerOrientation(cube.getCorner(EPIECE::DRB)),
         cube.getCornerOrientation(cube.getCorner(EPIECE::DRF)),
     };
+
+    return 1;
 }
