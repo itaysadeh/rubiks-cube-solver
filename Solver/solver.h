@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "../Util/Timer.h"
-#include "../Cube.h"
-#include "Searcher.h"
+#include "../Util/timer.h"
+#include "../cube.h"
+#include "searcher.h"
 
 // base class for solvers that ensures a solver will have the means to search for a solution and return the result
 struct Solver

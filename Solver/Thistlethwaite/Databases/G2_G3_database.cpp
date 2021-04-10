@@ -1,6 +1,6 @@
 #include "G2_G3_database.h"
 
-uint32_t G2_G3_Database::getIndex(const Rubiks& cube) const
+uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
 {
     using EPIECE = Rubiks::EPIECE;
     using pair_t = std::array<uint8_t, 2>;

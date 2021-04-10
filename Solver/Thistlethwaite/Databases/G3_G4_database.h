@@ -1,8 +1,8 @@
 #ifndef G3_G4_DATABASE_H
 #define G3_G4_DATABASE_H
 
-#include "../../Database.h"
-#include "../../../Util/Indexer.h"
+#include "../../database.h"
+#include "../../../Util/indexer.h"
 
 /*
  * In G3->G4, finally the cube is solved. In this state the cube is seperated to 3 edge slices
@@ -26,7 +26,7 @@ struct G3_G4_Database : public Database
 	{	
 	}
 
-	uint32_t getIndex(const Rubiks& cube) const override;
+        uint32_t getInd(const Rubiks& cube) const override;
 
 private:
     PermIndexer<4> permIndexer4;

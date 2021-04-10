@@ -1,8 +1,8 @@
 #ifndef THISTLETHWAITE_H
 #define THISTLETHWAITE_H
 
-#include "../Solver.h"
-#include "Groups.h"
+#include "../solver.h"
+#include "groups.h"
 
 // jaapsch.net/puzzles/thistle.htm
 class Thistlethwaite : public Solver

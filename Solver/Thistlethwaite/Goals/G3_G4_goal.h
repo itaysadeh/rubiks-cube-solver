@@ -1,7 +1,7 @@
 #ifndef G3_G4_GOAL_H
 #define G3_G4_GOAL_H
 
-#include "../../Goal.h"
+#include "../../goal.h"
 
 struct G3_G4_Goal : public Goal
 {

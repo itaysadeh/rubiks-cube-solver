@@ -14,7 +14,7 @@
 #include "Goals/G2_G3_goal.h"
 #include "Goals/G3_G4_goal.h"
 
-#include "../../Util/DatabaseGenerator.h"
+#include "../../Util/databasegenerator.h"
 
 // base class for the 4 groups in Thistlethwaite's algorithm
 struct Group

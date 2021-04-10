@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "../Cube.h"
+#include "../cube.h"
 
 class Database
 {
@@ -20,7 +20,7 @@ public:
         reset();
     }
 
-    virtual uint32_t getIndex(const Rubiks& cube) const = 0;
+    virtual uint32_t getInd(const Rubiks& cube) const = 0;
 
     bool load();
     void write() const;

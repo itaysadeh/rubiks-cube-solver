@@ -1,4 +1,4 @@
-#include "SearchUtil.h"
+#include "searchutil.h"
 
 bool SearchUtil::isRedundant(EMOVE curr, EMOVE last) const
 {

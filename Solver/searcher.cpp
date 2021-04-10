@@ -1,4 +1,4 @@
-#include "Searcher.h"
+#include "searcher.h"
 
 std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, const Database& database) const
 {
@@ -38,7 +38,7 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
                 Rubiks copy = currNode->cube;
                 copy.performMove(move);
 
-                uint32_t newIndex = database.getIndex(copy);
+                uint32_t newIndex = database.getInd(copy);
                 uint8_t  newScore = database[newIndex];
 
                 // don't consider nodes that move away from a solution

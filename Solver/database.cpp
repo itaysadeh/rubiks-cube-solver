@@ -1,4 +1,4 @@
-#include "Database.h"
+#include "database.h"
 
 bool Database::load()
 {
@@ -61,7 +61,7 @@ bool Database::set(uint32_t index, uint8_t value)
 
 bool Database::set(const Rubiks& cube, uint8_t value)
 {
-    return set(getIndex(cube), value);
+    return set(getInd(cube), value);
 }
 
 bool Database::isSet(uint32_t index) const
@@ -71,7 +71,7 @@ bool Database::isSet(uint32_t index) const
 
 bool Database::isSet(const Rubiks& cube) const
 {
-    return isSet(getIndex(cube));
+    return isSet(getInd(cube));
 }
 
 bool Database::full() const
@@ -103,5 +103,5 @@ uint8_t Database::operator [](uint32_t index) const
 
 uint8_t Database::operator [](const Rubiks& cube) const
 {
-    return m_data[getIndex(cube)];
+    return m_data[getInd(cube)];
 }

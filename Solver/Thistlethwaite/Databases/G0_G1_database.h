@@ -1,7 +1,7 @@
 #ifndef G0_G1_DATABASE_H
 #define G0_G1_DATABASE_H
 
-#include "../../Database.h"
+#include "../../database.h"
 
 /*
  * In G1, the orientation of all 12 edges is solved (good orientation means an edge can be solved
@@ -19,7 +19,7 @@ struct G0_G1_Database : public Database
 	{
 	}
 
-	uint32_t getIndex(const Rubiks& cube) const override;
+	uint32_t getInd(const Rubiks& cube) const override;
 };
 
 #endif // G0_G1_DATABASE_H

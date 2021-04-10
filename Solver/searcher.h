@@ -6,10 +6,10 @@
 #include <algorithm>
 #include <queue>
 
-#include "../Util/SearchUtil.h"
-#include "../Cube.h"
-#include "Database.h"
-#include "Goal.h"
+#include "../Util/searchutil.h"
+#include "../cube.h"
+#include "database.h"
+#include "goal.h"
 
 struct Algorithm
 {

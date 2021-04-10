@@ -3,10 +3,10 @@
 
 #include "SDL.h"
 
-#include "../Cube.h"
-#include "../Util/SearchUtil.h"
-#include "../Util/RandomNumGenerator.h"
-#include "../Solver/Thistlethwaite/Thistlethwaite.h"
+#include "../cube.h"
+#include "../Util/searchutil.h"
+#include "../Util/randomnumgenerator.h"
+#include "../Solver/Thistlethwaite/thistlethwaite.h"
 
 #include <iostream>
 #include <cstdint>

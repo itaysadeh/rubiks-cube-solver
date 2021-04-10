@@ -1,4 +1,4 @@
-#include "Thistlethwaite.h"
+#include "thistlethwaite.h"
 
 Thistlethwaite::Thistlethwaite()
 {

@@ -1,6 +1,6 @@
 #include "G0_G1_database.h"
 
-uint32_t G0_G1_Database::getIndex(const Rubiks& cube) const
+uint32_t G0_G1_Database::getInd(const Rubiks& cube) const
 {
     using EPIECE = Rubiks::EPIECE;
 

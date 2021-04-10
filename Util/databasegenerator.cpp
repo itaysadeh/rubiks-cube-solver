@@ -1,4 +1,4 @@
-#include "DatabaseGenerator.h"
+#include "databasegenerator.h"
 
 void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rubiks& baseCube)
 {
@@ -33,7 +33,7 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
         return true;
     }
 
-    uint32_t index = database.getIndex(cube);
+    uint32_t index = database.getInd(cube);
 
     // IDDFS looks at nodes multiple times, so indexing should only
     // be done at leaf level since lower depths have already been visited

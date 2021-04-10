@@ -3,11 +3,11 @@
 #include <string>
 #include <iostream>
 
-#include "../Solver/Database.h"
-#include "../Solver/Goal.h"
+#include "../Solver/database.h"
+#include "../Solver/goal.h"
 
-#include "../Util/Timer.h"
-#include "../Util/SearchUtil.h"
+#include "../Util/timer.h"
+#include "../Util/searchutil.h"
 
 // searches the cube (IDDFS) for all possible states and stores the depth of each state in a file
 class DatabaseGenerator

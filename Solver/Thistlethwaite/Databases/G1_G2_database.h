@@ -1,8 +1,8 @@
 #ifndef G1_G2_DATABASE_H
 #define G1_G2_DATABASE_H
 
-#include "../../Database.h"
-#include "../../../Util/Indexer.h"
+#include "../../database.h"
+#include "../../../Util/indexer.h"
 
 /*
  * In G2, all the M-slice edges are brought back to their home slice and the orientation of all the corners
@@ -21,7 +21,7 @@ struct G1_G2_Database : public Database
 	{
 	}
 
-	uint32_t getIndex(const Rubiks& cube) const override;
+        uint32_t getInd(const Rubiks& cube) const override;
 
 private:
     CombIndexer<4> combIndexer4;
