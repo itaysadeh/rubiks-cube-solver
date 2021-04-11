@@ -1,11 +1,17 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include "rubikscube.h"
+#include <bit>
+#include <cstdint>
+#include <cstring>
+#include <iostream>
+#include <vector>
+#include <array>
+#include <ctime>
 
-class Rubiks : public RubiksCube
+class Rubiks
 {
-public: 
+public:
     Rubiks();
     enum class EFACE   : uint8_t { U, L, F, R, B, D };
     enum class ECOLOUR : uint8_t { W, O, G, R, B, Y };
