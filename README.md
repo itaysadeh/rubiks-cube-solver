@@ -2,7 +2,7 @@
 
 ## Input
 - To apply moves (perform face twists) use: <kbd>U</kbd>-up, <kbd>L</kbd>-left, <kbd>F</kbd>-front, <kbd>R</kbd>-right, <kbd>B</kbd>-back and <kbd>D</kbd>-down.
-  (for counter-clockwise hold <kbd>Shift</kbd>, for 180-degre (half twist) hold <kbd>l-Ctrl</kbd>)
+  (for counter-clockwise hold <kbd>Shift</kbd>, for 180-degree (half twist) hold <kbd>l-Ctrl</kbd>)
 - To scramble the cube use <kbd>S</kbd>.
 - To solve the cube with [Thistlethwaite's algorithm](https://www.jaapsch.net/puzzles/thistle.htm) use <kbd>F1</kbd>
 
@@ -25,7 +25,7 @@ is treated as a "simpler" puzzle for the computer to solve.
 - Unique states: 2^11 = 2048
 - Legal moves: All moves
 
-In G1, the orientation of all 12 edges is solved (good orientation means an edge can be solved without using a 90-degre Up or Down move)
+In G1, the orientation of all 12 edges is solved (good orientation means an edge can be solved without using a 90-degree Up or Down move)
 G0->G1 only looks at edge orientations (0 for good, 1 for bad), which gives 2^12 unique states. Only half of these states is reachable because
 the total edge orientation value is always even (each move affects 0 or 4 edges which gives an overall even value).
 
@@ -33,7 +33,7 @@ Therefore, there are  2^12 / 2 = 2^11 = 2048 states to store in a database.
 #### G1->G2:
 - Positions: 2.11·10^16
 - Unique states: 8C4 * 3^7 = 1082565
-- Legal moves: 90-degre Up/Down turns are excluded
+- Legal moves: 90-degree Up/Down turns are excluded
 
 In G2, all the M-slice edges are brought back to their home slice and the orientation of all the corners is solved (their Left or Right facelet is in the Left or Right face). There are 3 ways a corner can be oriented which gives 3^8 corner states. Similar to the edges in G0, only 3^8 / 3 of the corner states are actually reachable because the total orientation value of the corners is always divisible by 3. 8C4 for the edges is for 8 positions where the 4 M-slice edges can be (without regard to order)
 
@@ -41,20 +41,20 @@ Therefore, there are 8C4 * 3^8 / 3 = 8C4 * 3^7 = 1082565 states to store in a da
 #### G2->G3:
 - Positions: 1.95·10^10
 - Unique states: 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800
-- Legal moves: 90-degre Up/Down and Front/Back turns are excluded
+- Legal moves: 90-degree Up/Down and Front/Back turns are excluded
 
-In G3, a cube is solvable using 180-degre moves only. This means that all edges are in their home slice and all corners are in their natural orbits.
+In G3, a cube is solvable using 180-degree moves only. This means that all edges are in their home slice and all corners are in their natural orbits.
 I couldn't find a nice way to rank each corner state so I split the 2 tetrads into 4 pairs (like in [Stefan](https://tomas.rokicki.com/cubecontest/stefan1.txt)'s approach).
 Since the M-slice is already solved in G2, a solved E-slice dictates a solved S-slice (vice versa), therefore only 8C4 edge states are stored in the database.
-An extra factor of 2 is added due to parity (corners): All G3 states have even parity because only 180-degre moves are allowed (even amount of twists), and G2 also stores states with odd parity.
+An extra factor of 2 is added due to parity (corners): All G3 states have even parity because only 180-degree moves are allowed (even amount of twists), and G2 also stores states with odd parity.
 
 Therefore, there are 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800 states to store in the database.
 #### G3->G4:
 - Positions: 6.63·10^5
 - Unique states: 4!^2 / 6 * 4!^3 / 2 = 96 * 4!^3 / 2 = 663552
-- Legal moves: Only 180-degre moves are allowed (all 90-degre moves are excluded)
+- Legal moves: Only 180-degree moves are allowed (all 90-degree moves are excluded)
 
-In G3->G4, finally the cube is solved. In this state the cube is seperated to 3 edge slices and 2 corner tetrads (each containing 4 pieces). Because only 180-degre moves are allowed the
+In G3->G4, finally the cube is solved. In this state the cube is seperated to 3 edge slices and 2 corner tetrads (each containing 4 pieces). Because only 180-degree moves are allowed the
 pieces will never leave these orbits. Each slice/tetrad can be permuted in 4! ways which gives 4!^5, but there are some restrictions:
 
 Corners: only 4!^2 / 6 of the corner states are reachable due to parity and disallowed lone 3-cycles (explained [here](https://puzzling.stackexchange.com/questions/5402/what-is-the-meaning-of-a-tetrad-twist-in-thistlethwaites-algorithm)).
