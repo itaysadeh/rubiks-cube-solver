@@ -3,7 +3,7 @@
 uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
 {
     using EPIECE = Rubiks::EPIECE;
-    using pair_t = std::array<uint8_t, 2>;
+    using EMOVE  = Rubiks::EMOVE;
 
     // stores which edge is currently occupying which position on the E- and S-slices (M-slice was solved in G1)
     std::array<uint8_t, 8> E_posPerm = {
@@ -28,30 +28,16 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         cube.getPieceInd(EPIECE::URB),
     };
 
-    // root pair positions
-    constexpr std::array<pair_t, 4> C_rootPairPos = {{ {0, 2}, {4, 6}, {1, 3}, {5, 7} }};
-
-    // finds the positions of a pair and writes it to result
-    auto setPairPos = [&](const pair_t& target, pair_t& result) {
-        for (uint8_t i = 0; i < 8; ++i)
-        {
-            if (target[0] == C_posPerm[i]) result[0] = i;
-            if (target[1] == C_posPerm[i]) result[1] = i;
-        }
-    };
-
-    std::array<pair_t, 4> C_pairPerm;
-    // stores the positions of the corners in a pair
-    for (uint8_t i = 0; i < 4; ++i)
-    {
-        setPairPos(C_rootPairPos[i], C_pairPerm[i]);
-    }
-
     // stores the positions of the 4 edges that need to be brought back to the E-slice
     // a solved E-slice dictates a solved S-slice (vice versa), only 1 slice has to be considered
     std::array<uint8_t, 4> E_posComb;
+    // same as the edges, spliting the corners into 2 tetrads - one the contains all the corners
+    // with even indices and one that contains all the corners with odd indices
+    std::array<uint8_t, 4> C_posComb;
+    std::array<uint8_t, 4> C_posCombEven;
+    std::array<uint8_t, 4> C_posCombOdd;
 
-    for (uint8_t i = 0, e = 0; i < 8 && e < 4; ++i)
+    for (uint8_t i = 0, e = 0, c = 0, ce = 0, co = 0; i < 8; ++i)
     {
         // indices of the E-slice edges are 4, 5, 6, 7
         if (E_posPerm[i] == 4 || E_posPerm[i] == 5 ||
@@ -59,56 +45,119 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         {
             E_posComb[e++] = i + 1;
         }
-    }
-
-    uint32_t E_ind = combIndexer4.getInd(E_posComb); // edge
-    uint32_t C_ind = 0;                              // corner
-    uint32_t P_ind = 0;                              // parity (0 = even, 1 = odd)
-
-    // checks if parity is even or odd
-    for (uint8_t i = 0; i < 8; ++i)
-    {
-        for (uint8_t j = i + 1; j < 8; ++j)
+        // same as the edges, but the corners are even
+        if (!(C_posPerm[i] & 1))
         {
-            P_ind ^= C_posPerm[i] < C_posPerm[j];
-        }
-    }
-
-    uint8_t C_pairRank[3];
-    bool seen[8]{};
-
-    for (uint8_t i = 0; i < 3; ++i)
-    {
-        // order the corners in the pair in ascending order
-        if (C_pairPerm[i][0] > C_pairPerm[i][1])
-        {
-            std::swap(C_pairPerm[i][0], C_pairPerm[i][1]);
+            C_posComb[c++] = i + 1;
         }
 
-        uint8_t rank = 0;
-        uint8_t C_relativePairRank[8][8];
+        // splits the corners into their tetrads
+        if (C_posPerm[i] & 1) C_posCombOdd[co++]  = C_posPerm[i];
+        else                  C_posCombEven[ce++] = C_posPerm[i];
+    }
 
-        // set the rank of each pair (realtivly, accounting for previous pairs)
-        for (uint8_t x = 0; x < 8; ++x)
+    // new permutation with fixed tetrads (keeping the relative order from the original permutation)
+    std::array<uint8_t, 8> C_tetradsPerm;
+    for (uint8_t i = 0, ce = 0, co = 0; i < 8; ++i)
+    {
+        if (i & 1) C_tetradsPerm[i] = C_posCombOdd[co++];
+        else       C_tetradsPerm[i] = C_posCombEven[ce++];
+    }
+
+    // solve the even tetrad (ULB DLF DRB URF)
+    auto C_imitateMove = [](EMOVE move, std::array<uint8_t, 8>& tetradsPerm) {
+        switch (move)
         {
-            if (seen[x]) continue;
-            for (uint8_t y = x + 1; y < 8; ++y)
+        case EMOVE::U2:
+            std::swap(tetradsPerm[0], tetradsPerm[6]);
+            std::swap(tetradsPerm[1], tetradsPerm[7]);
+            break;
+        case EMOVE::D2:
+            std::swap(tetradsPerm[2], tetradsPerm[4]);
+            std::swap(tetradsPerm[3], tetradsPerm[5]);
+            break;
+        case EMOVE::L2:
+            std::swap(tetradsPerm[1], tetradsPerm[3]);
+            std::swap(tetradsPerm[0], tetradsPerm[2]);
+            break;
+        case EMOVE::R2:
+            std::swap(tetradsPerm[4], tetradsPerm[6]);
+            std::swap(tetradsPerm[5], tetradsPerm[7]);
+            break;
+        case EMOVE::F2:
+            std::swap(tetradsPerm[1], tetradsPerm[5]);
+            std::swap(tetradsPerm[2], tetradsPerm[6]);
+            break;
+        case EMOVE::B2:
+            std::swap(tetradsPerm[0], tetradsPerm[4]);
+            std::swap(tetradsPerm[3], tetradsPerm[7]);
+            break;
+        default:
+            throw std::logic_error("G2_G3_database::getInd invalid enum value " + (int)move);
+        }
+    };
+
+    const std::array<std::vector<EMOVE>, 4> C_evenTetradSolvingMoves = {{ {EMOVE::U2, EMOVE::L2, EMOVE::B2}, {EMOVE::D2, EMOVE::F2}, {EMOVE::R2} }};
+
+    for (uint8_t i = 0; i < 8; i += 2)
+    {
+        if (C_tetradsPerm[i] == i)
+        {
+            continue;
+        }
+        else
+        {
+            for (auto move : C_evenTetradSolvingMoves[i >> 1])
             {
-                if (seen[y]) continue;
-                C_relativePairRank[x][y] = rank++;
+                C_imitateMove(move, C_tetradsPerm);
+                if (C_tetradsPerm[i] == i) continue;
+                // reverse last move
+                else C_imitateMove(move, C_tetradsPerm);
             }
         }
+    }
+    // solve ULF (first corner of the odd tetrad)
+    std::array<std::array<EMOVE, 4>, 3> C_oddTetradSolvingMoves = {{
+        {EMOVE::F2, EMOVE::L2, EMOVE::F2, EMOVE::U2},
+        {EMOVE::U2, EMOVE::F2, EMOVE::U2, EMOVE::L2},
+        {EMOVE::L2, EMOVE::U2, EMOVE::L2, EMOVE::F2}
+    }};
 
-        // get the rank of the 3 pairs
-        C_pairRank[i] = C_relativePairRank[C_pairPerm[i][0]][C_pairPerm[i][1]];
+    std::cout << "initial: ";
+    for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
+    std::cout << std::endl;
 
-        seen[C_pairPerm[i][0]] = true;
-        seen[C_pairPerm[i][1]] = true;
+    if (C_tetradsPerm[1] != 1)
+    {
+        for (uint8_t i = 0; i < 3; ++i)
+        {
+            for (uint8_t j = 0; j < 4; ++j)
+            {
+                C_imitateMove(C_oddTetradSolvingMoves[i][j], C_tetradsPerm);
+            }
+            std::cout << "after" << (int)i << ": ";
+            for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
+            std::cout << std::endl;
+            if (C_tetradsPerm[1] == 1) break;
+            // reverse last move
+            for (int k = 3; k >= 0; --k)
+            {
+                C_imitateMove(C_oddTetradSolvingMoves[i][k], C_tetradsPerm);
+            }
+        }
     }
 
-    // (0..8C2 - 1) * (6C2 * 4C2 * 2C2) + (0..6C2 - 1) * (4C2 * 2C2) + (0..4C2 - 1) = 0..2519
-    C_ind = C_pairRank[0] * 90 + C_pairRank[1] * 6 + C_pairRank[2];
+    for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
+    std::cout << std::endl;
 
-    // (0..2519 * (8C4) + (0..8C4 - 1)) * 2 + 0|1 = 0..352799
-    return (C_ind * 70 + E_ind) * 2 + P_ind;
+    // permutation of the remaining 3 odd pieces
+    std::array<uint8_t, 3> C_oddTetradPerm = { (C_tetradsPerm[3] >> 1) - 1, (C_tetradsPerm[5] >> 1) - 1, (C_tetradsPerm[7] >> 1) - 1 };
+
+    uint32_t E_ind = combIndexer4.getInd(E_posComb);
+    uint32_t C_ind = combIndexer4.getInd(C_posComb);
+    uint32_t factor = permIndexer3.getInd(C_oddTetradPerm);
+
+    return factor;
+
+    return C_ind * 70 + E_ind;
 }

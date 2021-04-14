@@ -29,6 +29,7 @@ struct G2_G3_Database : public Database
 
 private:
     CombIndexer<4> combIndexer4;
+    PermIndexer<3> permIndexer3;
 };
 
 #endif // G2_G3_DATABASE_H
