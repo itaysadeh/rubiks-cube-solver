@@ -45,8 +45,8 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         {
             E_posComb[e++] = i + 1;
         }
-        // same as the edges, but the corners are even
-        if (!(C_posPerm[i] & 1))
+        // even tetrad
+        if (C_posPerm[i] % 2 == 0)
         {
             C_posComb[c++] = i + 1;
         }
@@ -64,7 +64,7 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         else       C_tetradsPerm[i] = C_posCombEven[ce++];
     }
 
-    // solve the even tetrad (ULB DLF DRB URF)
+    // imitate a move (half twists only) in an array
     auto C_imitateMove = [](EMOVE move, std::array<uint8_t, 8>& tetradsPerm) {
         switch (move)
         {
@@ -77,16 +77,16 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
             std::swap(tetradsPerm[3], tetradsPerm[5]);
             break;
         case EMOVE::L2:
-            std::swap(tetradsPerm[1], tetradsPerm[3]);
             std::swap(tetradsPerm[0], tetradsPerm[2]);
+            std::swap(tetradsPerm[1], tetradsPerm[3]);
             break;
         case EMOVE::R2:
             std::swap(tetradsPerm[4], tetradsPerm[6]);
             std::swap(tetradsPerm[5], tetradsPerm[7]);
             break;
         case EMOVE::F2:
-            std::swap(tetradsPerm[1], tetradsPerm[5]);
             std::swap(tetradsPerm[2], tetradsPerm[6]);
+            std::swap(tetradsPerm[1], tetradsPerm[5]);
             break;
         case EMOVE::B2:
             std::swap(tetradsPerm[0], tetradsPerm[4]);
@@ -97,25 +97,31 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         }
     };
 
+    // solve the even tetrad (ULB DLF DRB URF)
     const std::array<std::vector<EMOVE>, 4> C_evenTetradSolvingMoves = {{ {EMOVE::U2, EMOVE::L2, EMOVE::B2}, {EMOVE::D2, EMOVE::F2}, {EMOVE::R2} }};
+
+    std::cout << "initial: ";
+    for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
+    std::cout << std::endl;
 
     for (uint8_t i = 0; i < 8; i += 2)
     {
-        if (C_tetradsPerm[i] == i)
+        if (C_tetradsPerm[i] == i) continue;
+
+        for (auto move : C_evenTetradSolvingMoves[i / 2])
         {
-            continue;
-        }
-        else
-        {
-            for (auto move : C_evenTetradSolvingMoves[i >> 1])
-            {
-                C_imitateMove(move, C_tetradsPerm);
-                if (C_tetradsPerm[i] == i) continue;
-                // reverse last move
-                else C_imitateMove(move, C_tetradsPerm);
-            }
+            C_imitateMove(move, C_tetradsPerm);
+
+            if (C_tetradsPerm[i] == i) break;
+            // reverse last move
+            else C_imitateMove(move, C_tetradsPerm);
         }
     }
+
+    std::cout << "after: ";
+    for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
+    std::cout << std::endl;
+
     // solve ULF (first corner of the odd tetrad)
     std::array<std::array<EMOVE, 4>, 3> C_oddTetradSolvingMoves = {{
         {EMOVE::F2, EMOVE::L2, EMOVE::F2, EMOVE::U2},
@@ -123,9 +129,9 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         {EMOVE::L2, EMOVE::U2, EMOVE::L2, EMOVE::F2}
     }};
 
-    std::cout << "initial: ";
-    for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
-    std::cout << std::endl;
+//    std::cout << "initial: ";
+//    for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
+//    std::cout << std::endl;
 
     if (C_tetradsPerm[1] != 1)
     {
@@ -135,9 +141,9 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
             {
                 C_imitateMove(C_oddTetradSolvingMoves[i][j], C_tetradsPerm);
             }
-            std::cout << "after" << (int)i << ": ";
-            for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
-            std::cout << std::endl;
+//            std::cout << "after" << (int)i << ": ";
+//            for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
+//            std::cout << std::endl;
             if (C_tetradsPerm[1] == 1) break;
             // reverse last move
             for (int k = 3; k >= 0; --k)
@@ -147,8 +153,8 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         }
     }
 
-    for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
-    std::cout << std::endl;
+//    for (auto c : C_tetradsPerm) std::cout << (int)c << " ";
+//    std::cout << std::endl;
 
     // permutation of the remaining 3 odd pieces
     std::array<uint8_t, 3> C_oddTetradPerm = { (C_tetradsPerm[3] >> 1) - 1, (C_tetradsPerm[5] >> 1) - 1, (C_tetradsPerm[7] >> 1) - 1 };

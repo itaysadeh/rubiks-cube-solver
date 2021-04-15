@@ -194,6 +194,18 @@ uint8_t Rubiks::getCornerInd(const corner_t& corner) const
     // unique index based on colour combinations
     uint8_t result = ((1 << (uint8_t)corner[0]) + (1 << (uint8_t)corner[1]) + (1 << (uint8_t)corner[2]));
 
+    // W = 0 = 1
+    // O = 1 = 2
+    // G = 2 = 4
+    // R = 3 = 8
+    // B = 4 = 16
+    // Y = 5 = 32
+
+    // ULB = WOB = 19 = 0
+    // ULF = WOG = 7  = 1
+    // DLF = YOG = 38 = 2
+    // DLB =
+
     switch (result)
     {
     case 19:
