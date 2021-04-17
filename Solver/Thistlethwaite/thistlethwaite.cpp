@@ -5,7 +5,7 @@ Thistlethwaite::Thistlethwaite()
     // init groups
     m_G0G1.useDatabase = true;
     m_G1G2.useDatabase = true;
-    m_G2G3.useDatabase = false;
+    m_G2G3.useDatabase = true;
     m_G3G4.useDatabase = true;
 
     m_G0G1.name = "G0->G1";
