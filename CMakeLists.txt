@@ -22,7 +22,6 @@ set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
 add_executable(RubiksCubeSolver ${SRC})
 
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -std=c++20")
-set(CMAKE_BUILD_TYPE Debug)
 
 # SDL2
 #    Linux
