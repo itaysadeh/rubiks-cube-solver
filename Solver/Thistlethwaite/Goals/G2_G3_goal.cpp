@@ -8,6 +8,8 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
 
     using pair_t  = std::array<uint8_t, 2>;
 
+    return true;
+
     // stores which corner is currently occupying which position
     std::array<uint8_t, 8> C_posPerm = {
         cube.getPieceInd(EPIECE::ULB),

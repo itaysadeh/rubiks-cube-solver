@@ -22,14 +22,14 @@ set(SRC "${CMAKE_SOURCE_DIR}/main.cpp"
 add_executable(RubiksCubeSolver ${SRC})
 
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -std=c++20")
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 # SDL2
 #    Linux
 if(UNIX)
     find_package(SDL2 REQUIRED)
-    include_directories(${SDL2_INCLUDE_DIRS})
-    target_link_libraries(RubiksCubeSolver PUBLIC SDL2::SDL2)
+    include_directories(RubiksCubeSolver ${SDL2_INCLUDE_DIRS})
+    target_link_libraries(RubiksCubeSolver PRIVATE SDL2::SDL2)
     # target_link_libraries(RubiksCubeSolver ${SDL2_LIBRARIES})
 endif()
 #    Windows

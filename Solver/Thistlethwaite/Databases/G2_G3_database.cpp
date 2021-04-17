@@ -157,7 +157,7 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
 //    std::cout << std::endl;
 
     // permutation of the remaining 3 odd pieces
-    std::array<uint8_t, 3> C_oddTetradPerm = { (C_tetradsPerm[3] >> 1) - 1, (C_tetradsPerm[5] >> 1) - 1, (C_tetradsPerm[7] >> 1) - 1 };
+    std::array<uint8_t, 3> C_oddTetradPerm = { (uint8_t)((C_tetradsPerm[3] >> 1) - 1), (uint8_t)((C_tetradsPerm[5] >> 1) - 1), (uint8_t)((C_tetradsPerm[7] >> 1) - 1) };
 
     uint32_t E_ind = combIndexer4.getInd(E_posComb);
     uint32_t C_ind = combIndexer4.getInd(C_posComb);
