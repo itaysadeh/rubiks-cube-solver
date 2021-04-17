@@ -34,7 +34,7 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
     }
 
     uint32_t index = database.getInd(cube);
-
+    
     // IDDFS looks at nodes multiple times, so indexing should only
     // be done at leaf level since lower depths have already been visited
     if (depth == maxDepth)

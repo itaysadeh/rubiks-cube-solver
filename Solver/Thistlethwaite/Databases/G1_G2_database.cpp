@@ -17,7 +17,7 @@ uint32_t G1_G2_Database::getInd(const Rubiks& cube) const
 
     // stores the edges that are currently occupying each position
     // the first 4 positions are in the M-slice in order to make a solved state the lowest combination: 0,1,2,3
-    std::array<uint8_t, 12> E_posPerm = {
+    std::array<uint8_t, 12> E_perm = {
         cube.getPieceInd(EPIECE::UB),
         cube.getPieceInd(EPIECE::UF),
         cube.getPieceInd(EPIECE::DB),
@@ -38,8 +38,8 @@ uint32_t G1_G2_Database::getInd(const Rubiks& cube) const
     for (uint8_t i = 0, e = 0; i < 12 && e < 4; ++i)
     {
         // indices of the M-slice edges are 8, 9, 10, 11
-        if (E_posPerm[i] == 8  || E_posPerm[i] == 9 ||
-            E_posPerm[i] == 10 || E_posPerm[i] == 11)
+        if (E_perm[i] == 8  || E_perm[i] == 9 ||
+            E_perm[i] == 10 || E_perm[i] == 11)
         {
             E_posComb[e++] = i + 1;
         }
@@ -58,6 +58,6 @@ uint32_t G1_G2_Database::getInd(const Rubiks& cube) const
         C_orientationPerm[5] * 243 +
         C_orientationPerm[6] * 729;
 
-    // (0..3^7 - 1) * 12C4 + (0..12C4 - 1) = 0..1082565
+    // (0..3^7 - 1) * 12C4 + (0..12C4 - 1) = 0..1082564
     return C_ind * 495 + E_ind;
 }

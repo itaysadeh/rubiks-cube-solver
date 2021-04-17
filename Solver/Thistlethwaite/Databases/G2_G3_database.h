@@ -21,7 +21,7 @@
 struct G2_G3_Database : public Database
 {
 	G2_G3_Database()
-        : Database(352800, "Thistlethwaite/G2")
+        : Database(29400, "Thistlethwaite/G2")
 	{
 	}
 
