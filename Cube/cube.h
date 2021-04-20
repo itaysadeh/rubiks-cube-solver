@@ -53,10 +53,7 @@ public:
     };
 
     // indices of affected facelets in a face rotation (ajacents)
-    struct AdjacentIndices
-    {
-        uint8_t i0, i1, i2, i3, i4, i5, i6, i7;
-    };
+    using adjacentIndices_t = std::array<uint8_t, 8>; 
 
     void resetCube();
     bool isSovled() const;
@@ -64,8 +61,8 @@ public:
     void rotateFaceCW(EFACE face);
     void rotateFaceCCW(EFACE face);
     void rotateFace180(EFACE face);
-    void rotateAdjacents(const AdjacentIndices& adj);
-    void rotateAdjacents180(const AdjacentIndices& adj);
+    void rotateAdjacents(const adjacentIndices_t& adj);
+    void rotateAdjacents180(const adjacentIndices_t& adj);
 
     void setFace(EFACE face, uint64_t newFace);
 

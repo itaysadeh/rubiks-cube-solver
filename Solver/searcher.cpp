@@ -24,7 +24,7 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
         Q.pop();
 
         // found a solution
-        if (goal.contented(currNode->cube) || database[currNode->cube] == 0)
+        if (goal.contented(currNode->cube))
         {
             solvedNode = currNode;
             solved     = true;
@@ -33,7 +33,7 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
         // solved state in the database didn't satisfiy the goal
         if (database[currNode->cube] == 0)
         {
-            throw std::logic_error("Searcher::Astar Solved state didn't satisfiy goal");
+            throw std::logic_error("Searcher::Astar A solved state in the database didn't satisfiy the goal");
         }
 
         // generate child nodes
@@ -72,6 +72,11 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
     }
     // moves are pushed in reverse order
     std::reverse(result.begin(), result.end());
+
+    if (result.size() != rootScore)
+    {
+        throw std::logic_error("asdfasdf");
+    }
 
     return result;
 }

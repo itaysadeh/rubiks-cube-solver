@@ -30,6 +30,23 @@ struct G2_G3_Database : public Database
 private:
     CombIndexer<4> combIndexer4;
     PermIndexer<3> permIndexer3;
+
+    using EMOVE = Rubiks::EMOVE;
+
+    // moves to solve the even tetrad (ULB, DLF, DRB, URF)
+    const std::array<std::vector<EMOVE>, 3> C_evenTetradSolvingMoves = {{
+        {EMOVE::U2, EMOVE::L2, EMOVE::B2},  // ULB
+        {EMOVE::D2, EMOVE::F2},             // DLF
+        {EMOVE::R2}                         // DRB
+    }};
+    // moves to solve ULF (first corner of the odd tetrad)
+    const std::array<std::array<EMOVE, 4>, 3> C_oddTetradSolvingMoves = {{
+        // these move sequences perform a double swap on the four pieces of  
+        // the odd tetrad without affecting the corners in the even tetrad
+        {EMOVE::F2, EMOVE::L2, EMOVE::F2, EMOVE::U2},
+        {EMOVE::U2, EMOVE::F2, EMOVE::U2, EMOVE::L2},
+        {EMOVE::L2, EMOVE::U2, EMOVE::L2, EMOVE::F2}
+    }};
 };
 
 #endif // G2_G3_DATABASE_H

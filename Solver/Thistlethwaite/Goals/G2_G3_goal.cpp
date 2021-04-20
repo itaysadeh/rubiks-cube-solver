@@ -18,19 +18,17 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
         cube.getPieceInd(EPIECE::URF),
         cube.getPieceInd(EPIECE::URB),
     };
-
-    // stores the positions of the corners ((perm[pos] = ind) -> (perm[ind] = pos))
-    std::array<uint8_t, 8> C_posPerm;
+    
+    // checks whether the tetrads are formed
     for (int i = 0; i < 8; ++i)
     {
-        // checks if the tetrads are formed
-        if ((C_perm[i] & 1) != (i & 1)) return false;
-
-        // convers to a piece->position relation
-        C_posPerm[C_perm[i]] = i;
+        if (C_perm[i] % 2 != i % 2)
+        {
+            return false;
+        }
     }
 
-    // a corner permutation is in G3 if all corners are solved after solving 5 corners
+// a corner permutation is in G3 if all corners are solved after solving 5 corners
 
      // imitate a move (half twists only) in an array
     auto imitateMove = [](EMOVE move, std::array<uint8_t, 8>& perm) {
@@ -77,16 +75,16 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
     for (uint8_t i = 0; i < 6; i += 2)
     {
         // checks if a corner is solved
-        if (C_posPerm[i] == i) continue;
+        if (C_perm[i] == i) continue;
 
         for (auto move : C_evenTetradSolvingMoves[i / 2])
         {
             // tries to solve
-            imitateMove(move, C_posPerm);
+            imitateMove(move, C_perm);
 
-            if (C_posPerm[i] == i) break;
+            if (C_perm[i] == i) break;
             // reverse move if it didn't solve the corner
-            else imitateMove(move, C_posPerm);
+            else imitateMove(move, C_perm);
         }
     }
 
@@ -100,7 +98,7 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
     }};
 
     // solve ULF if it's not already solved
-    if (C_posPerm[1] != 1)
+    if (C_perm[1] != 1)
     {
         for (uint8_t i = 0; i < 3; ++i)
         {
@@ -108,15 +106,15 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
             for (auto it = C_oddTetradSolvingMoves[i].begin();
                       it != C_oddTetradSolvingMoves[i].end(); ++it)
             {
-                imitateMove(*it, C_posPerm);
+                imitateMove(*it, C_perm);
             }
 
-            if (C_posPerm[1] == 1) break;
+            if (C_perm[1] == 1) break;
             // reverse move if it didn't solve the corner
             for (auto rit = C_oddTetradSolvingMoves[i].rbegin();
                       rit != C_oddTetradSolvingMoves[i].rend(); ++rit)
             {
-                imitateMove(*rit, C_posPerm);
+                imitateMove(*rit, C_perm);
             }
         }
     }
@@ -124,7 +122,7 @@ bool G2_G3_Goal::contented(const Rubiks& cube) const
     // checks if the permutation is solved
     for (uint8_t i = 0; i < 8; ++i)
     {
-        if (C_posPerm[i] != i) return false;
+        if (C_perm[i] != i) return false;
     }
 
     // checks if all the edges are in their home slice (M-slice edges are already solved)

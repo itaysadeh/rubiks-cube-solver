@@ -16,7 +16,6 @@ uint32_t G1_G2_Database::getInd(const Rubiks& cube) const
     };
 
     // stores the edges that are currently occupying each position
-    // the first 4 positions are in the M-slice in order to make a solved state the lowest combination: 0,1,2,3
     std::array<uint8_t, 12> E_perm = {
         cube.getPieceInd(EPIECE::UB),
         cube.getPieceInd(EPIECE::UF),
@@ -46,7 +45,7 @@ uint32_t G1_G2_Database::getInd(const Rubiks& cube) const
     }
 
     uint32_t E_ind = combIndexer4.getInd(E_posComb); // edge
-    uint32_t C_ind = 0;                             // corner
+    uint32_t C_ind = 0;                              // corner
 
     // treats corner orientations as ternary numbers and converts it to decimal
     C_ind +=

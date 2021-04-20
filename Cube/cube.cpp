@@ -62,32 +62,32 @@ void Rubiks::rotateFace180(EFACE face)
     setFace(face, std::rotl(getFace(face), 32));
 }
 
-void Rubiks::rotateAdjacents(const AdjacentIndices& adj)
+void Rubiks::rotateAdjacents(const adjacentIndices_t& adj)
 {
     // rotates 16 bits (2 facelets) in 1 operation
     uint16_t tmpi0;
-    memcpy(&tmpi0, &m_cube[adj.i0], sizeof(uint16_t));
-    memcpy(&m_cube[adj.i0], &m_cube[adj.i1], sizeof(uint16_t));
-    memcpy(&m_cube[adj.i1], &m_cube[adj.i2], sizeof(uint16_t));
-    memcpy(&m_cube[adj.i2], &m_cube[adj.i3], sizeof(uint16_t));
-    memcpy(&m_cube[adj.i3], &tmpi0, sizeof(uint16_t));
+    memcpy(&tmpi0,          &m_cube[adj[0]], sizeof(uint16_t));
+    memcpy(&m_cube[adj[0]], &m_cube[adj[1]], sizeof(uint16_t));
+    memcpy(&m_cube[adj[1]], &m_cube[adj[2]], sizeof(uint16_t));
+    memcpy(&m_cube[adj[2]], &m_cube[adj[3]], sizeof(uint16_t));
+    memcpy(&m_cube[adj[3]], &tmpi0,          sizeof(uint16_t));
     // 3rd facelet is coppied by itself in case it's not continious in memory
-    // (e.g indices 6,7,0 are affected in a L face rotation)
+    // (i.e indices 6,7,0 are affected in a L face rotation)
     uint8_t tmpi4;
-    memcpy(&tmpi4, &m_cube[adj.i4], sizeof(uint8_t));
-    memcpy(&m_cube[adj.i4], &m_cube[adj.i5], sizeof(uint8_t));
-    memcpy(&m_cube[adj.i5], &m_cube[adj.i6], sizeof(uint8_t));
-    memcpy(&m_cube[adj.i6], &m_cube[adj.i7], sizeof(uint8_t));
-    memcpy(&m_cube[adj.i7], &tmpi4, sizeof(uint8_t));
+    memcpy(&tmpi4,          &m_cube[adj[4]], sizeof(uint8_t));
+    memcpy(&m_cube[adj[4]], &m_cube[adj[5]], sizeof(uint8_t));
+    memcpy(&m_cube[adj[5]], &m_cube[adj[6]], sizeof(uint8_t));
+    memcpy(&m_cube[adj[6]], &m_cube[adj[7]], sizeof(uint8_t));
+    memcpy(&m_cube[adj[7]], &tmpi4, sizeof(uint8_t));
 }
 
-void Rubiks::rotateAdjacents180(const AdjacentIndices& adj)
+void Rubiks::rotateAdjacents180(const adjacentIndices_t& adj)
 {
-    std::swap(*(uint16_t*)&m_cube[adj.i0], *(uint16_t*)&m_cube[adj.i2]);
-    std::swap(*(uint16_t*)&m_cube[adj.i1], *(uint16_t*)&m_cube[adj.i3]);
+    std::swap(*(uint16_t*)&m_cube[adj[0]], *(uint16_t*)&m_cube[adj[2]]);
+    std::swap(*(uint16_t*)&m_cube[adj[1]], *(uint16_t*)&m_cube[adj[3]]);
 
-    std::swap(m_cube[adj.i4], m_cube[adj.i6]);
-    std::swap(m_cube[adj.i5], m_cube[adj.i7]);
+    std::swap(m_cube[adj[4]], m_cube[adj[6]]);
+    std::swap(m_cube[adj[5]], m_cube[adj[7]]);
 }
 
 void Rubiks::setFace(EFACE face, uint64_t new_face)
