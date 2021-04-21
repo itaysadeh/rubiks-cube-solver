@@ -55,7 +55,7 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         else                    C_oTetrad[co++] = C_perm[i];
     }
 
-    // forms the new permutations with the corners in their tetrads
+    // forms the new permutation with the corners in their tetrads in relative order
     for (unsigned i = 0; i < 8; ++i)
     {
         C_tetradsPerm[i] = (i & 1) ? C_oTetrad[i >> 1] : C_eTetrad[i >> 1];
