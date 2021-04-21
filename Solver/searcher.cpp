@@ -30,6 +30,12 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
             solved     = true;
             break;
         }
+        // solved state in the database didn't satisfiy the goal
+        if (database[currNode->cube] == 0)
+        {
+            throw std::logic_error("Searcher::Astar A solved state in the database didn't satisfiy the goal");
+        }
+
         // generate child nodes
         for (const auto& move : goal.legalMoves)
         {
@@ -53,7 +59,10 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
     }
 
     // no solution was found and the queue is empty, invalid database led to wrong assumptions
-    if (!solved) throw std::logic_error("Searcher::Astar Didn't find a solution, invalid database.");
+    if (!solved)
+    {
+        throw std::logic_error("Searcher::Astar Didn't find a solution, invalid database.");
+    }
 
     std::vector<EMOVE> result;
     while (solvedNode->parent)
