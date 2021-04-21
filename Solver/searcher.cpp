@@ -73,11 +73,6 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
     // moves are pushed in reverse order
     std::reverse(result.begin(), result.end());
 
-    if (result.size() != rootScore)
-    {
-        throw std::logic_error("asdfasdf");
-    }
-
     return result;
 }
 

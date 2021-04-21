@@ -4,7 +4,7 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
 {
     using EPIECE = Rubiks::EPIECE;
 
-    // stores the edges that are currently occupying each position on the E & S slice (M-slice was solved in G1)
+    // stores the edges that are currently occupying each position on the E & S slice
     std::array<uint8_t, 8> E_perm = {
         cube.getPieceInd(EPIECE::RF),
         cube.getPieceInd(EPIECE::RB),
@@ -32,11 +32,12 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
     // stores the positions of the 4 corners that need to be brought back to the even tetrad
     std::array<uint8_t, 4> C_posComb;
     // extracts the corners into their tetrads while keeping the same relative order from the initial perm
+    std::array<uint8_t, 4> C_eTetrad, C_oTetrad;
     std::array<uint8_t, 8> C_tetradsPerm;
-    // maps the even tetrad positions from (0 2 4 6) to (0 1 2 3) for nCk calculations
+    // used to check the positions of the even tetrad first
     const std::array<uint8_t, 8> C_map = { 0,2,4,6,1,3,5,7 };
 
-    for (uint8_t i = 0, e = 0, c = 0, ce = 0, co = 1; i < 8; ++i)
+    for (uint8_t i = 0, e = 0, c = 0, ce = 0, co = 0; i < 8; ++i)
     {
         // indices of the E-slice edges are 4, 5, 6, 7
         if (E_perm[i] == 4 || E_perm[i] == 5 ||
@@ -44,65 +45,52 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
         {
             E_posComb[e++] = i + 1;
         }
-        // even tetrad
+        // even tetrad (even indices)
         if (C_perm[C_map[i]] % 2 == 0)
         {
             C_posComb[c++] = i + 1;
         }
-        // extracts the corners and splits them into their tetrads
-        if (C_perm[i] % 2 == 0)
-        {
-            C_tetradsPerm[ce] = C_perm[i];
-            ce += 2;
-        }
-        else
-        {
-            C_tetradsPerm[co] = C_perm[i];
-            co += 2;
-        }
+        // splits the corners while keeping the relative order
+        if (C_perm[i] % 2 == 0) C_eTetrad[ce++] = C_perm[i];
+        else                    C_oTetrad[co++] = C_perm[i];
     }
 
-    // run the moves to solve the even tetrad
+    // forms the new permutations with the corners in their tetrads
+    for (unsigned i = 0; i < 8; ++i)
+    {
+        C_tetradsPerm[i] = (i & 1) ? C_oTetrad[i >> 1] : C_eTetrad[i >> 1];
+    }
+
+    // solves the even tetrad (ULB = 0, DLF = 2, DRB = 4, URF = 6)
     for (uint8_t i = 0; i < 6; i += 2)
     {
-        // checks if a corner is solved
         if (C_tetradsPerm[i] == i) continue;
 
         for (auto move : C_evenTetradSolvingMoves[i / 2])
         {
-            // tries to solve
             imitateMove(move, C_tetradsPerm);
-
-            if (C_tetradsPerm[i] == i) break;
-            // reverse move if it didn't solve the corner
-            else imitateMove(move, C_tetradsPerm);
+            if (C_tetradsPerm[i] == i) break;    
+            imitateMove(move, C_tetradsPerm);
         }
     }
-    // solve ULF if it's not already solved
-    if (C_tetradsPerm[1] != 1)
+    // solves one corner in the odd tetrad (ULF = 1)
+    uint8_t move_sequence = 0;
+    while (C_tetradsPerm[1] != 1)
     {
-        for (uint8_t i = 0; i < 3; ++i)
+        for (int j = 0; j < 4; ++j)
         {
-            // tries to solve
-            for (auto it = C_oddTetradSolvingMoves[i].begin();
-                      it != C_oddTetradSolvingMoves[i].end(); ++it)
-            {
-                imitateMove(*it, C_tetradsPerm);
-            }
-
-            if (C_tetradsPerm[1] == 1) break;
-            // reverse move if it didn't solve the corner
-            for (auto rit = C_oddTetradSolvingMoves[i].rbegin();
-                      rit != C_oddTetradSolvingMoves[i].rend(); ++rit)
-            {
-                imitateMove(*rit, C_tetradsPerm);
-            }
+            imitateMove(C_oddTetradSolvingMoves[move_sequence][j], C_tetradsPerm);
         }
+        if (C_tetradsPerm[1] == 1) break;
+        for (int j = 3; j >= 0; --j)
+        {
+            imitateMove(C_oddTetradSolvingMoves[move_sequence][j], C_tetradsPerm);
+        }
+        move_sequence++;
     }
 
-    // permutation of the remaining 3 corners in the odd tetrad (3, 5, 7)
-    // stores 3,5,7 as 0,1,2
-    std::array<uint8_t, 3> C_oddTetradPerm = {
+    // stores the permutation of the remaining 3 corners in the odd tetrad (3,5,7) as (0,1,2)
+    std::array<uint8_t, 3> C_tetradTwist = {
         (uint8_t)((C_tetradsPerm[3] >> 1) - 1),
         (uint8_t)((C_tetradsPerm[5] >> 1) - 1),
         (uint8_t)((C_tetradsPerm[7] >> 1) - 1),
@@ -113,7 +101,7 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
     // 0..8C4 - 1
     uint32_t C_ind = combIndexer4.getInd(C_posComb);
     // 0...3! - 1
-    uint32_t F_ind = permIndexer3.getInd(C_oddTetradPerm);
+    uint32_t F_ind = permIndexer3.getInd(C_tetradTwist);
 
     // (0..8C4 - 1 * 8C4 + 0..8C4 - 1) * 6 + ..5 = 0..29399
     return (C_ind * 70 + E_ind) * 6 + F_ind;
@@ -121,8 +109,7 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
 
 void G2_G3_Database::imitateMove(EMOVE move, std::array<uint8_t, 8>& tetradsPerm) const
 {
-    std::array<uint8_t, 4> indices;
-    std::array<uint8_t, 4> positions;
+    std::array<uint8_t, 4> indices, positions;
     switch (move)
     {
     case EMOVE::U2:
@@ -144,8 +131,8 @@ void G2_G3_Database::imitateMove(EMOVE move, std::array<uint8_t, 8>& tetradsPerm
         indices = { 0,4,3,7 };
         break;
     default:
-        std::string moveName = std::to_string((int)move);
-        throw std::logic_error("G2_G3_database::getInd invalid enum value " + moveName);
+        std::string moveValue = std::to_string((int)move);
+        throw std::logic_error("G2_G3_database::imitateMove invalid enum value " + moveValue);
     }
 
     for (uint8_t i = 0; i < 8; ++i)

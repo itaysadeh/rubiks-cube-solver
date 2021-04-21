@@ -134,22 +134,15 @@ uint8_t Rubiks::getCornerOrientation(const corner_t& corner) const
     // a differnet logic to avoid unnecessary extra code
 
     // retrun 0 / 1 / 2 based on which axis the L/R colour is on
-    if (corner[0] == ECOLOUR::R || corner[0] == ECOLOUR::O)
+    for (uint8_t i = 0; i < 3; ++i)
     {
-        return 0;
+        if (corner[i] == ECOLOUR::R || corner[i] == ECOLOUR::O)
+        {
+            return i;
+        }
     }
-    else if (corner[1] == ECOLOUR::R || corner[1] == ECOLOUR::O)
-    {
-        return 1;
-    }
-    else if (corner[2] == ECOLOUR::R || corner[2] == ECOLOUR::O)
-    {
-        return 2;
-    }
-    else
-    {
-        throw std::logic_error("Rubiks::getCornerOrientation unable to get orientation, corner must have a R / O facelet");
-    }
+
+    throw std::logic_error("Rubiks::getCornerOrientation unable to get orientation, corner must have a R / O facelet");
 }
 
 uint8_t Rubiks::getEdgeInd(const edge_t& edge) const
@@ -185,7 +178,7 @@ uint8_t Rubiks::getEdgeInd(const edge_t& edge) const
         return 11;
     default:
         std::string edgeComb = getColourName(edge[0]) + getColourName(edge[1]);
-        throw std::logic_error("Rubiks::getCornerInd invalid combination of edge colours:" + edgeComb);
+        throw std::logic_error("Rubiks::getCornerInd invalid combination of edge colours: " + edgeComb);
     }
 }
 
@@ -277,7 +270,8 @@ uint8_t Rubiks::getPieceInd(EPIECE piece) const
     case EPIECE::URB:
         return getCornerInd({ getColour(ECORNER::RUB), getColour(ECORNER::URB), getColour(ECORNER::BRU) });
     default:
-        throw std::logic_error("Rubiks::getPieceInd invalid enum value" + (int)piece);
+        std::string value = std::to_string((int)piece);
+        throw std::logic_error("Rubiks::getPieceInd invalid enum value: " + value);
     }
 }
 
@@ -312,7 +306,8 @@ Rubiks::edge_t Rubiks::getEdge(EPIECE piece) const
     case EPIECE::UB:
         return { getColour(EEDGE::UB), getColour(EEDGE::BU) };
     default:
-        throw std::logic_error("Rubiks::getPieceInd invalid enum value" + (int)piece);
+        std::string value = std::to_string((int)piece);
+        throw std::logic_error("Rubiks::getPieceInd invalid enum value: " + value);
     }
 }
 
@@ -339,7 +334,8 @@ Rubiks::corner_t Rubiks::getCorner(EPIECE piece) const
     case EPIECE::URB:
         return { getColour(ECORNER::RUB), getColour(ECORNER::URB), getColour(ECORNER::BRU) };
     default:
-        throw std::logic_error("Rubiks::getPieceInd invalid enum value" + (int)piece);
+        std::string value = std::to_string((int)piece);
+        throw std::logic_error("Rubiks::getPieceInd invalid enum value: " + value);
     }
 }
 
@@ -360,7 +356,8 @@ std::string Rubiks::getColourName(ECOLOUR colour) const
     case ECOLOUR::Y:
         return "Y";
     default:
-        throw std::logic_error("Rubiks::getColourName invalid enum value" + (int)colour);
+        std::string value = std::to_string((int)colour);
+        throw std::logic_error("Rubiks::getColourName invalid enum value: " + value);
     }
 }
 
@@ -433,7 +430,8 @@ std::string Rubiks::getMoveName(EMOVE move) const
     case EMOVE::NO_MOVE:
         return "";
     default:
-        throw std::logic_error("Rubiks::getMoveName invalid enum value " + (int)move);
+        std::string value = std::to_string((int)move);
+        throw std::logic_error("Rubiks::getMoveName invalid enum value: " + value);
     }
 }
 
@@ -498,7 +496,8 @@ void Rubiks::performMove(EMOVE move)
     case EMOVE::NO_MOVE:
         break;
     default:
-        throw std::logic_error("RubiksCube::performMove Invalid enum value " + (int)move);
+        std::string value = std::to_string((int)move);
+        throw std::logic_error("RubiksCube::performMove Invalid enum value: " + value);
     }
 }
 
@@ -561,7 +560,8 @@ void Rubiks::revertMove(EMOVE move)
         D2();
         break;
     default:
-        throw std::logic_error("RubiksCube::revertMove Invalid enum value " + (int)move);
+        std::string value = std::to_string((int)move);
+        throw std::logic_error("RubiksCube::revertMove Invalid enum value: " + value);
     }
 }
 

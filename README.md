@@ -40,15 +40,19 @@ In G2, all the M-slice edges are brought back to their home slice and the orient
 Therefore, there are 8C4 * 3^8 / 3 = 8C4 * 3^7 = 1082565 states to store in a database.
 #### G2->G3:
 - Positions: 1.95·10^10
-- Unique states: 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800
+- Unique states: 8C4^2 * 2 * 6 = 29400
 - Legal moves: 90-degre Up/Down and Front/Back turns are excluded
 
-In G3, a cube is solvable using 180-degre moves only. This means that all edges are in their home slice and all corners are in their natural orbits.
-I couldn't find a nice way to rank each corner state so I split the 2 tetrads into 4 pairs (like in [Stefan](https://tomas.rokicki.com/cubecontest/stefan1.txt)'s approach).
-Since the M-slice is already solved in G2, a solved E-slice dictates a solved S-slice (vice versa), therefore only 8C4 edge states are stored in the database.
-An extra factor of 2 is added due to parity (corners): All G3 states have even parity because only 180-degre moves are allowed (even amount of twists), and G2 also stores states with odd parity.
+In G3, a cube is solvable using 180-degree moves only. This means that all edges are in their home slice and all corners are in their natural orbits. The M-slice is already solved in G1.
+One solved slice / tetrad means that the second slice / tetrad is also solved, so the positions
+of 4 edges and 4 corners are tracked (8C4 possible combinations for both)
 
-Therefore, there are 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800 states to store in the database.
+Because of 90-degree L/R face turns, there are states in G2 that have odd parity which adds an
+additional factor of 2.
+
+Additionally, a factor of 3 is added due to [lone 3-cycles](https:://puzzling.stackexchange.com/questions/5402/what-is-the-meaning-of-a-tetrad-twist-in-thistlethwaites-algorithm).
+
+Therefore, there are 8C4^2 * 2 * 6 = 29400 states to store in the database.
 #### G3->G4:
 - Positions: 6.63·10^5
 - Unique states: 4!^2 / 6 * 4!^3 / 2 = 96 * 4!^3 / 2 = 663552
@@ -57,7 +61,7 @@ Therefore, there are 8C4 * (8C2 * 6C2 * 4C2 * 2C2) * 2 = 352800 states to store 
 In G3->G4, finally the cube is solved. In this state the cube is seperated to 3 edge slices and 2 corner tetrads (each containing 4 pieces). Because only 180-degre moves are allowed the
 pieces will never leave these orbits. Each slice/tetrad can be permuted in 4! ways which gives 4!^5, but there are some restrictions:
 
-Corners: only 4!^2 / 6 of the corner states are reachable due to parity and disallowed lone 3-cycles (explained [here](https://puzzling.stackexchange.com/questions/5402/what-is-the-meaning-of-a-tetrad-twist-in-thistlethwaites-algorithm)).
+Corners: only 4!^2 / 6 of the corner states are reachable due to parity and disallowed lone 3-cycles.
 
 Edges: only 4!^4 / 2 of the edge states are reachable due to parity.
 

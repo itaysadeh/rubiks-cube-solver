@@ -2,6 +2,7 @@
 #define GOAL_H
 
 #include <vector>
+#include <array>
 #include <memory>
 
 #include "../Cube/cube.h"
