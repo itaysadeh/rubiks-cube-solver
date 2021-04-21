@@ -47,6 +47,9 @@ private:
         {EMOVE::U2, EMOVE::F2, EMOVE::U2, EMOVE::L2},
         {EMOVE::L2, EMOVE::U2, EMOVE::L2, EMOVE::F2}
     }};
+
+    // imitates a move on an array
+    void imitateMove(EMOVE move, std::array<uint8_t, 8>& tetradsPerm) const;
 };
 
 #endif // G2_G3_DATABASE_H

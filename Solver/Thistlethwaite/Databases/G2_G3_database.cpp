@@ -3,7 +3,6 @@
 uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
 {
     using EPIECE = Rubiks::EPIECE;
-    using EMOVE  = Rubiks::EMOVE;
 
     // stores the edges that are currently occupying each position on the E & S slice (M-slice was solved in G1)
     std::array<uint8_t, 8> E_perm = {
@@ -35,7 +34,7 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
     // extracts the corners into their tetrads while keeping the same relative order from the initial perm
     std::array<uint8_t, 8> C_tetradsPerm;
     // maps the even tetrad positions from (0 2 4 6) to (0 1 2 3) for nCk calculations
-    const std::array<uint8_t, 8> C_map = { 0, 2, 4, 6, 1, 3, 5, 7 };
+    const std::array<uint8_t, 8> C_map = { 0,2,4,6,1,3,5,7 };
 
     for (uint8_t i = 0, e = 0, c = 0, ce = 0, co = 1; i < 8; ++i)
     {
@@ -62,65 +61,6 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
             co += 2;
         }
     }
-
-    // imitate a move (half twists only) in an array
-    auto imitateMove = [](EMOVE move, std::array<uint8_t, 8>& tetradsPerm) {
-        uint8_t e0, e1, o0, o1;
-        switch (move)
-        {
-        case EMOVE::U2:
-            e0 = 0;
-            e1 = 6;
-            o0 = 1;
-            o1 = 7;
-            break;
-        case EMOVE::D2:
-            e0 = 2;
-            e1 = 4;
-            o0 = 3;
-            o1 = 5;
-            break;
-        case EMOVE::L2:
-            e0 = 0;
-            e1 = 2;
-            o0 = 1;
-            o1 = 3;
-            break;
-        case EMOVE::R2:
-            e0 = 4;
-            e1 = 6;
-            o0 = 5;
-            o1 = 7;
-            break;
-        case EMOVE::F2:
-            e0 = 2;
-            e1 = 6;
-            o0 = 1;
-            o1 = 5;
-            break;
-        case EMOVE::B2:
-            e0 = 0;
-            e1 = 4;
-            o0 = 3;
-            o1 = 7;
-            break;
-        default:
-            std::string moveName = std::to_string((int)move);
-            throw std::logic_error("G2_G3_database::getInd invalid enum value " + moveName);
-        }
- 
-        uint8_t i0, i1, j0, j1;
-        for (uint8_t i = 0; i < 8; ++i)
-        {
-            if (tetradsPerm[i] == e0) i0 = i;
-            if (tetradsPerm[i] == e1) i1 = i;
-            if (tetradsPerm[i] == o0) j0 = i;
-            if (tetradsPerm[i] == o1) j1 = i;
-        }
- 
-        std::swap(tetradsPerm[i0], tetradsPerm[i1]);
-        std::swap(tetradsPerm[j0], tetradsPerm[j1]);
-    };
 
     // run the moves to solve the even tetrad
     for (uint8_t i = 0; i < 6; i += 2)
@@ -177,4 +117,45 @@ uint32_t G2_G3_Database::getInd(const Rubiks& cube) const
 
     // (0..8C4 - 1 * 8C4 + 0..8C4 - 1) * 6 + ..5 = 0..29399
     return (C_ind * 70 + E_ind) * 6 + F_ind;
+}
+
+void G2_G3_Database::imitateMove(EMOVE move, std::array<uint8_t, 8>& tetradsPerm) const
+{
+    std::array<uint8_t, 4> indices;
+    std::array<uint8_t, 4> positions;
+    switch (move)
+    {
+    case EMOVE::U2:
+        indices = { 0,6,1,7 };
+        break;
+    case EMOVE::D2:
+        indices = { 2,4,3,5 };
+        break;
+    case EMOVE::L2:
+        indices = { 0,2,1,3 };
+        break;
+    case EMOVE::R2:
+        indices = { 4,6,5,7 };
+        break;
+    case EMOVE::F2:
+        indices = { 2,6,1,5 };
+        break;
+    case EMOVE::B2:
+        indices = { 0,4,3,7 };
+        break;
+    default:
+        std::string moveName = std::to_string((int)move);
+        throw std::logic_error("G2_G3_database::getInd invalid enum value " + moveName);
+    }
+
+    for (uint8_t i = 0; i < 8; ++i)
+    {
+        if (tetradsPerm[i] == indices[0]) positions[0] = i;
+        if (tetradsPerm[i] == indices[1]) positions[1] = i;
+        if (tetradsPerm[i] == indices[2]) positions[2] = i;
+        if (tetradsPerm[i] == indices[3]) positions[3] = i;
+    }
+
+    std::swap(tetradsPerm[positions[0]], tetradsPerm[positions[1]]);
+    std::swap(tetradsPerm[positions[2]], tetradsPerm[positions[3]]);
 }
