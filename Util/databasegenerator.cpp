@@ -8,10 +8,11 @@ void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rub
 
     timer.set();
 
+    std::vector<uint8_t> lastIterationVisit(database.size(), (uint8_t)(-1));
     while (!database.full())
     {
         std::cout << "Depth: " << (int)depth << ". ";
-        if (databaseSearcher(cube, Rubiks::EMOVE::NO_MOVE, goal, database, 0, depth))
+        if (databaseSearcher(cube, Rubiks::EMOVE::NO_MOVE, goal, database, 0, depth, lastIterationVisit))
         {
             break;
         }
@@ -25,7 +26,7 @@ void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rub
     std::cout << "Finished generating (" << timer.get() / 1000 << " seconds)" << std::endl;
 }
 
-bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth) const
+bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth, std::vector<uint8_t>& lastIterationVisit) const
 {
     // all states visited
     if (database.full())
@@ -36,8 +37,10 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
     uint32_t index = database.getInd(cube);
 
     // prune a branch if a state has been visited at an earlier depth
-    if (depth <= database[index])
+    // or by a different branch during the same maxDepth iteration
+    if (depth <= database[index] && lastIterationVisit[index] != maxDepth)
     {
+        lastIterationVisit[index] = maxDepth;
         // IDDFS looks at nodes multiple times, so indexing should only
         // be done at leaf level since lower depths have already been visited
         if (depth == maxDepth)
@@ -52,7 +55,7 @@ bool DatabaseGenerator::databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, co
                 {
                     cube.performMove(move);
 
-                    if (databaseSearcher(cube, move, goal, database, depth + 1, maxDepth))
+                    if (databaseSearcher(cube, move, goal, database, depth + 1, maxDepth, lastIterationVisit))
                     {
                         return true;
                     }
