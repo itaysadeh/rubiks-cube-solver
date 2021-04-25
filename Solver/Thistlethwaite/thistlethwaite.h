@@ -14,7 +14,7 @@ public:
 
 	std::vector<EMOVE> solve(const Rubiks& cube) const override;
 
-public:
+private:
 	using G0_G1 = TypedGroup<G0_G1_Database, G0_G1_Goal>;
 	using G1_G2 = TypedGroup<G1_G2_Database, G1_G2_Goal>;
 	using G2_G3 = TypedGroup<G2_G3_Database, G2_G3_Goal>;
