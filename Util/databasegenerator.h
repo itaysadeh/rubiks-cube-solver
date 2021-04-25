@@ -17,7 +17,7 @@ public:
     void generate(const Goal& goal, Database& database, const Rubiks& pBaseCube = Rubiks());
 
 private:
-    bool databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth) const;
+    bool databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth, std::vector<uint8_t>& lastIterationVisit) const;
 
     SearchUtil searchUtil;
 };
