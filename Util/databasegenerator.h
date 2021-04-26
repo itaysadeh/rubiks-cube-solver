@@ -19,11 +19,7 @@ public:
     void generate(const Goal& goal, Database& database, const Rubiks& pBaseCube = Rubiks()) const;
 
 private:
-<<<<<<< HEAD
     bool databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth, std::vector<bool>& visited) const;
-=======
-    bool databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth, std::vector<uint8_t>& lastIterationVisit) const;
->>>>>>> 1b1df7ed78daeda9f3b8e95e1ed0b88634fd6785
 
     SearchUtil searchUtil;
 };
