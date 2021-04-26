@@ -51,7 +51,7 @@ of 4 edges and 4 corners are tracked (8C4 possible combinations for both)
 Because of 90-degree L/R face turns, there are states in G2 that have odd parity which adds an
 additional factor of 2.
 
-Additionally, a factor of 3 is added due to [lone 3-cycles](https:://puzzling.stackexchange.com/questions/5402/what-is-the-meaning-of-a-tetrad-twist-in-thistlethwaites-algorithm).
+Additionally, a factor of 3 is added due to [lone 3-cycles](https://puzzling.stackexchange.com/questions/5402/what-is-the-meaning-of-a-tetrad-twist-in-thistlethwaites-algorithm).
 
 Therefore, there are 8C4^2 * 2 * 6 = 29400 states to store in the database.
 #### G3->G4:
