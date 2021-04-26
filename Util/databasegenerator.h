@@ -1,7 +1,9 @@
 #ifndef DATABASE_GENERATOR_H
 #define DATABASE_GENERATOR_H
+
 #include <string>
 #include <iostream>
+#include <array>
 
 #include "../Solver/database.h"
 #include "../Solver/goal.h"
@@ -14,10 +16,10 @@ class DatabaseGenerator
 {
 public:
     // if a cube isn't passed the database will be generated using a solved cube
-    void generate(const Goal& goal, Database& database, const Rubiks& pBaseCube = Rubiks());
+    void generate(const Goal& goal, Database& database, const Rubiks& pBaseCube = Rubiks()) const;
 
 private:
-    bool databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth) const;
+    bool databaseSearcher(Rubiks cube, Rubiks::EMOVE lastMove, const Goal& goal, Database& database, uint8_t depth, uint8_t maxDepth, std::vector<bool>& visited) const;
 
     SearchUtil searchUtil;
 };
