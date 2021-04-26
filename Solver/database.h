@@ -39,6 +39,7 @@ public:
     bool isSet(uint32_t index) const;
     bool isSet(const Rubiks& cube) const;
 
+    // returns true if all indices are set
     bool full() const;
 
     size_t currentSize() const;
