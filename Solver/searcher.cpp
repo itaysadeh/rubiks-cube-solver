@@ -39,22 +39,21 @@ std::vector<Rubiks::EMOVE> Astar::search(const Rubiks& cube, const Goal& goal, c
         // generate child nodes
         for (const auto& move : goal.legalMoves)
         {
-            if (!searchUtil.isRedundant(move, currNode->move))
+            if (searchUtil.isRedundant(move, currNode->move)) continue;
+            
+            Rubiks copy = currNode->cube;
+            copy.performMove(move);
+
+            uint32_t newIndex = database.getInd(copy);
+            uint8_t  newScore = database[newIndex];
+
+            // don't consider nodes that move away from a solution
+            if (newScore < currNode->score)
             {
-                Rubiks copy = currNode->cube;
-                copy.performMove(move);
-
-                uint32_t newIndex = database.getInd(copy);
-                uint8_t  newScore = database[newIndex];
-
-                // don't consider nodes that move away from a solution
-                if (newScore <= currNode->score)
-                {
-                    pNode_t newNode = std::make_shared<Node_Astar>(Node_Astar{ copy, currNode, move, newScore });
-                    Q.push(newNode);
-                }
-                copy.revertMove(move);
+                pNode_t newNode = std::make_shared<Node_Astar>(Node_Astar{ copy, currNode, move, newScore });
+                Q.push(newNode);
             }
+            copy.revertMove(move);
         }
     }
 
@@ -102,26 +101,22 @@ std::vector<Rubiks::EMOVE> IDDFS::search(const Rubiks& cube, const Goal& goal, c
 bool IDDFS::IDDFS_searcher(Node_IDDFS node, const Goal& goal, uint8_t maxDepth, std::vector<EMOVE>& result) const
 {
     // IDDFS looks at nodes multiple times, only checks for solutions at leaf level
-    if (node.depth == maxDepth)
-    {
-        return goal.contented(node.cube);
-    }
+    if (node.depth == maxDepth) return goal.contented(node.cube);
 
-    for (const auto& move : goal.legalMoves)
+    for (const auto move : goal.legalMoves)
     {
-        if (!searchUtil.isRedundant(move, node.move))
+        if (searchUtil.isRedundant(move, node.move)) continue;
+
+        node.cube.performMove(move);
+        uint8_t currDepth = node.depth + 1;
+
+        if (IDDFS_searcher(Node_IDDFS{node.cube, move, currDepth}, goal, maxDepth, result))
         {
-            node.cube.performMove(move);
-            uint8_t currDepth = node.depth + 1;
-
-            if (IDDFS_searcher(Node_IDDFS{node.cube, move, currDepth}, goal, maxDepth, result))
-            {
-                // solution found, moves pushed to result
-                result.push_back(move);
-                return true;
-            }
-            node.cube.revertMove(move);
+            // solution found, moves pushed to result
+            result.push_back(move);
+            return true;
         }
+        node.cube.revertMove(move);
     }
 
     // branch lead to a dead end

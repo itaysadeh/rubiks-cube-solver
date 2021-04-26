@@ -50,6 +50,8 @@ struct IDDFS : public Algorithm
     bool IDDFS_searcher(Node_IDDFS node, const Goal& goal, uint8_t maxDepth, std::vector<EMOVE>& result) const;
 };
 
+// 
+
 // contains all search algorithms
 struct Searcher
 {
