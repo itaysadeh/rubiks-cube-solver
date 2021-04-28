@@ -8,7 +8,6 @@ void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rub
 
     timer.set();
 
-    std::vector<uint8_t> lastIterationVisit(database.size(), (uint8_t)(-1));
     while (!database.full())
     {
         // keeps track of visited nodes in each of the iterations
@@ -16,7 +15,6 @@ void DatabaseGenerator::generate(const Goal& goal, Database& database, const Rub
 
         std::cout << "Depth: " << (int)depth << ". ";
         if (databaseSearcher(cube, Rubiks::EMOVE::NO_MOVE, goal, database, 0, depth, visited))
-
         {
             break;
         }
